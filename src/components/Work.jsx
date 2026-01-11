@@ -1,7 +1,6 @@
 import { useEffect } from "react";
-
+import { Link } from "react-router-dom";
 import projects from "../data/projects";
-
 
 function Work() {
   useEffect(() => {
@@ -28,9 +27,9 @@ function Work() {
       <p className="work-label">01 Work / Case Study</p>
 
       {projects.map((project, index) => (
-        <a
+        <Link
           key={project.id}
-          href={`/work/${project.id}`}
+          to={`/work/${project.id}`}
           className="work-card"
           style={{ background: project.gradient }}
         >
@@ -48,7 +47,7 @@ function Work() {
           <div className="work-visual">
             <img src={project.image} alt={project.title} />
           </div>
-        </a>
+        </Link>
       ))}
     </section>
   );
