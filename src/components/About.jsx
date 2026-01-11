@@ -20,6 +20,10 @@ function About() {
           <span>UI Engineering</span>
           <span>Problem Solving</span>
           <span>Accessibility</span>
+          <a href="/about">
+            {""}
+            <span>More Learn</span>
+          </a>
         </div>
       </div>
     </section>

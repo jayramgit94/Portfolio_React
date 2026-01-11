@@ -1,6 +1,28 @@
-import projects  from "../data/projects";  
+import { useEffect } from "react";
+
+import projects from "../data/projects";
+
 
 function Work() {
+  useEffect(() => {
+    const cards = document.querySelectorAll(".work-card");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section id="work" className="work-section">
       <p className="work-label">01 Work / Case Study</p>
