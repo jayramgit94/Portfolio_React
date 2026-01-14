@@ -24,14 +24,7 @@ function Navbar() {
           </Link>
 
           <div className="nav-actions">
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-              className="linkedin"
-            >
-              in
-            </a>
+            
 
             <button
               className={`menu-toggle ${open ? "open" : ""}`}
