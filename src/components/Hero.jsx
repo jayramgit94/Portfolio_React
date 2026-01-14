@@ -24,7 +24,33 @@ function Hero() {
 
         {/* IMAGE */}
         <div className="hero-elly-image">
-          <img src="/profile.jpg" alt="Jayram Sangawat" />
+          <div className="image-wrap">
+            <img
+              className="hero-image"
+              src="/profile.jpg"
+              alt="Jayram Sangawat"
+            />
+
+            <svg className="spin-badge" viewBox="0 0 100 100">
+              <defs>
+                <path
+                  id="circlePath"
+                  d="
+            M 50, 50
+            m -35, 0
+            a 35,35 0 1,1 70,0
+            a 35,35 0 1,1 -70,0
+          "
+                />
+              </defs>
+
+              <text fontSize="16" letterSpacing="2.2" fill="#5e2080">
+                <textPath href="#circlePath">
+                  MEET • ME • NICE • TO • YOU •
+                </textPath>
+              </text>
+            </svg>
+          </div>
         </div>
       </div>
     </section>

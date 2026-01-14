@@ -13,7 +13,7 @@ function Home() {
       <Navbar />
       <Hero />
       <Work />
-      <About />
+      {/* <About /> */}
       <Footer />
 
     </>
