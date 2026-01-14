@@ -10,17 +10,15 @@ export default function AboutPage() {
       <main className="about">
         {/* HERO */}
         <section className="about-hero">
-          <div className="about-hero-left">
-            <h1>
-              Jayram Sangawat <br />
-              <span className="about-native">जयराम सांगावत</span>
-            </h1>
-            <p className="about-pronounce">/ jay-ram sang-a-wat /</p>
+          <div className="about-hero-text">
+            <h1 className="about-name">Jayram Sangawat</h1>
+            <h2 className="about-native">जयराम सांगावत</h2>
+            <p className="about-pronunciation">/ jay-ram san-ga-wat /</p>
           </div>
 
-          <div className="about-hero-right">
-            <img src="/me.png" alt="Portrait" />
-            <img src="/me-2.png" alt="Secondary" />
+          <div className="about-hero-images">
+            <img src="/me.png" className="img-main" />
+            <img src="/me-2.png" className="img-side" />
           </div>
         </section>
 

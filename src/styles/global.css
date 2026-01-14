@@ -3,7 +3,7 @@
 ========================= */
 
 .hero-elly {
-padding: 180px 0 140px;
+  padding: 180px 0 140px;
   background: #fffdef;
   /* border-style: dashed; */
   border-width: 2px;
@@ -12,7 +12,7 @@ padding: 180px 0 140px;
 }
 
 .hero-elly-grid {
-  max-width: 1200px;   /* KEY FIX */
+  max-width: 1200px; /* KEY FIX */
   margin: 0 auto;
   padding: 0 48px;
 
@@ -21,7 +21,6 @@ padding: 180px 0 140px;
   align-items: center;
   gap: 64px;
 }
-
 
 .image-wrap {
   position: relative;
@@ -32,7 +31,6 @@ padding: 180px 0 140px;
   width: 420px;
   border-radius: 20px;
 }
-
 
 /* TEXT BLOCK */
 .hero-elly-text h1 {
@@ -59,7 +57,6 @@ padding: 180px 0 140px;
   display: flex;
   justify-content: center;
 }
-
 
 .hero-elly-image img {
   width: 460px;
@@ -117,8 +114,6 @@ padding: 180px 0 140px;
   }
 }
 
-
-
 /* =========================
    RESPONSIVE
 ========================= */
@@ -165,7 +160,6 @@ padding: 180px 0 140px;
   }
 }
 
-
 /* =========================
    RESET
 ========================= */
@@ -191,6 +185,9 @@ img {
 ========================= */
 body {
   font-family: Inter, system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
+    sans-serif;
+  color: #0b0b0b;
   color: #330f63;
   background: #fff;
   line-height: 1.6;
@@ -244,14 +241,13 @@ section {
 }
 .navbar-glass {
   position: fixed;
-  top: 16px;                 /* slightly tighter */
+  top: 16px; /* slightly tighter */
   left: 0;
   right: 0;
   display: flex;
   justify-content: center;
   z-index: 200;
 }
-
 
 /* =========================
    TOP ROW
@@ -392,8 +388,6 @@ section {
     font-weight: 500;
   }
 }
-
-
 
 /* =========================
    LEFT / CENTER / RIGHT
@@ -767,7 +761,92 @@ section {
   border-radius: 12px;
 }
 
+/* PAGE WRAPPER */
+.about-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 140px 32px 0;
+}
 
+/* HERO GRID */
+.about-hero {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 80px;
+  min-height: 70vh;
+}
+
+/* LEFT TEXT */
+.about-hero-text {
+  max-width: 520px;
+}
+
+.about-name {
+  font-size: clamp(3.2rem, 6vw, 4.2rem);
+  line-height: 1.1;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.about-native {
+  font-size: clamp(2.8rem, 5vw, 3.6rem);
+  font-weight: 400;
+  color: #0b1a55;
+  margin-bottom: 16px;
+}
+
+.about-pronunciation {
+  font-size: 1rem;
+  color: #666;
+}
+
+/* RIGHT IMAGES */
+.about-hero-images {
+  position: relative;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* MAIN IMAGE */
+.img-main {
+  width: 360px;
+  height: 460px;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+/* SIDE IMAGE */
+.img-side {
+  width: 180px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+  position: absolute;
+  right: -40px;
+  bottom: -40px;
+}
+
+@media (max-width: 900px) {
+  .about-hero {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+
+  .about-hero-images {
+    justify-content: flex-start;
+  }
+
+  .img-main {
+    width: 100%;
+    height: auto;
+  }
+
+  .img-side {
+    display: none;
+  }
+}
 
 /* =========================
    CUSTOM CURSOR (FIXED)
