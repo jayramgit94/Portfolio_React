@@ -63,7 +63,9 @@
   border-radius: 20px;
   object-fit: cover;
 
-  transition: transform 0.6s ease, box-shadow 0.6s ease;
+  transition:
+    transform 0.6s ease,
+    box-shadow 0.6s ease;
 }
 .hero-elly-image {
   position: relative;
@@ -185,8 +187,8 @@ img {
 ========================= */
 body {
   font-family: Inter, system-ui, sans-serif;
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI",
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif;
   color: #0b0b0b;
   color: #330f63;
   background: #fff;
@@ -518,10 +520,12 @@ section {
 }
 
 .hero-image img {
-  width: 340px;
+  width: 360px;
   border-radius: 18px;
   object-fit: cover;
-  transition: transform 0.6s ease, box-shadow 0.6s ease;
+  transition:
+    transform 0.6s ease,
+    box-shadow 0.6s ease;
 }
 
 .hero-image img:hover {
@@ -558,7 +562,9 @@ section {
   background: linear-gradient(135deg, #f3f6b2 0%, #c9e4c5 50%, #b8cde6 100%);
 
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  transition:
+    transform 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
 /* CARD LIFT */
@@ -580,6 +586,7 @@ section {
 .work-title {
   font-size: 40px;
   margin: 12px 0 16px;
+  transition: color 0.3s ease;
 }
 
 .work-description {
@@ -596,12 +603,15 @@ section {
   border-radius: 999px;
   font-size: 14px;
   cursor: pointer;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease;
 }
 
 /* IMAGE – PARALLAX FEEL */
 .work-visual img {
-  width: 420px;
-  height: 320px;
+  width: 380px;
+  height: 260px;
   object-fit: cover;
   border-radius: 16px;
   transition: transform 0.6s ease;
@@ -611,6 +621,18 @@ section {
   transform: translateY(-12px) scale(1.04);
 }
 
+.work-card:hover .work-title,
+.work-card:focus-within .work-title,
+.work-card.is-visible .work-title {
+  color: #2b0a3d;
+}
+
+.work-card:hover .work-button,
+.work-card:focus-within .work-button {
+  background: #2b0a3d;
+  transform: translateY(-2px);
+}
+
 /* =========================
    WORK – SCROLL REVEAL
 ========================= */
@@ -618,12 +640,77 @@ section {
 .work-card {
   opacity: 0;
   transform: translateY(60px);
-  transition: opacity 0.8s ease, transform 0.8s ease;
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
 }
 
 .work-card.is-visible {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* =========================
+   HERO + WORK RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+  .hero-layout {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .hero-image {
+    justify-content: flex-start;
+  }
+
+  .hero-image img {
+    width: min(100%, 420px);
+  }
+
+  .work-card {
+    gap: 36px;
+    padding: 40px;
+  }
+
+  .work-visual img {
+    width: 320px;
+    height: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-text-block h1 {
+    font-size: 44px;
+  }
+
+  .hero-text {
+    font-size: 18px;
+  }
+
+  .work-section {
+    padding: 90px 24px;
+  }
+
+  .work-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 32px;
+    margin-bottom: 48px;
+  }
+
+  .work-content {
+    max-width: 100%;
+  }
+
+  .work-visual {
+    width: 100%;
+  }
+
+  .work-visual img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
 }
 
 /* Stagger effect */
@@ -848,8 +935,6 @@ section {
   }
 }
 
-
-
 /* ===============================
    TOOLKIT SECTION
 ================================ */
@@ -857,13 +942,13 @@ section {
 .toolkit-section {
   max-width: 1100px;
   margin: 0 auto;
-  padding: 5px 24px;
+  padding: 40px 24px 80px;
 }
 
 /* HEADER ALIGNMENT */
 .toolkit-header {
   max-width: 520px;
-  margin-bottom: 90px;
+  margin-bottom: 72px;
 }
 
 .toolkit-header h2 {
@@ -880,23 +965,25 @@ section {
 /* GRID CENTERED */
 .toolkit-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 48px;
-  max-width: 900px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 32px;
+  max-width: 980px;
   margin: 0 auto;
 }
 
 /* CARD */
 .tool-card {
-  width: 140px;
-  height: 120px;
-  border-radius: 22px;
+  position: relative;
+  width: 160px;
+  height: 140px;
+  border-radius: 24px;
   background: linear-gradient(
     180deg,
-    rgba(255,255,255,0.05),
-    rgba(255,255,255,0.01)
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.02)
   );
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(35, 12, 63, 0.08);
+  backdrop-filter: blur(10px);
 
   display: flex;
   flex-direction: column;
@@ -905,7 +992,7 @@ section {
   gap: 14px;
 
   transition:
-    transform 0.9s cubic-bezier(.2,.8,.2,1),
+    transform 0.85s cubic-bezier(0.2, 0.8, 0.2, 1),
     opacity 0.6s ease,
     filter 0.6s ease,
     box-shadow 0.4s ease;
@@ -914,11 +1001,17 @@ section {
 /* ICON */
 .tool-icon {
   font-size: 30px;
+  font-weight: 700;
+  color: #2b0a3d;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 .tool-name {
   font-size: 0.95rem;
-  color: #d0d0d0;
+  color: #2b0a3d;
+  font-weight: 600;
 }
 
 /* INITIAL STATES */
@@ -928,11 +1021,11 @@ section {
 }
 
 .from-left {
-  transform: translateX(-140px) rotate(-8deg);
+  transform: translateX(-140px) rotate(-6deg);
 }
 
 .from-right {
-  transform: translateX(140px) rotate(8deg);
+  transform: translateX(140px) rotate(6deg);
 }
 
 /* SCROLL-IN */
@@ -944,8 +1037,8 @@ section {
 
 /* HOVER REWARD */
 .tool-card:hover {
-  transform: translateY(-8px) scale(1.05);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 30px 60px rgba(31, 20, 61, 0.24);
 }
 
 /* MOBILE */
@@ -964,14 +1057,15 @@ section {
   }
 }
 
-
 /* INFO TEXT (hidden by default) */
 .tool-info {
   font-size: 0.8rem;
-  color: #aaa;
+  color: #5a3b86;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 /* HOVER: reveal info */
@@ -985,7 +1079,7 @@ section {
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 22px;
+  border-radius: 24px;
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
@@ -993,27 +1087,83 @@ section {
 
 /* Individual skill glow colors */
 .tool-card.html::after {
-  background: radial-gradient(circle at top, rgba(255,109,58,0.25), transparent 60%);
+  background: radial-gradient(
+    circle at top,
+    rgba(255, 109, 58, 0.25),
+    transparent 60%
+  );
 }
 
 .tool-card.css::after {
-  background: radial-gradient(circle at top, rgba(59,130,246,0.25), transparent 60%);
+  background: radial-gradient(
+    circle at top,
+    rgba(59, 130, 246, 0.25),
+    transparent 60%
+  );
 }
 
 .tool-card.js::after {
-  background: radial-gradient(circle at top, rgba(250,204,21,0.25), transparent 60%);
+  background: radial-gradient(
+    circle at top,
+    rgba(250, 204, 21, 0.25),
+    transparent 60%
+  );
 }
 
 .tool-card.react::after {
-  background: radial-gradient(circle at top, rgba(56,189,248,0.25), transparent 60%);
+  background: radial-gradient(
+    circle at top,
+    rgba(56, 189, 248, 0.25),
+    transparent 60%
+  );
 }
 
-.tool-card.git::after {
-  background: radial-gradient(circle at top, rgba(249,115,22,0.25), transparent 60%);
+.tool-card.github::after {
+  background: radial-gradient(
+    circle at top,
+    rgba(15, 23, 42, 0.25),
+    transparent 60%
+  );
+}
+
+.tool-card.docker::after {
+  background: radial-gradient(
+    circle at top,
+    rgba(59, 130, 246, 0.28),
+    transparent 60%
+  );
+}
+
+.tool-card.python::after {
+  background: radial-gradient(
+    circle at top,
+    rgba(37, 99, 235, 0.28),
+    transparent 60%
+  );
+}
+
+.tool-card.cpp::after {
+  background: radial-gradient(
+    circle at top,
+    rgba(99, 102, 241, 0.28),
+    transparent 60%
+  );
+}
+
+.tool-card.bootstrap::after {
+  background: radial-gradient(
+    circle at top,
+    rgba(168, 85, 247, 0.28),
+    transparent 60%
+  );
 }
 
 .tool-card.figma::after {
-  background: radial-gradient(circle at top, rgba(168,85,247,0.25), transparent 60%);
+  background: radial-gradient(
+    circle at top,
+    rgba(168, 85, 247, 0.25),
+    transparent 60%
+  );
 }
 
 /* Activate glow on hover */
@@ -1038,8 +1188,6 @@ section {
     opacity: 0.15;
   }
 }
-
-
 
 /* =========================
    CUSTOM CURSOR (FIXED)
@@ -1076,12 +1224,61 @@ a:hover ~ .custom-cursor {
 /* =========================
    FOOTER
 ========================= */
+
 .footer {
   position: relative;
   background: #ececeb;
   padding: 120px 40px 60px;
   text-align: center;
-  overflow: hidden; /* important */
+  overflow: hidden;
+
+  /* Reveal baseline (IMPORTANT) */
+  transform: translateY(60px);
+  opacity: 0;
+
+  transition:
+    transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.6s ease;
+}
+
+/* Footer revealed & locked */
+.footer-lock {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Background sketch */
+.footer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/footer-hills-sketch.png");
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: 1200px auto;
+
+  opacity: 0.08;
+  pointer-events: none;
+
+  /* soft fade upward */
+  mask-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 40%,
+    rgba(0, 0, 0, 0) 85%
+  );
+
+  transition: opacity 0.6s ease;
+}
+
+/* Enhance sketch on lock */
+.footer-lock::before {
+  opacity: 0.14;
+}
+
+/* Content above background */
+.footer > * {
+  position: relative;
+  z-index: 1;
 }
 
 .footer h2 {
@@ -1102,89 +1299,47 @@ a:hover ~ .custom-cursor {
   margin-bottom: 40px;
 }
 
+.footer-links a {
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+/* Subtle underline on hover */
+.footer-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.footer-links a:hover::after {
+  transform: scaleX(1);
+}
+
 .footer-copy {
   font-size: 14px;
   color: #666;
 }
 
-.footer::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("/footer-hills-sketch.png");
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  background-size: 1200px auto;
-
-  opacity: 0.09; /* 🔥 key value */
-  pointer-events: none;
-
-  /* soft fade upward */
-  mask-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 1) 40%,
-    rgba(0, 0, 0, 0) 85%
-  );
-}
-
-.footer > * {
-  position: relative;
-  z-index: 1;
+/* Sentinel helper (do not style visually) */
+.footer-sentinel {
+  height: 1px;
 }
 
 /* =========================
    RESPONSIVE
 ========================= */
 
-/* Tablets */
 @media (max-width: 768px) {
-  .hero-layout,
-  .work-card {
-    flex-direction: column;
-    gap: 40px;
-  }
-
-  .hero-text-block h1 {
-    font-size: 56px;
-  }
-
-  .work-title {
-    font-size: 32px;
-  }
-
-  .about-card {
-    padding: 50px 30px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-  .nav-links {
-    display: none;
-  }
-
-  .hero {
-    padding: 100px 20px 60px;
-  }
-
-  .hero-text-block h1 {
-    font-size: 40px;
-  }
-
-  .hero-text {
-    font-size: 18px;
-  }
-
-  .hero-image img {
-    width: 260px;
-  }
-
-  .work-section {
-    padding: 80px 20px;
-  }
-
-  .work-card {
-    padding: 32px;
+  .footer {
+    padding: 100px 24px 50px;
   }
 
   .footer-links {
@@ -1193,17 +1348,10 @@ a:hover ~ .custom-cursor {
   }
 }
 
-/* Disable hover on touch */
+/* Disable hover-only effects on touch */
 @media (hover: none) {
-  .work-card:hover,
-  .about-card:hover,
-  .hero-image img:hover {
-    transform: none;
-    box-shadow: none;
-  }
-
-  .work-card:hover .work-visual img {
-    transform: none;
+  .footer-links a::after {
+    display: none;
   }
 }
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import resumePdf from "../assets/resume_1_jay.pdf";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -24,8 +25,6 @@ function Navbar() {
           </Link>
 
           <div className="nav-actions">
-            
-
             <button
               className={`menu-toggle ${open ? "open" : ""}`}
               onClick={() => setOpen(!open)}
@@ -46,7 +45,7 @@ function Navbar() {
             Favourite show this year was Peaky Blinders
           </span>
 
-          <a href="/resume.pdf" target="_blank" rel="noreferrer">
+          <a href={resumePdf} target="_blank" rel="noreferrer">
             Resume
           </a>
         </div>
@@ -61,7 +60,7 @@ function Navbar() {
             About
           </Link>
 
-          <a href="/resume.pdf" onClick={() => setOpen(false)}>
+          <a href={resumePdf} onClick={() => setOpen(false)}>
             Resume
           </a>
         </div>

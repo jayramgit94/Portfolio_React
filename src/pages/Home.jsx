@@ -1,30 +1,59 @@
 import { useEffect } from "react";
 import Cursor from "../components/Cursor";
-import Navbar from "../components/Navbar";
-import Hero from "../components/Hero";
-import Work from "../components/Work";
 import Footer from "../components/Footer";
+import Hero from "../components/Hero";
+import Navbar from "../components/Navbar";
+import Work from "../components/Work";
 import "../styles/global.css";
 
 function Home() {
   useEffect(() => {
+    /* ===============================
+       TOOLKIT CARD REVEAL
+    ================================ */
     const cards = document.querySelectorAll(".tool-card");
 
-    const observer = new IntersectionObserver(
+    const cardObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("show");
-            observer.unobserve(entry.target);
+            cardObserver.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.3 }
+      { threshold: 0.3 },
     );
 
-    cards.forEach((card) => observer.observe(card));
+    cards.forEach((card) => cardObserver.observe(card));
 
-    return () => observer.disconnect();
+    /* ===============================
+       FOOTER LOCK REVEAL
+    ================================ */
+    const footer = document.querySelector(".footer");
+    const sentinel = document.querySelector(".footer-sentinel");
+
+    if (footer && sentinel) {
+      const footerObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            footer.classList.add("footer-lock");
+            footerObserver.disconnect(); // run once
+          }
+        },
+        {
+          root: null,
+          threshold: 0,
+          rootMargin: "0px 0px -20% 0px",
+        },
+      );
+
+      footerObserver.observe(sentinel);
+    }
+
+    return () => {
+      cardObserver.disconnect();
+    };
   }, []);
 
   return (
@@ -40,7 +69,7 @@ function Home() {
           <h2>My Toolkit</h2>
           <p>
             Technologies and tools I use to design and build clean, responsive,
-            and engaging web experiences.
+            fast, and engaging web experiences.
           </p>
         </div>
 
@@ -49,37 +78,61 @@ function Home() {
             {
               name: "HTML",
               icon: "⌘",
-              info: "Semantic, accessible markup",
+              info: "Semantic structure & accessibility",
               color: "html",
             },
             {
               name: "CSS",
               icon: "✦",
-              info: "Layouts, animation, polish",
+              info: "Layouts, motion, visual polish",
               color: "css",
             },
             {
               name: "JavaScript",
               icon: "JS",
-              info: "Logic & interactivity",
+              info: "Logic, interactivity, state",
               color: "js",
             },
             {
               name: "React",
               icon: "⚛",
-              info: "Component-based UI",
+              info: "Component systems & UI logic",
               color: "react",
             },
             {
-              name: "Git",
-              icon: "⎇",
-              info: "Version control & workflow",
-              color: "git",
+              name: "GitHub",
+              icon: "",
+              info: "Collaboration & CI habits",
+              color: "github",
+            },
+            {
+              name: "Docker",
+              icon: "🐳",
+              info: "Containerized dev & deploy",
+              color: "docker",
+            },
+            {
+              name: "Python",
+              icon: "Py",
+              info: "Automation & data tooling",
+              color: "python",
+            },
+            {
+              name: "C++",
+              icon: "C++",
+              info: "Core logic & performance",
+              color: "cpp",
+            },
+            {
+              name: "Bootstrap",
+              icon: "B",
+              info: "Rapid UI scaffolding",
+              color: "bootstrap",
             },
             {
               name: "Figma",
               icon: "◆",
-              info: "Design & handoff",
+              info: "Design, prototypes & handoff",
               color: "figma",
             },
           ].map((tool, i) => (
@@ -96,6 +149,9 @@ function Home() {
           ))}
         </div>
       </section>
+
+      {/* FOOTER SENTINEL (DO NOT STYLE) */}
+      <div className="footer-sentinel" />
 
       <Footer />
     </>
