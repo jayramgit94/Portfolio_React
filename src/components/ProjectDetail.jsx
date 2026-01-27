@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import projects from "../data/projects";
 import "../styles/project-detail.css";
@@ -6,6 +6,7 @@ import "../styles/project-detail.css";
 function ProjectDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [activeSection, setActiveSection] = useState("overview");
 
   if (!projects || !Array.isArray(projects)) {
     return <div style={{ padding: "120px" }}>Projects data missing</div>;
@@ -38,6 +39,40 @@ function ProjectDetail() {
 
     navigate("/");
   };
+
+  useEffect(() => {
+    setActiveSection("overview");
+  }, [id]);
+
+  useEffect(() => {
+    const sectionElements = Array.from(
+      document.querySelectorAll(".project-section"),
+    );
+
+    if (!sectionElements.length) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible.length) {
+          setActiveSection(visible[0].target.id);
+        }
+      },
+      {
+        threshold: [0.2, 0.4, 0.6],
+        rootMargin: "-20% 0px -55% 0px",
+      },
+    );
+
+    sectionElements.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, [sections.length]);
 
   return (
     <div className="project-detail">
@@ -102,7 +137,13 @@ function ProjectDetail() {
           <div className="toc-card">
             <p className="toc-title">On this page</p>
             {tocItems.map((item) => (
-              <a key={item.id} href={`#${item.id}`} className="toc-link">
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                className={`toc-link ${
+                  activeSection === item.id ? "is-active" : ""
+                }`}
+              >
                 {item.title}
               </a>
             ))}

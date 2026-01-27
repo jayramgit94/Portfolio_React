@@ -67,10 +67,6 @@ function Home() {
       <section className="toolkit-section">
         <div className="toolkit-header">
           <h2>My Toolkit</h2>
-          <p>
-            Technologies and tools I use to design and build clean, responsive,
-            fast, and engaging web experiences.
-          </p>
         </div>
 
         <div className="toolkit-grid">
@@ -144,7 +140,6 @@ function Home() {
             >
               <div className="tool-icon">{tool.icon}</div>
               <span className="tool-name">{tool.name}</span>
-              <span className="tool-info">{tool.info}</span>
             </div>
           ))}
         </div>

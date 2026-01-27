@@ -49,9 +49,7 @@ export default function AboutPage() {
     let ticking = false;
 
     const handleScroll = () => {
-      if (ticking) {
-        return;
-      }
+      if (ticking) return;
 
       ticking = true;
       window.requestAnimationFrame(() => {
@@ -83,9 +81,7 @@ export default function AboutPage() {
 
     return () => {
       revealObserver.disconnect();
-      if (footerObserver) {
-        footerObserver.disconnect();
-      }
+      if (footerObserver) footerObserver.disconnect();
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
@@ -112,34 +108,35 @@ export default function AboutPage() {
               <img src="/me.png" alt="Jayram working" />
             </div>
             <div className="about-image-side" data-parallax>
-              <img src="/me-2.png" alt="Jayram and companion" />
+              <img src="/me-2.png" alt="Jayram collaborating" />
             </div>
           </div>
         </section>
 
         {/* INTRO */}
         <section className="about-intro" data-reveal="up">
-          <div className="intro-label">Me me me</div>
+          <div className="intro-label">About me</div>
           <div className="intro-body">
             <p className="intro-lead">
-              I’m a <span className="text-highlight">frontend developer</span>
-              from India who loves building clean, grounded, and elegant
-              interfaces.
+              I’m a{" "}
+              <span className="text-highlight">Computer Science student</span>{" "}
+              who started coding out of curiosity—wondering how websites are
+              built and why some feel effortless to use.
             </p>
 
             <p>
-              I blend design sensitivity with engineering discipline—turning
-              product goals into{" "}
-              <span className="text-highlight">UI systems</span>
-              that feel intuitive, scale gracefully, and stay fast. I focus on
-              typography, spacing, and interaction details because that’s where
-              trust is built.
+              I began with frontend development in my first year, experimenting
+              with layouts and customizing my own portfolio. The basics weren’t
+              easy at first—JavaScript logic and CSS behavior took time to
+              click. But small progress, consistency, and building things step
+              by step kept me moving forward.
             </p>
 
             <p>
-              Outside of work, I study great digital products, refine my design
-              taste, and keep experimenting with micro-interactions and motion
-              to make interfaces feel alive.
+              Over time, my interest grew beyond UI into backend systems, APIs,
+              databases, and application performance. I enjoy building complete
+              systems where functionality, speed, and smooth user experience
+              matter equally.
             </p>
 
             <p className="about-easter">
@@ -154,25 +151,27 @@ export default function AboutPage() {
           <div className="section-content">
             <div className="about-item" data-reveal="up">
               <div className="item-header">
-                <strong>Frontend Developer</strong>
-                <span>2023 — Present</span>
+                <strong>Project-Based Development</strong>
+                <span>2022 — Present</span>
               </div>
               <p>
-                Building modern React applications with a focus on
-                accessibility, design systems, and performance. I collaborate
-                closely with designers to keep UI consistent and shippable.
+                Built multiple real-world projects including chat systems,
+                certificate generators, AI-powered tools, and full-stack web
+                applications. I focus on writing practical code that solves real
+                problems and scales beyond demos.
               </p>
             </div>
 
             <div className="about-item" data-reveal="up">
               <div className="item-header">
-                <strong>Freelance Projects</strong>
-                <span>2022 — Present</span>
+                <strong>Team & Hackathon Work</strong>
+                <span>2023 — Present</span>
               </div>
               <p>
-                Delivered portfolio sites, dashboards, and marketing pages for
-                clients. I handle layout architecture, component libraries, and
-                responsive behavior end-to-end.
+                Worked in team-based environments during hackathons and college
+                projects. I often take responsibility for integrating frontend
+                and backend pieces, coordinating tasks, and turning ideas into
+                working systems.
               </p>
             </div>
           </div>
@@ -184,23 +183,26 @@ export default function AboutPage() {
           <div className="section-content">
             <div className="about-item" data-reveal="up">
               <div className="item-header">
-                <strong>Clarity over noise</strong>
-                <span>UI Philosophy</span>
+                <strong>Learning by building</strong>
+                <span>Growth mindset</span>
               </div>
               <p>
-                I aim for calm interfaces with clear hierarchy, reducing
-                cognitive load while keeping the experience visually delightful.
+                I understand concepts best when I apply them in projects. I
+                break large problems into smaller parts, read documentation,
+                experiment, debug errors, and iterate until things work
+                reliably.
               </p>
             </div>
 
             <div className="about-item" data-reveal="up">
               <div className="item-header">
-                <strong>Systems thinking</strong>
-                <span>Consistency</span>
+                <strong>Impact over perfection</strong>
+                <span>Product thinking</span>
               </div>
               <p>
-                I design components as reusable building blocks so products can
-                scale without losing their identity.
+                I value building useful and meaningful products—whether it’s a
+                chat app used by friends, a certificate system used for events,
+                or accessibility-focused tools that help real users.
               </p>
             </div>
           </div>
@@ -212,13 +214,14 @@ export default function AboutPage() {
           <div className="section-content">
             <div className="about-item" data-reveal="up">
               <div className="item-header">
-                <strong>Bachelor of Computer Science</strong>
-                <span>2021 — 2025</span>
+                <strong>B.Tech in Computer Science & Engineering</strong>
+                <span>2023 — Present</span>
               </div>
               <p>
-                Studied data structures, databases, and software engineering,
-                while building projects that bridge UI and real-world product
-                needs.
+                Studying core computer science subjects while actively building
+                projects in web development, backend systems, and applied AI.
+                Currently focused on gaining real-world experience through
+                internships and collaborative projects.
               </p>
             </div>
           </div>
@@ -226,11 +229,11 @@ export default function AboutPage() {
 
         {/* IMAGE GRID */}
         <section className="about-gallery" data-reveal="up">
-          <img src="/me.png" alt="Working setup" data-reveal="up" />
-          <img src="/me-2.png" alt="Personal moment" data-reveal="up" />
+          <img src="/me.png" alt="Late-night coding session" data-reveal="up" />
+          <img src="/me-2.png" alt="Working with teammates" data-reveal="up" />
           <img src="/profile.jpg" alt="Profile portrait" data-reveal="up" />
-          <img src="/me.png" alt="Workspace" data-reveal="up" />
-          <img src="/me-2.png" alt="Lifestyle" data-reveal="up" />
+          <img src="/me.png" alt="Debugging a project" data-reveal="up" />
+          <img src="/me-2.png" alt="Project discussion" data-reveal="up" />
           <img src="/profile.jpg" alt="Profile portrait" data-reveal="up" />
         </section>
       </main>

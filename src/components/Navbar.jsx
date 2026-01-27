@@ -1,10 +1,31 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import resumePdf from "../assets/resume_1_jay.pdf";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleProjectsClick = (event) => {
+    event.preventDefault();
+    const scrollToWork = () => {
+      const section = document.getElementById("work");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+
+    if (location.pathname === "/") {
+      scrollToWork();
+    } else {
+      navigate("/#work");
+      setTimeout(scrollToWork, 0);
+    }
+
+    setOpen(false);
+  };
 
   useEffect(() => {
     const onScroll = () => {
@@ -38,7 +59,9 @@ function Navbar() {
 
         {/* DESKTOP LINKS */}
         <div className="nav-desktop">
-          <Link to="/">Projects</Link>
+          <Link to="/#work" onClick={handleProjectsClick}>
+            Projects
+          </Link>
           <Link to="/about">About</Link>
 
           <span className="nav-center">
@@ -52,7 +75,7 @@ function Navbar() {
 
         {/* MOBILE MENU */}
         <div className={`mobile-menu ${open ? "show" : ""}`}>
-          <Link to="/" onClick={() => setOpen(false)}>
+          <Link to="/#work" onClick={handleProjectsClick}>
             Projects
           </Link>
 

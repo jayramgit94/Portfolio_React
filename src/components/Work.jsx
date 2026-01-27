@@ -4,6 +4,10 @@ import projects from "../data/projects";
 
 function Work() {
   useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  }, []);
+
+  useEffect(() => {
     const cards = document.querySelectorAll(".work-card");
 
     const observer = new IntersectionObserver(
@@ -14,7 +18,7 @@ function Work() {
           }
         });
       },
-      { threshold: 0.2 }
+      { threshold: 0.2 },
     );
 
     cards.forEach((card) => observer.observe(card));

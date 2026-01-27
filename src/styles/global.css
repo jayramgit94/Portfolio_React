@@ -537,9 +537,9 @@ section {
    WORK SECTION
 ========================= */
 .work-section {
-  max-width: 1100px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 120px 40px;
+  padding: 120px 32px;
 }
 
 .work-label {
@@ -554,9 +554,9 @@ section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 60px;
-  padding: 60px;
-  margin-bottom: 90px;
+  gap: 72px;
+  padding: 68px;
+  margin-bottom: 80px;
   border-radius: 18px;
 
   background: linear-gradient(135deg, #f3f6b2 0%, #c9e4c5 50%, #b8cde6 100%);
@@ -575,7 +575,7 @@ section {
 
 /* LEFT */
 .work-content {
-  max-width: 420px;
+  max-width: 520px;
 }
 
 .work-index {
@@ -584,14 +584,14 @@ section {
 }
 
 .work-title {
-  font-size: 40px;
-  margin: 12px 0 16px;
+  font-size: 44px;
+  margin: 12px 0 18px;
   transition: color 0.3s ease;
 }
 
 .work-description {
-  font-size: 18px;
-  margin-bottom: 28px;
+  font-size: 19px;
+  margin-bottom: 30px;
 }
 
 /* BUTTON */
@@ -599,9 +599,9 @@ section {
   background: #0b1c44;
   color: #fff;
   border: none;
-  padding: 12px 22px;
+  padding: 13px 24px;
   border-radius: 999px;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
   transition:
     transform 0.3s ease,
@@ -610,8 +610,8 @@ section {
 
 /* IMAGE – PARALLAX FEEL */
 .work-visual img {
-  width: 380px;
-  height: 260px;
+  width: 460px;
+  height: 300px;
   object-fit: cover;
   border-radius: 16px;
   transition: transform 0.6s ease;
@@ -668,13 +668,13 @@ section {
   }
 
   .work-card {
-    gap: 36px;
-    padding: 40px;
+    gap: 40px;
+    padding: 44px;
   }
 
   .work-visual img {
-    width: 320px;
-    height: 220px;
+    width: 360px;
+    height: 240px;
   }
 }
 
@@ -688,13 +688,13 @@ section {
   }
 
   .work-section {
-    padding: 90px 24px;
+    padding: 90px 20px;
   }
 
   .work-card {
     flex-direction: column;
     align-items: flex-start;
-    padding: 32px;
+    padding: 36px;
     margin-bottom: 48px;
   }
 
