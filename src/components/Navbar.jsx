@@ -65,7 +65,7 @@ function Navbar() {
           <Link to="/about">About</Link>
 
           <span className="nav-center">
-            Favourite show this year was Peaky Blinders
+            Just Do It.
           </span>
 
           <a href={resumePdf} target="_blank" rel="noreferrer">
