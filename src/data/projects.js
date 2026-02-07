@@ -1,11 +1,14 @@
-import airbnbImg from "../assets/airbnb.png";
-import githubImg from "../assets/github-analyzer.png";
+import airbnbImg from "../assets/Air_bnb.png";
+import githubRepoImg from "../assets/githubrepo_analyzer.png";
 import signLangImg from "../assets/sign-language.png";
-import videoCallImg from "../assets/video-call.png";
+import zoomCallImg from "../assets/zoom_call.png";
+import zoomCallSignupImg from "../assets/zoom_call_signup.png";
 
 const projects = [
   {
     id: "sign-language",
+    link: "https://zoom-xepv.vercel.app/",
+
     title: "Sign Language in Online Meetings",
     description:
       "A real-time AI system I built to help people communicate better in online meetings by translating sign language into text and speech.",
@@ -104,10 +107,11 @@ const projects = [
 
   {
     id: "video-call-platform",
+    link: "https://github-repo-visualize.netlify.app/",
     title: "Online Video Calling Platform",
     description:
       "A browser-based video calling app focused on simplicity, speed, and reliable real-time communication.",
-    image: videoCallImg,
+    image: zoomCallImg,
     gradient: "linear-gradient(135deg, #fbe7e1 0%, #f3c1d3 50%, #d8b4fe 100%)",
     role: "Frontend Engineer",
     timeline: "6 weeks · 2023",
@@ -147,7 +151,7 @@ const projects = [
           "Connection status should be visible but subtle",
           "Hosts want quick layout controls",
         ],
-        image: videoCallImg,
+        image: zoomCallImg,
       },
       {
         id: "design",
@@ -161,7 +165,7 @@ const projects = [
           "Picture-in-picture self view",
           "Keyboard shortcuts for faster control",
         ],
-        image: videoCallImg,
+        image: zoomCallSignupImg,
       },
       {
         id: "result",
@@ -184,7 +188,7 @@ const projects = [
     title: "GitHub Repository Analyzer",
     description:
       "A developer-focused tool that reviews GitHub repositories and highlights code quality, activity, and improvement areas.",
-    image: githubImg,
+    image: githubRepoImg,
     gradient: "linear-gradient(135deg, #e3fdfd 0%, #cbf1f5 50%, #a6e3e9 100%)",
     role: "Full-stack Developer",
     timeline: "4 weeks · 2023",
@@ -223,7 +227,7 @@ const projects = [
           "Issue response behavior",
           "Basic testing and documentation signals",
         ],
-        image: githubImg,
+        image: githubRepoImg,
       },
       {
         id: "dashboard",
@@ -237,7 +241,7 @@ const projects = [
           "Activity trends over time",
           "Clear next-step suggestions",
         ],
-        image: githubImg,
+        image: githubRepoImg,
       },
       {
         id: "impact",

@@ -294,3 +294,63 @@
     aspect-ratio: 4 / 3;
   }
 }
+
+@media (max-width: 600px) {
+  .project-hero {
+    padding: 130px 0 90px;
+  }
+
+  .project-title {
+    font-size: 30px;
+  }
+
+  .project-subtitle {
+    font-size: 16px;
+  }
+
+  .project-hero-card {
+    padding: 20px;
+  }
+
+  .project-body {
+    padding: 0 18px 96px;
+    gap: 32px;
+  }
+
+  .section-header h2 {
+    font-size: 26px;
+  }
+
+  .section-text {
+    font-size: 16px;
+  }
+
+  .toc-card {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .project-hero-inner,
+  .project-body {
+    padding: 0 16px;
+  }
+
+  .project-back {
+    width: 100%;
+    text-align: center;
+  }
+
+  .project-hero-grid {
+    gap: 20px;
+  }
+
+  .project-hero-image img {
+    border-radius: 14px;
+  }
+
+  .section-grid {
+    grid-template-columns: 1fr;
+  }
+}

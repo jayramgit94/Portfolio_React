@@ -45,7 +45,15 @@ export default function AboutPage() {
     const hero = document.querySelector(".about-hero");
     const parallaxItems = document.querySelectorAll("[data-parallax]");
     const toTopButton = document.querySelector(".to-top");
+    const secretTrigger = document.querySelector(".about-secret-trigger");
+    const secretMessage = document.querySelector(".about-secret-message");
+    const flipCard = document.querySelector(".about-flip-card");
+    const aboutRoot = document.querySelector(".about");
+    const isDesktop = window.matchMedia(
+      "(min-width: 1025px) and (pointer: fine)",
+    );
 
+    let secretTimer;
     let ticking = false;
 
     const handleScroll = () => {
@@ -79,10 +87,58 @@ export default function AboutPage() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
+    const handleSecretEnter = () => {
+      if (!isDesktop.matches) return;
+      window.clearTimeout(secretTimer);
+      secretTimer = window.setTimeout(() => {
+        secretMessage?.classList.add("show");
+        aboutRoot?.classList.add("easter-enabled");
+      }, 2000);
+    };
+
+    const handleSecretLeave = () => {
+      window.clearTimeout(secretTimer);
+      secretMessage?.classList.remove("show");
+    };
+
+    const handleFlipClick = () => {
+      if (!isDesktop.matches) return;
+      if (!aboutRoot?.classList.contains("easter-enabled")) return;
+      flipCard?.classList.add("is-flipped");
+    };
+
+    const handleFlipLeave = () => {
+      flipCard?.classList.remove("is-flipped");
+    };
+
+    if (secretTrigger) {
+      secretTrigger.addEventListener("mouseenter", handleSecretEnter);
+      secretTrigger.addEventListener("mouseleave", handleSecretLeave);
+      secretTrigger.addEventListener("focus", handleSecretEnter);
+      secretTrigger.addEventListener("blur", handleSecretLeave);
+    }
+
+    if (flipCard) {
+      flipCard.addEventListener("click", handleFlipClick);
+      flipCard.addEventListener("mouseleave", handleFlipLeave);
+    }
+
     return () => {
       revealObserver.disconnect();
       if (footerObserver) footerObserver.disconnect();
       window.removeEventListener("scroll", handleScroll);
+
+      if (secretTrigger) {
+        secretTrigger.removeEventListener("mouseenter", handleSecretEnter);
+        secretTrigger.removeEventListener("mouseleave", handleSecretLeave);
+        secretTrigger.removeEventListener("focus", handleSecretEnter);
+        secretTrigger.removeEventListener("blur", handleSecretLeave);
+      }
+
+      if (flipCard) {
+        flipCard.removeEventListener("click", handleFlipClick);
+        flipCard.removeEventListener("mouseleave", handleFlipLeave);
+      }
     };
   }, []);
 
@@ -99,13 +155,21 @@ export default function AboutPage() {
         <section className="about-hero" data-reveal="up">
           <div className="about-hero-text">
             <h1 className="about-name">Jayram Sangawat</h1>
-            <h2 className="about-native">जयराम सांगावत</h2>
+            <h2 className="about-native devanagari-heading">जयराम सांगावत</h2>
             <p className="about-pronunciation">/ jay-ram san-ga-wat /</p>
           </div>
 
           <div className="about-hero-images">
-            <div className="about-image-main" data-parallax>
-              <img src="/me.png" alt="Jayram working" />
+            <div className="about-image-main about-flip-card" data-parallax>
+              <div className="flip-inner">
+                <div className="flip-front">
+                  <img src="/me.png" alt="Jayram working" />
+                </div>
+                <div className="flip-back">
+                  <p>Hey there 👋 Nice to meet you</p>
+                  <span>Thanks for stopping by.</span>
+                </div>
+              </div>
             </div>
             <div className="about-image-side" data-parallax>
               <img src="/me-2.png" alt="Jayram collaborating" />
@@ -140,7 +204,12 @@ export default function AboutPage() {
             </p>
 
             <p className="about-easter">
-              Psst… hover the hero image for a tiny surprise ✨
+              <span className="about-secret-trigger" tabIndex={0}>
+                Hover here for 2 seconds…
+              </span>
+              <span className="about-secret-message">
+                Go up and hover (or click) on the profile photo 👀
+              </span>
             </p>
           </div>
         </section>
