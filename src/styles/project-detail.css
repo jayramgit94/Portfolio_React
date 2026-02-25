@@ -101,6 +101,53 @@
   color: #2b0a3d;
 }
 
+/* Project Links (Live Demo & GitHub) */
+.project-links {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.project-link svg {
+  flex-shrink: 0;
+}
+
+.live-link {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.live-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+}
+
+.github-link {
+  background: #1f2937;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(31, 41, 55, 0.4);
+}
+
+.github-link:hover {
+  transform: translateY(-2px);
+  background: #111827;
+  box-shadow: 0 8px 20px rgba(31, 41, 55, 0.5);
+}
+
 .project-hero-image img {
   width: 100%;
   max-width: 520px;
