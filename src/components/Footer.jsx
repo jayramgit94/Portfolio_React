@@ -1,35 +1,57 @@
+import { Link } from "react-router-dom";
+
 function Footer() {
   return (
-    <footer id="contact" className="footer">
-      {/* SHUTTER COVER */}
-      <div className="footer-cover" />
+    <footer className="footer">
+      <div className="footer-inner">
+        <div className="footer-brand">
+          <Link to="/" className="footer-logo">
+            JS
+          </Link>
+          <p>Crafting digital experiences with care.</p>
+        </div>
 
-      <h2>Let’s build something meaningful together.</h2>
+        <nav className="footer-nav">
+          <div className="footer-nav-group">
+            <h4>Navigate</h4>
+            <Link to="/">Home</Link>
+            <Link to="/about">About</Link>
+            <a href="#work">Projects</a>
+          </div>
 
-      <p className="footer-text">
-        Feel free to reach out if you want to collaborate or just say hello.
-      </p>
-
-      <div className="footer-links">
-        <a href="mailto:jayram@email.com">Email</a>
-        <a
-          href="https://github.com/your-github"
-          target="_blank"
-          rel="noreferrer"
-        >
-          GitHub
-        </a>
-        <a
-          href="https://linkedin.com/in/your-linkedin"
-          target="_blank"
-          rel="noreferrer"
-        >
-          LinkedIn
-        </a>
+          <div className="footer-nav-group">
+            <h4>Connect</h4>
+            <a href="mailto:jayram@email.com">Email</a>
+            <a
+              href="https://github.com/jayramgit94"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub
+            </a>
+            <a
+              href="https://linkedin.com/in/jayram-s-6b1865293/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://linkedin.com/in/jayram-s-6b1865293/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Instagram
+            </a>
+          </div>
+        </nav>
       </div>
 
+      <div className="footer-divider" />
+
       <p className="footer-copy">
-        © {new Date().getFullYear()} Jayram Sangawat
+        &copy; {new Date().getFullYear()} Jayram Sangawat — Made with{" "}
+        <span className="heart">&hearts;</span> in India
       </p>
     </footer>
   );
