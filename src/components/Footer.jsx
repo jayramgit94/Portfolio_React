@@ -8,7 +8,7 @@ function Footer() {
           <Link to="/" className="footer-logo">
             JS
           </Link>
-          <p>Crafting digital experiences with care.</p>
+          <p>Built with consistency, curiosity, and hard work.</p>
         </div>
 
         <nav className="footer-nav">
@@ -21,7 +21,7 @@ function Footer() {
 
           <div className="footer-nav-group">
             <h4>Connect</h4>
-            <a href="mailto:jayram@email.com">Email</a>
+            <a href="mailto:sangawatjayram@gmail.com">Email</a>
             <a
               href="https://github.com/jayramgit94"
               target="_blank"
@@ -30,14 +30,14 @@ function Footer() {
               GitHub
             </a>
             <a
-              href="https://linkedin.com/in/jayram-s-6b1865293/"
+              href="https://www.linkedin.com/in/jayram-s-6b1865293/"
               target="_blank"
               rel="noreferrer"
             >
               LinkedIn
             </a>
             <a
-              href="https://linkedin.com/in/jayram-s-6b1865293/"
+              href="https://www.instagram.com/jayrams_.23/"
               target="_blank"
               rel="noreferrer"
             >
@@ -50,8 +50,8 @@ function Footer() {
       <div className="footer-divider" />
 
       <p className="footer-copy">
-        &copy; {new Date().getFullYear()} Jayram Sangawat — Made with{" "}
-        <span className="heart">&hearts;</span> in India
+        &copy; {new Date().getFullYear()} Jayram G Sangawat &mdash; Made with{" "}
+        <span className="heart">&hearts;</span> in Maharashtra, India
       </p>
     </footer>
   );

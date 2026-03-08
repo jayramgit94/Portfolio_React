@@ -285,13 +285,13 @@ export default function AboutPage() {
           >
             <span className="about-role">Developer &amp; Builder</span>
             <h1 className="about-name">
-              Jayram <span className="about-name-accent">Sangawat</span>
+              Jayram G <span className="about-name-accent">Sangawat</span>
             </h1>
             <h2 className="about-native">
-              &#2332;&#2351;&#2352;&#2366;&#2350;{" "}
-              &#2360;&#2366;&#2306;&#2327;&#2366;&#2357;&#2340;
+              &#2332;&#2351;&#2366;&#2352;&#2366;&#2350;{" "}
+              &#2360;&#2306;&#2327;&#2366;&#2357;&#2340;
             </h2>
-            <p className="about-pronunciation">/ jay-ram san-ga-wat /</p>
+            <p className="about-pronunciation">/ Jai-ram Sang-a-wat /</p>
           </motion.div>
 
           <motion.div
@@ -312,7 +312,7 @@ export default function AboutPage() {
                 <div className="flip-front">
                   <img
                     src="/profile.jpg"
-                    alt="Jayram Sangawat"
+                    alt="Jayram G Sangawat"
                     width="300"
                     height="380"
                     loading="eager"
@@ -337,23 +337,26 @@ export default function AboutPage() {
           </div>
           <div className="intro-body">
             <p className="intro-lead">
-              I&rsquo;m a{" "}
-              <span className="text-highlight">Computer Science student</span>{" "}
-              who started coding out of curiosity&mdash;wondering how websites
-              are built and why some feel effortless to use.
+              I am a{" "}
+              <span className="text-highlight">
+                Computer Science Engineering student
+              </span>{" "}
+              at JD College of Engineering and Management, Nagpur. I am
+              passionate about building practical technology solutions and
+              exploring fields such as Artificial Intelligence, Machine
+              Learning, and Full-Stack Web Development.
             </p>
             <p>
-              I began with frontend development in my first year, experimenting
-              with layouts and customizing my own portfolio. The basics
-              weren&rsquo;t easy at first&mdash;JavaScript logic and CSS
-              behavior took time to click. But small progress, consistency, and
-              building things step by step kept me moving forward.
+              I enjoy turning ideas into real applications by combining
+              problem-solving skills with modern technologies. My journey in
+              technology is driven by consistency, curiosity, and continuous
+              learning.
             </p>
             <p>
-              Over time, my interest grew beyond UI into backend systems, APIs,
-              databases, and application performance. I enjoy building complete
-              systems where functionality, speed, and smooth user experience
-              matter equally.
+              I regularly work on projects, practice data structures and
+              algorithms, and contribute to my GitHub to strengthen my technical
+              foundation and prepare for opportunities in leading technology
+              companies.
             </p>
             <p className="about-easter">
               <span className="about-secret-trigger" tabIndex={0}>
@@ -450,14 +453,14 @@ export default function AboutPage() {
           <div className="section-content">
             <StaggerItem index={0} className="about-item">
               <div className="item-header">
-                <strong>B.Tech in Computer Science &amp; Engineering</strong>
-                <span className="item-badge">2023 &mdash; Present</span>
+                <strong>B.Tech &mdash; Computer Science Engineering</strong>
+                <span className="item-badge">2023 &mdash; 2027</span>
               </div>
               <p>
-                Studying core computer science subjects while actively building
-                projects in web development, backend systems, and applied AI.
-                Currently focused on gaining real-world experience through
-                internships and collaborative projects.
+                JD College of Engineering and Management, Nagpur. Currently in
+                6th semester. Studying core computer science subjects while
+                actively building projects in web development, backend systems,
+                AI, and machine learning.
               </p>
             </StaggerItem>
           </div>
@@ -480,7 +483,9 @@ export default function AboutPage() {
               I don&rsquo;t chase trends. I build things that work, feel right,
               and matter to the people using them.
             </p>
-            <footer className="philosophy-attr">&mdash; Jayram Sangawat</footer>
+            <footer className="philosophy-attr">
+              &mdash; Jayram G Sangawat
+            </footer>
             <span className="philosophy-ornament-bottom" aria-hidden="true" />
           </motion.blockquote>
         </RevealSection>
@@ -516,7 +521,7 @@ export default function AboutPage() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         transition={{ type: "spring", damping: 15, stiffness: 400 }}
-        onClick={() => window.open("mailto:jayram@email.com")}
+        onClick={() => window.open("mailto:sangawatjayram@gmail.com")}
       >
         &#9993;&#65039;
       </motion.button>

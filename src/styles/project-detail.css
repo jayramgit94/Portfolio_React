@@ -435,9 +435,11 @@
     border-left: none;
     border-bottom: 2px solid transparent;
     border-radius: var(--radius-md) var(--radius-md) 0 0;
-    min-height: 40px;
+    min-height: 44px;
     display: flex;
     align-items: center;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-sm);
   }
 
   .toc-link.is-active {
@@ -452,7 +454,7 @@
 
 @media (max-width: 600px) {
   .project-hero {
-    padding: 5.5rem var(--space-4) 2rem;
+    padding: 5rem var(--space-4) 1.5rem;
   }
 
   .project-hero-card {
@@ -462,17 +464,21 @@
 
   .project-links {
     flex-direction: column;
+    gap: var(--space-2);
   }
 
   .project-link {
     width: 100%;
     justify-content: center;
     padding: var(--space-3) var(--space-4);
-    min-height: 44px;
+    min-height: 48px;
+    font-size: var(--text-sm);
+    border-radius: var(--radius-lg);
   }
 
   .section-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-3);
   }
 
   .project-body {
@@ -480,19 +486,20 @@
   }
 
   .project-title {
-    font-size: clamp(1.6rem, 6vw, 2.4rem);
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
   }
 
   .project-subtitle {
-    font-size: var(--text-base);
-    margin-bottom: var(--space-6);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-5);
+    line-height: 1.7;
   }
 
   .project-back {
     font-size: var(--text-xs);
     padding: 0.5em 1em;
     margin-bottom: var(--space-4);
-    min-height: 40px;
+    min-height: 44px;
   }
 
   .info-card {
@@ -506,6 +513,7 @@
 
   .section-callout {
     padding: var(--space-4);
+    border-radius: var(--radius-lg);
   }
 
   .section-media {
@@ -513,17 +521,29 @@
   }
 
   .project-content {
-    gap: var(--space-8);
+    gap: var(--space-6);
+  }
+
+  .section-heading {
+    font-size: var(--text-lg);
+  }
+
+  /* GPU-accelerated transitions */
+  .project-hero-card,
+  .info-card,
+  .section-media {
+    transform: translateZ(0);
   }
 }
 
 @media (max-width: 400px) {
   .project-hero {
-    padding: 5rem var(--space-3) 1.5rem;
+    padding: 4.5rem var(--space-3) 1rem;
   }
 
   .project-hero-card {
     padding: var(--space-3);
+    border-radius: var(--radius-lg);
   }
 
   .project-body {
@@ -532,5 +552,9 @@
 
   .meta-value {
     font-size: var(--text-xs);
+  }
+
+  .project-title {
+    font-size: clamp(1.3rem, 7vw, 1.8rem);
   }
 }

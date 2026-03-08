@@ -819,10 +819,12 @@
 @media (max-width: 768px) {
   .about-hero {
     grid-template-columns: 1fr;
-    padding-top: 7rem;
+    padding-top: 6rem;
     padding-bottom: var(--space-8);
     text-align: center;
-    gap: var(--space-8);
+    gap: var(--space-6);
+    min-height: calc(100dvh - 60px);
+    align-content: center;
   }
 
   .about-hero::before {
@@ -842,14 +844,19 @@
   }
 
   .about-image-main {
-    width: 260px;
-    height: 320px;
+    width: 220px;
+    height: 280px;
+    border-radius: var(--radius-xl);
+  }
+
+  .about-flip-card {
+    border-radius: var(--radius-xl);
   }
 
   .about-intro,
   .about-section {
     grid-template-columns: 1fr;
-    gap: var(--space-6);
+    gap: var(--space-5);
     padding: var(--space-8) var(--space-4);
   }
 
@@ -858,7 +865,8 @@
   }
 
   .philosophy-quote {
-    padding: var(--space-8) var(--space-4);
+    padding: var(--space-8) var(--space-5);
+    border-radius: var(--radius-xl);
   }
 
   .about-gallery-section {
@@ -868,7 +876,11 @@
 
   .about-gallery {
     grid-template-columns: 1fr 1fr;
-    gap: var(--space-4);
+    gap: var(--space-3);
+  }
+
+  .gallery-item {
+    border-radius: var(--radius-lg);
   }
 
   .gallery-item img {
@@ -887,6 +899,7 @@
 
   .gallery-caption {
     transform: translateY(0);
+    font-size: 0.75rem;
   }
 
   .item-header {
@@ -910,11 +923,21 @@
     opacity: 0.012;
   }
 
+  .about-item {
+    padding: var(--space-6);
+    border-radius: var(--radius-lg);
+    transform: translateZ(0);
+  }
+
   .about-item:hover {
-    transform: translateY(-3px);
+    transform: translateY(-3px) translateZ(0);
   }
 
   .about-item::after {
+    display: none;
+  }
+
+  .about-item::before {
     display: none;
   }
 
@@ -940,13 +963,32 @@
 
   .intro-lead {
     font-size: var(--text-lg);
+    line-height: 1.7;
+  }
+
+  .about-name {
+    font-size: clamp(2.5rem, 8vw, 3.5rem);
+  }
+
+  .about-pronunciation {
+    font-size: var(--text-sm);
+  }
+
+  /* GPU hints for smooth scroll reveals */
+  .about-intro,
+  .about-section,
+  .about-philosophy,
+  .about-gallery-section {
+    will-change: transform;
+    transform: translateZ(0);
   }
 }
 
 @media (max-width: 480px) {
   .about-hero {
-    padding-top: 6rem;
-    gap: var(--space-6);
+    padding-top: 5rem;
+    gap: var(--space-5);
+    min-height: auto;
   }
 
   .about-hero-images {
@@ -955,8 +997,8 @@
   }
 
   .about-image-main {
-    width: 200px;
-    height: 260px;
+    width: 180px;
+    height: 230px;
   }
 
   .about-gallery {
@@ -979,6 +1021,7 @@
 
   .about-item {
     padding: var(--space-5);
+    border-radius: var(--radius-md);
   }
 
   .about-intro,
@@ -992,6 +1035,11 @@
 
   .philosophy-quote {
     padding: var(--space-6) var(--space-3);
+    border-radius: var(--radius-lg);
+  }
+
+  .philosophy-quote p {
+    font-size: var(--text-lg);
   }
 
   .about-gallery-section {
@@ -1009,11 +1057,24 @@
   }
 
   .about-name {
-    font-size: clamp(2.2rem, 8vw, 3rem);
+    font-size: clamp(2rem, 9vw, 2.8rem);
   }
 
   .about-native {
-    font-size: clamp(1rem, 4vw, 1.3rem);
+    font-size: clamp(0.9rem, 4vw, 1.2rem);
+  }
+
+  .intro-lead {
+    font-size: var(--text-base);
+  }
+
+  .intro-body p {
+    font-size: var(--text-sm);
+    line-height: 1.75;
+  }
+
+  .item-header strong {
+    font-size: var(--text-base);
   }
 
   .fab {

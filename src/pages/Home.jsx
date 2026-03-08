@@ -11,6 +11,24 @@ import "../styles/global.css";
 
 const tools = [
   {
+    name: "C++",
+    icon: "C++",
+    info: "Core logic & problem solving",
+    color: "cpp",
+  },
+  {
+    name: "Python",
+    icon: "Py",
+    info: "AI, ML & automation",
+    color: "python",
+  },
+  {
+    name: "JavaScript",
+    icon: "JS",
+    info: "Logic, interactivity, state",
+    color: "js",
+  },
+  {
     name: "HTML",
     icon: "\u2318",
     info: "Semantic structure & accessibility",
@@ -23,47 +41,34 @@ const tools = [
     color: "css",
   },
   {
-    name: "JavaScript",
-    icon: "JS",
-    info: "Logic, interactivity, state",
-    color: "js",
-  },
-  {
     name: "React",
     icon: "\u269B",
     info: "Component systems & UI logic",
     color: "react",
   },
   {
-    name: "GitHub",
-    icon: "\uD83D\uDCBB",
-    info: "Collaboration & CI habits",
+    name: "Node.js",
+    icon: "N",
+    info: "Backend APIs & server logic",
     color: "github",
   },
   {
-    name: "Docker",
-    icon: "\uD83D\uDC33",
-    info: "Containerized dev & deploy",
-    color: "docker",
-  },
-  {
-    name: "Python",
-    icon: "Py",
-    info: "Automation & data tooling",
+    name: "MongoDB",
+    icon: "\uD83C\uDF43",
+    info: "NoSQL database & data modeling",
     color: "python",
   },
-  { name: "C++", icon: "C++", info: "Core logic & performance", color: "cpp" },
   {
-    name: "Bootstrap",
-    icon: "B",
-    info: "Rapid UI scaffolding",
-    color: "bootstrap",
+    name: "Git",
+    icon: "\u23C7",
+    info: "Version control & collaboration",
+    color: "git",
   },
   {
-    name: "Figma",
-    icon: "\u25C6",
-    info: "Design, prototypes & handoff",
-    color: "figma",
+    name: "GitHub",
+    icon: "\uD83D\uDCBB",
+    info: "Code hosting & CI/CD",
+    color: "github",
   },
 ];
 
@@ -91,10 +96,10 @@ function ToolkitCard({ tool, index }) {
 }
 
 const stats = [
-  { number: "10+", label: "Projects Delivered" },
-  { number: "5+", label: "Tech Stacks" },
-  { number: "2+", label: "Years of Learning" },
-  { number: "100%", label: "Passion Driven" },
+  { number: "5+", label: "Projects Built" },
+  { number: "150+", label: "DSA Problems Solved" },
+  { number: "10+", label: "Technologies Used" },
+  { number: "3+", label: "Years of Learning" },
 ];
 
 function StatsRow() {
@@ -158,7 +163,7 @@ function Contact() {
           </p>
           <div className="cta-links">
             <MagneticButton
-              href="mailto:jayram@email.com"
+              href="mailto:sangawatjayram@gmail.com"
               className="btn btn-primary"
             >
               <svg
@@ -185,7 +190,7 @@ function Contact() {
               GitHub
             </MagneticButton>
             <MagneticButton
-              href="https://linkedin.com/in/jayram-sangawat"
+              href="https://www.linkedin.com/in/jayram-s-6b1865293/"
               target="_blank"
               rel="noreferrer"
               className="btn btn-outline-light"
