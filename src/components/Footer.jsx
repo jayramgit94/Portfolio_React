@@ -8,7 +8,7 @@ function Footer() {
           <Link to="/" className="footer-logo">
             JS
           </Link>
-          <p>Built with consistency, curiosity, and hard work.</p>
+          <p>Shipping AI-powered tools and full-stack applications.</p>
         </div>
 
         <nav className="footer-nav">
@@ -43,6 +43,21 @@ function Footer() {
             >
               Instagram
             </a>
+            <a
+              href="https://leetcode.com/u/jayramleet94/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LeetCode
+            </a>
+            <a
+              href="https://www.geeksforgeeks.org/profile/sangawatp3o5"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GeeksforGeeks
+            </a>
+            <a href="tel:+919421438043">+91 9421438043</a>
           </div>
         </nav>
       </div>

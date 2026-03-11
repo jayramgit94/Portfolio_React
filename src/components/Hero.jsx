@@ -7,6 +7,7 @@ import {
   useTransform,
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import resumePdf from "../assets/JAY_Resume_2026.pdf";
 import MagneticButton from "./MagneticButton";
 
 // Smooth spring-based fade-up with stagger
@@ -22,7 +23,7 @@ const fadeUp = (delay = 0, isMobile = false) => ({
   },
 });
 
-const rotatingWords = ["DIGITAL", "CREATIVE", "MODERN", "SCALABLE"];
+const rotatingWords = ["INTELLIGENT", "FULL-STACK", "AI-POWERED", "REAL-WORLD"];
 
 // Spring config for smooth parallax
 const springConfig = { damping: 50, stiffness: 100, mass: 0.5 };
@@ -164,12 +165,13 @@ function Hero() {
                 </motion.span>
               </AnimatePresence>
             </span>
-            <span className="hero-headline-top">EXPERIENCES</span>
+            <span className="hero-headline-top">APPLICATIONS</span>
           </motion.h1>
 
           <motion.p className="hero-sub" {...fadeUp(0.25, isMobile)}>
-            Computer Science student building AI-powered and full-stack
-            applications through consistency, curiosity, and hard work.
+            Computer Science student building real-world web and AI
+            projects &mdash; from problem solving to deployment. 5 live
+            projects, 8.20 CGPA, 150+ DSA problems solved.
           </motion.p>
 
           <motion.div className="hero-cta-group" {...fadeUp(0.35, isMobile)}>
@@ -188,9 +190,59 @@ function Hero() {
                 <path d="M7 17l9.2-9.2M17 17V7.8H7.8" />
               </svg>
             </MagneticButton>
+            <MagneticButton
+              href={resumePdf}
+              target="_blank"
+              rel="noreferrer"
+              className="btn btn-outline-light"
+            >
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
+              Resume
+            </MagneticButton>
             <MagneticButton href="#contact" className="btn btn-outline-light">
               Get in Touch
             </MagneticButton>
+          </motion.div>
+
+          <motion.div className="hero-profiles" {...fadeUp(0.45, isMobile)}>
+            <a
+              href="https://leetcode.com/u/jayramleet94/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LeetCode
+            </a>
+            <span className="profile-sep">&middot;</span>
+            <a
+              href="https://www.geeksforgeeks.org/profile/sangawatp3o5"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GeeksforGeeks
+            </a>
+            <span className="profile-sep">&middot;</span>
+            <a
+              href="https://github.com/jayramgit94"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub
+            </a>
           </motion.div>
         </motion.div>
 
@@ -218,8 +270,8 @@ function Hero() {
             loading="eager"
           />
           <div className="hero-float-card">
-            <span className="hero-float-emoji">🚀</span>
-            <span>Building cool stuff</span>
+            <span className="hero-float-emoji">🤖</span>
+            <span>AI + Full-Stack Dev</span>
           </div>
         </motion.div>
       </motion.div>

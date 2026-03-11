@@ -19,7 +19,7 @@ function Cursor() {
     };
 
     const onMouseOver = (e) => {
-      const card = e.target.closest(".work-card, .toolkit-card");
+      const card = e.target.closest(".work-card");
       const clickable = e.target.closest(
         "a, button, [role='button'], .nav-logo",
       );

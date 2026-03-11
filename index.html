@@ -6,18 +6,125 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f8f9fb" />
     <title>Jayram G Sangawat — Portfolio</title>
+    <meta name="description" content="Jayram G Sangawat — Computer Science student building real-world web and AI projects. Full-stack developer with React, Python, FastAPI, TensorFlow. 5 deployed projects, 8.20 CGPA." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Jayram G Sangawat — Portfolio" />
+    <meta property="og:description" content="CS student building AI-powered tools and full-stack applications — from real-time sign language detection to automated certificate systems." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/profile.jpg" />
 
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Inter + Plus Jakarta Sans + Space Grotesk (hero display) -->
+    <!-- Inter (body) + Space Grotesk (headings & display) -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
+    <!-- ═══ PRELOADER (pure HTML/CSS, instant) ═══ -->
+    <div id="preloader">
+      <div class="pre-inner">
+        <svg class="pre-logo" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle class="pre-ring" cx="30" cy="30" r="26" stroke="url(#preGrad)" stroke-width="1.5" stroke-dasharray="6 4" />
+          <text x="30" y="35" text-anchor="middle" fill="url(#preGrad)" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="22">J</text>
+          <defs>
+            <linearGradient id="preGrad" x1="0" y1="0" x2="60" y2="60">
+              <stop offset="0%" stop-color="#6366f1" />
+              <stop offset="100%" stop-color="#a855f7" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="pre-line"></div>
+        <span class="pre-name">JAYRAM</span>
+        <span class="pre-tagline">Building intelligent applications</span>
+      </div>
+    </div>
+
+    <style>
+      #preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8f9fb;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      #preloader.pre-done {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .pre-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .pre-logo {
+        width: 56px;
+        height: 56px;
+        animation: pre-spin 3s linear infinite;
+      }
+      .pre-ring {
+        transform-origin: center;
+      }
+      @keyframes pre-spin {
+        to { transform: rotate(360deg); }
+      }
+      .pre-line {
+        width: 0;
+        height: 2px;
+        border-radius: 2px;
+        background: linear-gradient(90deg, #6366f1, #a855f7);
+        animation: pre-expand 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      @keyframes pre-expand {
+        to { width: 72px; }
+      }
+      .pre-name {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 6px;
+        color: #111;
+        opacity: 0;
+        animation: pre-text-in 0.6s ease forwards 0.4s;
+      }
+      .pre-tagline {
+        font-family: 'Inter', sans-serif;
+        font-size: 11px;
+        letter-spacing: 1px;
+        color: #888;
+        opacity: 0;
+        animation: pre-text-in 0.6s ease forwards 0.7s;
+      }
+      @keyframes pre-text-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      /* Counter dots */
+      .pre-inner::after {
+        content: '';
+        display: flex;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #6366f1;
+        opacity: 0;
+        animation: pre-pulse 1s ease-in-out infinite 1s;
+      }
+      @keyframes pre-pulse {
+        0%, 100% { opacity: 0.2; transform: scale(0.8); }
+        50% { opacity: 0.8; transform: scale(1.2); }
+      }
+    </style>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

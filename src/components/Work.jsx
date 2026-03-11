@@ -128,11 +128,11 @@ function Work() {
       <div className="work-header">
         <span className="section-label">Selected Work</span>
         <h2 className="section-title">
-          Projects I&rsquo;ve <span className="text-gradient">crafted</span>
+          Projects I&rsquo;ve <span className="text-gradient">shipped</span>
         </h2>
         <p className="section-desc">
-          A curated collection of projects that showcase my skills in frontend
-          development, UI design, and full-stack engineering.
+          AI-powered tools, full-stack applications, and real-world systems
+          &mdash; each deployed live with open-source code.
         </p>
       </div>
 

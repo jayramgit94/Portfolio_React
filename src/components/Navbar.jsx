@@ -1,7 +1,7 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import resumePdf from "../assets/resume_1_jay.pdf";
+import resumePdf from "../assets/JAY_Resume_2026.pdf";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -63,8 +63,19 @@ function Navbar() {
     .filter(Boolean)
     .join(" ");
 
+  // Scroll progress for the thin bar at the very top of the page
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
+
   return (
-    <motion.header
+    <>
+      {/* Scroll progress bar */}
+      <motion.div
+        className="scroll-progress-bar"
+        style={{ scaleX }}
+        aria-hidden="true"
+      />
+      <motion.header
       className={navClasses}
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -141,6 +152,7 @@ function Navbar() {
         </AnimatePresence>
       </div>
     </motion.header>
+    </>
   );
 }
 

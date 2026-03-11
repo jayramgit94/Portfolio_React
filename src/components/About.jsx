@@ -6,9 +6,13 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Cursor from "../components/Cursor";
 import Footer from "../components/Footer";
+import {
+  BreathingOrbs,
+  SpotlightFollow,
+} from "../components/MicroInteractions";
 import Navbar from "../components/Navbar";
 import "../styles/about.css";
 
@@ -78,19 +82,69 @@ function StaggerItem({ children, index = 0, className = "" }) {
   );
 }
 
-/* ── Gradient divider between about sections ── */
+/* ── Signal-pulse divider between about sections ── */
 function AboutDivider() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-20px" });
 
   return (
     <div className="about-divider" ref={ref}>
+      {/* left accent dots (outermost → innermost) */}
+      <motion.span
+        className="divider-dot"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={inView ? { scale: 1, opacity: 0.4 } : {}}
+        transition={{ delay: 0.65, duration: 0.35, ease: "easeOut" }}
+      />
+      <motion.span
+        className="divider-dot divider-dot--mid"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={inView ? { scale: 1, opacity: 0.55 } : {}}
+        transition={{ delay: 0.5, duration: 0.35, ease: "easeOut" }}
+      />
+
+      {/* left line: grows from center outward */}
       <motion.div
         className="about-divider-line"
+        style={{ transformOrigin: "right center" }}
         initial={{ scaleX: 0, opacity: 0 }}
         animate={inView ? { scaleX: 1, opacity: 1 } : {}}
-        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ delay: 0.12, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
       />
+
+      {/* center diamond ornament */}
+      <motion.div
+        className="divider-ornament"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={inView ? { scale: 1, opacity: 1 } : {}}
+        transition={{ type: "spring", stiffness: 260, damping: 20 }}
+      />
+
+      {/* right line: grows from center outward */}
+      <motion.div
+        className="about-divider-line"
+        style={{ transformOrigin: "left center" }}
+        initial={{ scaleX: 0, opacity: 0 }}
+        animate={inView ? { scaleX: 1, opacity: 1 } : {}}
+        transition={{ delay: 0.12, duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+      />
+
+      {/* right accent dots (innermost → outermost) */}
+      <motion.span
+        className="divider-dot divider-dot--mid"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={inView ? { scale: 1, opacity: 0.55 } : {}}
+        transition={{ delay: 0.5, duration: 0.35, ease: "easeOut" }}
+      />
+      <motion.span
+        className="divider-dot"
+        initial={{ scale: 0, opacity: 0 }}
+        animate={inView ? { scale: 1, opacity: 0.4 } : {}}
+        transition={{ delay: 0.65, duration: 0.35, ease: "easeOut" }}
+      />
+
+      {/* light sweep that runs across once */}
+      {inView && <span className="divider-shimmer" />}
     </div>
   );
 }
@@ -146,10 +200,128 @@ function GalleryImage({ src, alt, index }) {
   );
 }
 
+/* ── Scroll-linked intro section ── */
+/* (removed — replaced by unified timeline) */
+
+/* ── Scroll-linked paragraph reveal for intro ── */
+function ScrollRevealP({ children, className = "" }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+
+  return (
+    <motion.p
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y: 16 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ ...springTransition, delay: 0.05 }}
+    >
+      {children}
+    </motion.p>
+  );
+}
+
+/* ── Animated timeline dot — activates when scrolled into view ── */
+function TimelineNode() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <div className="tl-node" ref={ref}>
+      <motion.span
+        className={`tl-dot ${inView ? "tl-dot--active" : ""}`}
+        initial={{ scale: 0.6, opacity: 0.4 }}
+        animate={
+          inView ? { scale: 1, opacity: 1 } : { scale: 0.6, opacity: 0.4 }
+        }
+        transition={{ type: "spring", damping: 12, stiffness: 200 }}
+      />
+      {/* Expanding ring on activation */}
+      {inView && (
+        <motion.span
+          className="tl-ring"
+          initial={{ scale: 0.5, opacity: 0.6 }}
+          animate={{ scale: 2.5, opacity: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ── Scroll-revealed card (used inside timeline) ── */
+function ScrollRevealCard({ children, index = 0, className = "about-item" }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-40px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y: 20 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ ...springTransition, delay: index * 0.08 }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+/* ── Confetti colors for hover burst ── */
+const BURST_COLORS = [
+  "#a78bfa", "#818cf8", "#34d399", "#f472b6",
+  "#60a5fa", "#fbbf24", "#fb923c", "#c084fc",
+];
+
+function BurstPiece({ x, y, color, delay: d, size, shape }) {
+  const fall = 400 + Math.random() * 500;
+  const drift = (Math.random() - 0.5) * 300;
+  return (
+    <motion.span
+      style={{
+        position: "fixed",
+        left: x,
+        top: y,
+        width: shape === "circle" ? size : size * 0.5,
+        height: shape === "circle" ? size : size * 2.5,
+        borderRadius: shape === "circle" ? "50%" : "2px",
+        backgroundColor: color,
+        pointerEvents: "none",
+        zIndex: 9999,
+      }}
+      initial={{ opacity: 1, scale: 0, y: 0, x: 0, rotate: 0 }}
+      animate={{
+        opacity: [1, 1, 0],
+        scale: [0, 1.2, 0.6],
+        y: fall,
+        x: drift,
+        rotate: Math.random() * 1080 - 540,
+      }}
+      transition={{
+        duration: 2.2 + Math.random() * 1.2,
+        delay: d,
+        ease: [0.2, 0.8, 0.4, 1],
+      }}
+    />
+  );
+}
+
 export default function AboutPage() {
   const flipCardRef = useRef(null);
   const heroRef = useRef(null);
+  const nativeRef = useRef(null);
+  const hoverTimer = useRef(null);
+  const hasBurst = useRef(false);
   const [showTop, setShowTop] = useState(false);
+  const [burstPieces, setBurstPieces] = useState([]);
+
+  /* ── Timeline (single continuous line from About Me → Certifications) ── */
+  const timelineRef = useRef(null);
+  const { scrollYProgress: tlProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 0.8", "end 0.6"],
+  });
+  const smoothTl = useSpring(tlProgress, { damping: 30, stiffness: 100 });
 
   /* Hero parallax */
   const { scrollYProgress } = useScroll({
@@ -243,6 +415,50 @@ export default function AboutPage() {
     };
   }, []);
 
+  /* ── 2-second hover confetti on Hindi name (full-page, once only) ── */
+  const triggerBurst = useCallback(() => {
+    if (hasBurst.current) return;
+    hasBurst.current = true;
+    const vw = window.innerWidth;
+    const shapes = ["circle", "rect"];
+    const newPieces = Array.from({ length: 80 }, (_, i) => ({
+      id: Date.now() + i,
+      x: Math.random() * vw,
+      y: -20 - Math.random() * 60,
+      color: BURST_COLORS[i % BURST_COLORS.length],
+      delay: Math.random() * 0.6,
+      size: 5 + Math.random() * 8,
+      shape: shapes[i % 2],
+    }));
+    setBurstPieces(newPieces);
+    setTimeout(() => setBurstPieces([]), 4000);
+  }, []);
+
+  useEffect(() => {
+    const el = nativeRef.current;
+    if (!el) return;
+    const onEnter = () => {
+      if (hasBurst.current) return;
+      hoverTimer.current = window.setTimeout(() => {
+        triggerBurst();
+        el.classList.remove("native-hovering");
+        el.classList.add("native-done");
+      }, 2000);
+      el.classList.add("native-hovering");
+    };
+    const onLeave = () => {
+      window.clearTimeout(hoverTimer.current);
+      if (!hasBurst.current) el.classList.remove("native-hovering");
+    };
+    el.addEventListener("mouseenter", onEnter);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      el.removeEventListener("mouseenter", onEnter);
+      el.removeEventListener("mouseleave", onLeave);
+      window.clearTimeout(hoverTimer.current);
+    };
+  }, [triggerBurst]);
+
   /* Scroll-to-top visibility */
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 400);
@@ -257,9 +473,11 @@ export default function AboutPage() {
   return (
     <>
       <Cursor />
+      <SpotlightFollow />
       <Navbar />
 
       <main className="about">
+        <BreathingOrbs count={3} />
         {/* Noise texture overlay */}
         <div className="about-noise" aria-hidden="true" />
 
@@ -269,6 +487,15 @@ export default function AboutPage() {
           ref={heroRef}
           onMouseMove={handleHeroMouseMove}
         >
+          {/* Animated mesh gradient background */}
+          <div className="hero-mesh" aria-hidden="true">
+            <div className="hero-mesh-orb hero-mesh-orb--1" />
+            <div className="hero-mesh-orb hero-mesh-orb--2" />
+            <div className="hero-mesh-orb hero-mesh-orb--3" />
+          </div>
+          {/* Dot grid overlay */}
+          <div className="hero-dotgrid" aria-hidden="true" />
+
           {/* Cursor-following radial glow */}
           <motion.div
             className="about-hero-glow"
@@ -283,15 +510,15 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...springTransition, delay: 0.1 }}
           >
-            <span className="about-role">Developer &amp; Builder</span>
+            <span className="about-role">AI + Full-Stack Developer</span>
             <h1 className="about-name">
               Jayram G <span className="about-name-accent">Sangawat</span>
             </h1>
-            <h2 className="about-native">
-              &#2332;&#2351;&#2366;&#2352;&#2366;&#2350;{" "}
+            <h2 className="about-native" ref={nativeRef}>
+              &#2332;&#2351;&#2352;&#2366;&#2350;{" "}
               &#2360;&#2306;&#2327;&#2366;&#2357;&#2340;
             </h2>
-            <p className="about-pronunciation">/ Jai-ram Sang-a-wat /</p>
+            <p className="about-pronunciation">/ Jay-raam San-ga-vat /</p>
           </motion.div>
 
           <motion.div
@@ -327,156 +554,257 @@ export default function AboutPage() {
           </motion.div>
         </section>
 
-        <AboutDivider />
-
-        {/* ═══ INTRO ═══ */}
-        <RevealSection className="about-intro" direction="up">
-          <div className="intro-label">
-            <span className="label-dot" />
-            About me
+        {/* Confetti burst pieces (from 2s hover on Hindi name) */}
+        {burstPieces.length > 0 && (
+          <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999 }}>
+            {burstPieces.map((p) => (
+              <BurstPiece key={p.id} {...p} />
+            ))}
           </div>
-          <div className="intro-body">
-            <p className="intro-lead">
-              I am a{" "}
-              <span className="text-highlight">
-                Computer Science Engineering student
-              </span>{" "}
-              at JD College of Engineering and Management, Nagpur. I am
-              passionate about building practical technology solutions and
-              exploring fields such as Artificial Intelligence, Machine
-              Learning, and Full-Stack Web Development.
-            </p>
-            <p>
-              I enjoy turning ideas into real applications by combining
-              problem-solving skills with modern technologies. My journey in
-              technology is driven by consistency, curiosity, and continuous
-              learning.
-            </p>
-            <p>
-              I regularly work on projects, practice data structures and
-              algorithms, and contribute to my GitHub to strengthen my technical
-              foundation and prepare for opportunities in leading technology
-              companies.
-            </p>
-            <p className="about-easter">
-              <span className="about-secret-trigger" tabIndex={0}>
-                Hover here for 2 seconds&hellip;
-              </span>
-              <span className="about-secret-message">
-                Go up and hover (or click) on the profile photo &#128064;
-              </span>
-            </p>
-          </div>
-        </RevealSection>
+        )}
 
         <AboutDivider />
 
-        {/* ═══ EXPERIENCE ═══ */}
-        <RevealSection className="about-section" direction="up">
-          <div className="section-label-about">
-            <span className="label-dot" />
-            Experience
-          </div>
-          <div className="section-content">
-            <StaggerItem index={0} className="about-item">
-              <div className="item-header">
-                <strong>Project-Based Development</strong>
-                <span className="item-badge">2022 &mdash; Present</span>
-              </div>
-              <p>
-                Built multiple real-world projects including chat systems,
-                certificate generators, AI-powered tools, and full-stack web
-                applications. I focus on writing practical code that solves real
-                problems and scales beyond demos.
-              </p>
-            </StaggerItem>
+        {/* ═══ UNIFIED TIMELINE: About Me → Certifications ═══ */}
+        <div className="about-timeline" ref={timelineRef}>
+          {/* Single continuous progress line */}
+          <motion.div className="tl-line" style={{ scaleY: smoothTl }} />
 
-            <StaggerItem index={1} className="about-item">
-              <div className="item-header">
-                <strong>Team &amp; Hackathon Work</strong>
-                <span className="item-badge">2023 &mdash; Present</span>
-              </div>
-              <p>
-                Worked in team-based environments during hackathons and college
-                projects. I often take responsibility for integrating frontend
-                and backend pieces, coordinating tasks, and turning ideas into
-                working systems.
-              </p>
-            </StaggerItem>
+          {/* ── About Me ── */}
+          <div className="tl-section">
+            <TimelineNode />
+            <div className="tl-head">About me</div>
+            <div className="tl-content tl-content--intro">
+              <ScrollRevealP className="intro-lead">
+                I&rsquo;m a{" "}
+                <span className="text-highlight">
+                  Computer Science student with an 8.20 CGPA
+                </span>{" "}
+                at JD College of Engineering, Nagpur &mdash; passionate about
+                building real-world software from problem solving to deployment.
+              </ScrollRevealP>
+
+              <ScrollRevealP>
+                I&rsquo;ve shipped 5 live projects including a real-time sign
+                language detector (93% accuracy), an automated certificate
+                system (200+ issued), and AI-powered resume &amp; repo
+                analyzers. My stack spans React, Python, FastAPI, TensorFlow,
+                and MongoDB.
+              </ScrollRevealP>
+
+              <ScrollRevealP>
+                Beyond building, I&rsquo;m an active problem solver &mdash; 150+
+                DSA problems on LeetCode &amp; GeeksforGeeks, 5 certifications
+                across React.js, JavaScript, C++, and Python, and 3 hackathon
+                participations.
+              </ScrollRevealP>
+
+              <ScrollRevealP>
+                Currently exploring advanced React patterns, machine learning
+                fundamentals, and API architecture while looking for internship
+                opportunities where I can contribute to real products.
+              </ScrollRevealP>
+
+              <ScrollRevealP className="about-easter">
+                <span className="about-secret-trigger" tabIndex={0}>
+                  Hover here for 2 seconds&hellip;
+                </span>
+                <span className="about-secret-message">
+                  Go up and hover (or click) on the profile photo &#128064;
+                </span>
+              </ScrollRevealP>
+            </div>
           </div>
-        </RevealSection>
+
+          {/* ── Experience ── */}
+          <div className="tl-section">
+            <TimelineNode />
+            <div className="tl-head">Experience</div>
+            <div className="tl-content">
+              <ScrollRevealCard index={0}>
+                <div className="item-header">
+                  <strong>AI &amp; Full-Stack Projects</strong>
+                  <span className="item-badge">2023 &mdash; Present</span>
+                </div>
+                <p>
+                  Built and deployed 5 end-to-end projects: a TensorFlow-based
+                  sign language detector, an automated certificate generator
+                  (200+ certificates issued), AI-powered resume &amp; repo
+                  analyzers using Google Gemini, and an Airbnb-style full-stack
+                  clone. All are live and open-source.
+                </p>
+              </ScrollRevealCard>
+              <ScrollRevealCard index={1}>
+                <div className="item-header">
+                  <strong>DSA &amp; Competitive Practice</strong>
+                  <span className="item-badge">150+ problems</span>
+                </div>
+                <p>
+                  Practicing data structures and algorithms on LeetCode &amp;
+                  GeeksforGeeks to build strong fundamentals in problem-solving,
+                  time complexity analysis, and interview readiness.
+                </p>
+              </ScrollRevealCard>
+            </div>
+          </div>
+
+          {/* ── Hackathons ── */}
+          <div className="tl-section">
+            <TimelineNode />
+            <div className="tl-head">Hackathons</div>
+            <div className="tl-content">
+              <ScrollRevealCard index={0}>
+                <div className="item-header">
+                  <strong>SB Jain Hackathon</strong>
+                  <span className="item-badge">Cleared Round 1</span>
+                </div>
+                <p>
+                  Built and presented a working solution that advanced past the
+                  initial screening round, demonstrating problem-solving under
+                  time constraints.
+                </p>
+              </ScrollRevealCard>
+              <ScrollRevealCard index={1}>
+                <div className="item-header">
+                  <strong>Raisoni Hackathon</strong>
+                  <span className="item-badge">Complete Implementation</span>
+                </div>
+                <p>
+                  Developed a full end-to-end project during the hackathon,
+                  delivering a complete working solution from ideation to demo.
+                </p>
+              </ScrollRevealCard>
+              <ScrollRevealCard index={2}>
+                <div className="item-header">
+                  <strong>SB Jain Hackathon</strong>
+                  <span className="item-badge">Team Collaboration</span>
+                </div>
+                <p>
+                  Participated as part of a team, contributing to rapid
+                  prototyping and collaborative problem-solving in a competitive
+                  environment.
+                </p>
+              </ScrollRevealCard>
+            </div>
+          </div>
+
+          {/* ── Values ── */}
+          <div className="tl-section">
+            <TimelineNode />
+            <div className="tl-head">Values</div>
+            <div className="tl-content">
+              <ScrollRevealCard index={0}>
+                <div className="item-header">
+                  <strong>Ship first, polish later</strong>
+                  <span className="item-badge">Builder mindset</span>
+                </div>
+                <p>
+                  Every project I&rsquo;ve built started as a rough prototype
+                  that I iterated on until it worked reliably. I&rsquo;d rather
+                  deploy something useful today than plan a perfect system that
+                  never ships.
+                </p>
+              </ScrollRevealCard>
+            </div>
+          </div>
+
+          {/* ── Education ── */}
+          <div className="tl-section">
+            <TimelineNode />
+            <div className="tl-head">Education</div>
+            <div className="tl-content">
+              <ScrollRevealCard index={0}>
+                <div className="item-header">
+                  <strong>B.Tech &mdash; Computer Science Engineering</strong>
+                  <span className="item-badge">2023 &mdash; 2027</span>
+                </div>
+                <p>
+                  JD College of Engineering and Management, Nagpur. Currently in
+                  6th semester with an <strong>8.20 CGPA</strong>. Studying core
+                  computer science subjects while actively building projects in
+                  web development, backend systems, AI, and machine learning.
+                </p>
+              </ScrollRevealCard>
+            </div>
+          </div>
+
+          {/* ── Certifications (last timeline section) ── */}
+          <div className="tl-section tl-section--last">
+            <TimelineNode />
+            <div className="tl-head">Certifications</div>
+            <div className="tl-content">
+              {[
+                { name: "React.js", platform: "GeeksforGeeks" },
+                { name: "JavaScript", platform: "GeeksforGeeks" },
+                { name: "C++ Programming", platform: "GeeksforGeeks" },
+                { name: "Soft Skills Development", platform: "GeeksforGeeks" },
+                { name: "Python Programming", platform: "Coursera" },
+              ].map((cert, i) => (
+                <ScrollRevealCard key={cert.name} index={i}>
+                  <div className="item-header">
+                    <strong>{cert.name}</strong>
+                    <span className="item-badge">{cert.platform}</span>
+                  </div>
+                </ScrollRevealCard>
+              ))}
+            </div>
+          </div>
+
+          {/* Terminal dot */}
+          <div className="tl-terminal">
+            <span className="tl-dot tl-dot--end" />
+          </div>
+        </div>
 
         <AboutDivider />
 
-        {/* ═══ VALUES ═══ */}
-        <RevealSection className="about-section" direction="up">
-          <div className="section-label-about">
-            <span className="label-dot" />
-            Values
+        {/* ═══ PHILOSOPHY (outside timeline) ═══ */}
+        <RevealSection className="about-philosophy">
+          {/* Abstract organic line art decoration */}
+          <div className="abstract-lines" aria-hidden="true">
+            <svg viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="abstract-lines-svg">
+              {/* Flowing curve 1 - large sweep */}
+              <path d="M-50 180 C100 80, 250 220, 400 140 S650 60, 850 160" stroke="url(#line-grad-1)" strokeWidth="1.5" strokeLinecap="round" />
+              {/* Flowing curve 2 - parallel offset */}
+              <path d="M-30 200 C120 100, 270 240, 420 160 S670 80, 870 180" stroke="url(#line-grad-2)" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
+              {/* Flowing curve 3 - counter flow */}
+              <path d="M-40 80 C80 180, 200 40, 380 120 S600 220, 850 100" stroke="url(#line-grad-3)" strokeWidth="1" strokeLinecap="round" opacity="0.35" />
+              {/* Small accent circles */}
+              <circle cx="200" cy="140" r="3" fill="url(#dot-grad)" opacity="0.4" />
+              <circle cx="400" cy="145" r="2" fill="url(#dot-grad)" opacity="0.3" />
+              <circle cx="580" cy="120" r="4" fill="url(#dot-grad)" opacity="0.25" />
+              <circle cx="650" cy="155" r="2.5" fill="url(#dot-grad)" opacity="0.35" />
+              <circle cx="150" cy="170" r="2" fill="url(#dot-grad)" opacity="0.3" />
+              {/* Ring accents */}
+              <circle cx="300" cy="110" r="8" stroke="url(#line-grad-1)" strokeWidth="0.8" fill="none" opacity="0.2" />
+              <circle cx="550" cy="170" r="6" stroke="url(#line-grad-2)" strokeWidth="0.8" fill="none" opacity="0.15" />
+              <defs>
+                <linearGradient id="line-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0" />
+                  <stop offset="30%" stopColor="var(--color-primary)" stopOpacity="0.4" />
+                  <stop offset="70%" stopColor="var(--color-accent)" stopOpacity="0.3" />
+                  <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="line-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0" />
+                  <stop offset="40%" stopColor="var(--color-accent)" stopOpacity="0.3" />
+                  <stop offset="60%" stopColor="var(--color-primary)" stopOpacity="0.25" />
+                  <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
+                </linearGradient>
+                <linearGradient id="line-grad-3" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0" />
+                  <stop offset="50%" stopColor="var(--color-primary)" stopOpacity="0.2" />
+                  <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
+                </linearGradient>
+                <radialGradient id="dot-grad">
+                  <stop offset="0%" stopColor="var(--color-primary)" />
+                  <stop offset="100%" stopColor="var(--color-accent)" />
+                </radialGradient>
+              </defs>
+            </svg>
           </div>
-          <div className="section-content">
-            <StaggerItem index={0} className="about-item">
-              <div className="item-header">
-                <strong>Learning by building</strong>
-                <span className="item-badge">Growth mindset</span>
-              </div>
-              <p>
-                I understand concepts best when I apply them in projects. I
-                break large problems into smaller parts, read documentation,
-                experiment, debug errors, and iterate until things work
-                reliably.
-              </p>
-            </StaggerItem>
-
-            <StaggerItem index={1} className="about-item">
-              <div className="item-header">
-                <strong>Impact over perfection</strong>
-                <span className="item-badge">Product thinking</span>
-              </div>
-              <p>
-                I value building useful and meaningful products&mdash;whether
-                it&rsquo;s a chat app used by friends, a certificate system used
-                for events, or accessibility-focused tools that help real users.
-              </p>
-            </StaggerItem>
-          </div>
-        </RevealSection>
-
-        <AboutDivider />
-
-        {/* ═══ EDUCATION ═══ */}
-        <RevealSection className="about-section" direction="up">
-          <div className="section-label-about">
-            <span className="label-dot" />
-            Education
-          </div>
-          <div className="section-content">
-            <StaggerItem index={0} className="about-item">
-              <div className="item-header">
-                <strong>B.Tech &mdash; Computer Science Engineering</strong>
-                <span className="item-badge">2023 &mdash; 2027</span>
-              </div>
-              <p>
-                JD College of Engineering and Management, Nagpur. Currently in
-                6th semester. Studying core computer science subjects while
-                actively building projects in web development, backend systems,
-                AI, and machine learning.
-              </p>
-            </StaggerItem>
-          </div>
-        </RevealSection>
-
-        <AboutDivider />
-
-        {/* ═══ PHILOSOPHY (signature section) ═══ */}
-        <RevealSection className="about-philosophy" direction="up">
-          <motion.blockquote
-            className="philosophy-quote"
-            initial={{ opacity: 0, scale: 0.96 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ ...gentleSpring, delay: 0.15 }}
-          >
+          <h3 className="standalone-label">Philosophy</h3>
+          <blockquote className="philosophy-quote">
             <span className="philosophy-ornament-top" aria-hidden="true" />
             <span className="philosophy-mark">&ldquo;</span>
             <p>
@@ -487,31 +815,28 @@ export default function AboutPage() {
               &mdash; Jayram G Sangawat
             </footer>
             <span className="philosophy-ornament-bottom" aria-hidden="true" />
-          </motion.blockquote>
+          </blockquote>
         </RevealSection>
 
         <AboutDivider />
 
-        {/* ═══ IMAGE GALLERY ═══ */}
-        <section className="about-gallery-section">
-          <RevealSection className="about-gallery-header" direction="up">
-            <span className="section-label-about">
-              <span className="label-dot" />
-              Moments
-            </span>
-            <h3 className="gallery-title">Behind the screen</h3>
-          </RevealSection>
-
-          <div className="about-gallery">
-            <GalleryImage src="/profile.jpg" alt="Profile portrait" index={0} />
-            <GalleryImage src="/me.png" alt="Late-night coding" index={1} />
+        {/* ═══ IMAGE GALLERY (outside timeline) ═══ */}
+        <RevealSection className="about-gallery-section">
+          <h3 className="standalone-label">Moments</h3>
+          <div className="gallery-grid">
+            <GalleryImage src="/profile.jpg" alt="That's me" index={0} />
+            <GalleryImage
+              src="/me.png"
+              alt="Where the code happens"
+              index={1}
+            />
             <GalleryImage
               src="/me-2.png"
-              alt="Working with teammates"
+              alt="Team hackathon session"
               index={2}
             />
           </div>
-        </section>
+        </RevealSection>
       </main>
 
       <motion.button
