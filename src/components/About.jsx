@@ -269,8 +269,14 @@ function ScrollRevealCard({ children, index = 0, className = "about-item" }) {
 
 /* ── Confetti colors for hover burst ── */
 const BURST_COLORS = [
-  "#a78bfa", "#818cf8", "#34d399", "#f472b6",
-  "#60a5fa", "#fbbf24", "#fb923c", "#c084fc",
+  "#a78bfa",
+  "#818cf8",
+  "#34d399",
+  "#f472b6",
+  "#60a5fa",
+  "#fbbf24",
+  "#fb923c",
+  "#c084fc",
 ];
 
 function BurstPiece({ x, y, color, delay: d, size, shape }) {
@@ -380,6 +386,20 @@ export default function AboutPage() {
       secretMessage?.classList.remove("show");
     };
 
+    const handleSecretFocus = () => {
+      if (!isDesktop.matches) return;
+      window.clearTimeout(secretTimer);
+      secretTimer = window.setTimeout(() => {
+        secretMessage?.classList.add("show");
+        aboutRoot?.classList.add("easter-enabled");
+      }, 2000);
+    };
+
+    const handleSecretBlur = () => {
+      window.clearTimeout(secretTimer);
+      secretMessage?.classList.remove("show");
+    };
+
     const handleFlipClick = () => {
       if (
         !isDesktop.matches ||
@@ -396,6 +416,8 @@ export default function AboutPage() {
     if (secretTrigger) {
       secretTrigger.addEventListener("mouseenter", handleSecretEnter);
       secretTrigger.addEventListener("mouseleave", handleSecretLeave);
+      secretTrigger.addEventListener("focus", handleSecretFocus);
+      secretTrigger.addEventListener("blur", handleSecretBlur);
     }
 
     if (flipCard) {
@@ -407,6 +429,8 @@ export default function AboutPage() {
       if (secretTrigger) {
         secretTrigger.removeEventListener("mouseenter", handleSecretEnter);
         secretTrigger.removeEventListener("mouseleave", handleSecretLeave);
+        secretTrigger.removeEventListener("focus", handleSecretFocus);
+        secretTrigger.removeEventListener("blur", handleSecretBlur);
       }
       if (flipCard) {
         flipCard.removeEventListener("click", handleFlipClick);
@@ -476,7 +500,7 @@ export default function AboutPage() {
       <SpotlightFollow />
       <Navbar />
 
-      <main className="about">
+      <main id="main-content" className="about">
         <BreathingOrbs count={3} />
         {/* Noise texture overlay */}
         <div className="about-noise" aria-hidden="true" />
@@ -556,7 +580,14 @@ export default function AboutPage() {
 
         {/* Confetti burst pieces (from 2s hover on Hindi name) */}
         {burstPieces.length > 0 && (
-          <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 9999 }}>
+          <div
+            style={{
+              position: "fixed",
+              inset: 0,
+              pointerEvents: "none",
+              zIndex: 9999,
+            }}
+          >
             {burstPieces.map((p) => (
               <BurstPiece key={p.id} {...p} />
             ))}
@@ -573,7 +604,7 @@ export default function AboutPage() {
           {/* ── About Me ── */}
           <div className="tl-section">
             <TimelineNode />
-            <div className="tl-head">About me</div>
+            <h2 className="tl-head">About me</h2>
             <div className="tl-content tl-content--intro">
               <ScrollRevealP className="intro-lead">
                 I&rsquo;m a{" "}
@@ -606,7 +637,12 @@ export default function AboutPage() {
               </ScrollRevealP>
 
               <ScrollRevealP className="about-easter">
-                <span className="about-secret-trigger" tabIndex={0}>
+                <span
+                  className="about-secret-trigger"
+                  tabIndex={0}
+                  role="button"
+                  aria-label="Hover or focus here for 2 seconds to reveal a hint"
+                >
                   Hover here for 2 seconds&hellip;
                 </span>
                 <span className="about-secret-message">
@@ -619,7 +655,7 @@ export default function AboutPage() {
           {/* ── Experience ── */}
           <div className="tl-section">
             <TimelineNode />
-            <div className="tl-head">Experience</div>
+            <h2 className="tl-head">Experience</h2>
             <div className="tl-content">
               <ScrollRevealCard index={0}>
                 <div className="item-header">
@@ -651,7 +687,7 @@ export default function AboutPage() {
           {/* ── Hackathons ── */}
           <div className="tl-section">
             <TimelineNode />
-            <div className="tl-head">Hackathons</div>
+            <h2 className="tl-head">Hackathons</h2>
             <div className="tl-content">
               <ScrollRevealCard index={0}>
                 <div className="item-header">
@@ -691,7 +727,7 @@ export default function AboutPage() {
           {/* ── Values ── */}
           <div className="tl-section">
             <TimelineNode />
-            <div className="tl-head">Values</div>
+            <h2 className="tl-head">Values</h2>
             <div className="tl-content">
               <ScrollRevealCard index={0}>
                 <div className="item-header">
@@ -711,7 +747,7 @@ export default function AboutPage() {
           {/* ── Education ── */}
           <div className="tl-section">
             <TimelineNode />
-            <div className="tl-head">Education</div>
+            <h2 className="tl-head">Education</h2>
             <div className="tl-content">
               <ScrollRevealCard index={0}>
                 <div className="item-header">
@@ -731,7 +767,7 @@ export default function AboutPage() {
           {/* ── Certifications (last timeline section) ── */}
           <div className="tl-section tl-section--last">
             <TimelineNode />
-            <div className="tl-head">Certifications</div>
+            <h2 className="tl-head">Certifications</h2>
             <div className="tl-content">
               {[
                 { name: "React.js", platform: "GeeksforGeeks" },
@@ -762,39 +798,169 @@ export default function AboutPage() {
         <RevealSection className="about-philosophy">
           {/* Abstract organic line art decoration */}
           <div className="abstract-lines" aria-hidden="true">
-            <svg viewBox="0 0 800 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="abstract-lines-svg">
+            <svg
+              viewBox="0 0 800 300"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="abstract-lines-svg"
+            >
               {/* Flowing curve 1 - large sweep */}
-              <path d="M-50 180 C100 80, 250 220, 400 140 S650 60, 850 160" stroke="url(#line-grad-1)" strokeWidth="1.5" strokeLinecap="round" />
+              <path
+                d="M-50 180 C100 80, 250 220, 400 140 S650 60, 850 160"
+                stroke="url(#line-grad-1)"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
               {/* Flowing curve 2 - parallel offset */}
-              <path d="M-30 200 C120 100, 270 240, 420 160 S670 80, 870 180" stroke="url(#line-grad-2)" strokeWidth="1" strokeLinecap="round" opacity="0.5" />
+              <path
+                d="M-30 200 C120 100, 270 240, 420 160 S670 80, 870 180"
+                stroke="url(#line-grad-2)"
+                strokeWidth="1"
+                strokeLinecap="round"
+                opacity="0.5"
+              />
               {/* Flowing curve 3 - counter flow */}
-              <path d="M-40 80 C80 180, 200 40, 380 120 S600 220, 850 100" stroke="url(#line-grad-3)" strokeWidth="1" strokeLinecap="round" opacity="0.35" />
+              <path
+                d="M-40 80 C80 180, 200 40, 380 120 S600 220, 850 100"
+                stroke="url(#line-grad-3)"
+                strokeWidth="1"
+                strokeLinecap="round"
+                opacity="0.35"
+              />
               {/* Small accent circles */}
-              <circle cx="200" cy="140" r="3" fill="url(#dot-grad)" opacity="0.4" />
-              <circle cx="400" cy="145" r="2" fill="url(#dot-grad)" opacity="0.3" />
-              <circle cx="580" cy="120" r="4" fill="url(#dot-grad)" opacity="0.25" />
-              <circle cx="650" cy="155" r="2.5" fill="url(#dot-grad)" opacity="0.35" />
-              <circle cx="150" cy="170" r="2" fill="url(#dot-grad)" opacity="0.3" />
+              <circle
+                cx="200"
+                cy="140"
+                r="3"
+                fill="url(#dot-grad)"
+                opacity="0.4"
+              />
+              <circle
+                cx="400"
+                cy="145"
+                r="2"
+                fill="url(#dot-grad)"
+                opacity="0.3"
+              />
+              <circle
+                cx="580"
+                cy="120"
+                r="4"
+                fill="url(#dot-grad)"
+                opacity="0.25"
+              />
+              <circle
+                cx="650"
+                cy="155"
+                r="2.5"
+                fill="url(#dot-grad)"
+                opacity="0.35"
+              />
+              <circle
+                cx="150"
+                cy="170"
+                r="2"
+                fill="url(#dot-grad)"
+                opacity="0.3"
+              />
               {/* Ring accents */}
-              <circle cx="300" cy="110" r="8" stroke="url(#line-grad-1)" strokeWidth="0.8" fill="none" opacity="0.2" />
-              <circle cx="550" cy="170" r="6" stroke="url(#line-grad-2)" strokeWidth="0.8" fill="none" opacity="0.15" />
+              <circle
+                cx="300"
+                cy="110"
+                r="8"
+                stroke="url(#line-grad-1)"
+                strokeWidth="0.8"
+                fill="none"
+                opacity="0.2"
+              />
+              <circle
+                cx="550"
+                cy="170"
+                r="6"
+                stroke="url(#line-grad-2)"
+                strokeWidth="0.8"
+                fill="none"
+                opacity="0.15"
+              />
               <defs>
-                <linearGradient id="line-grad-1" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0" />
-                  <stop offset="30%" stopColor="var(--color-primary)" stopOpacity="0.4" />
-                  <stop offset="70%" stopColor="var(--color-accent)" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
+                <linearGradient
+                  id="line-grad-1"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="0%"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="var(--color-primary)"
+                    stopOpacity="0"
+                  />
+                  <stop
+                    offset="30%"
+                    stopColor="var(--color-primary)"
+                    stopOpacity="0.4"
+                  />
+                  <stop
+                    offset="70%"
+                    stopColor="var(--color-accent)"
+                    stopOpacity="0.3"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--color-accent)"
+                    stopOpacity="0"
+                  />
                 </linearGradient>
-                <linearGradient id="line-grad-2" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="var(--color-accent)" stopOpacity="0" />
-                  <stop offset="40%" stopColor="var(--color-accent)" stopOpacity="0.3" />
-                  <stop offset="60%" stopColor="var(--color-primary)" stopOpacity="0.25" />
-                  <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
+                <linearGradient
+                  id="line-grad-2"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="0%"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="var(--color-accent)"
+                    stopOpacity="0"
+                  />
+                  <stop
+                    offset="40%"
+                    stopColor="var(--color-accent)"
+                    stopOpacity="0.3"
+                  />
+                  <stop
+                    offset="60%"
+                    stopColor="var(--color-primary)"
+                    stopOpacity="0.25"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--color-primary)"
+                    stopOpacity="0"
+                  />
                 </linearGradient>
-                <linearGradient id="line-grad-3" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0" />
-                  <stop offset="50%" stopColor="var(--color-primary)" stopOpacity="0.2" />
-                  <stop offset="100%" stopColor="var(--color-accent)" stopOpacity="0" />
+                <linearGradient
+                  id="line-grad-3"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="0%"
+                >
+                  <stop
+                    offset="0%"
+                    stopColor="var(--color-primary)"
+                    stopOpacity="0"
+                  />
+                  <stop
+                    offset="50%"
+                    stopColor="var(--color-primary)"
+                    stopOpacity="0.2"
+                  />
+                  <stop
+                    offset="100%"
+                    stopColor="var(--color-accent)"
+                    stopOpacity="0"
+                  />
                 </linearGradient>
                 <radialGradient id="dot-grad">
                   <stop offset="0%" stopColor="var(--color-primary)" />

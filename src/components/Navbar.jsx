@@ -76,82 +76,82 @@ function Navbar() {
         aria-hidden="true"
       />
       <motion.header
-      className={navClasses}
-      initial={{ y: -60, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-    >
-      <div className={`navbar-pill ${open ? "expanded" : ""}`}>
-        {/* TOP ROW */}
-        <div className="nav-top">
-          <Link to="/" className="nav-logo" aria-label="Home">
-            JS
-          </Link>
+        className={navClasses}
+        initial={{ y: -60, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      >
+        <div className={`navbar-pill ${open ? "expanded" : ""}`}>
+          {/* TOP ROW */}
+          <div className="nav-top">
+            <Link to="/" className="nav-logo" aria-label="Home">
+              JS
+            </Link>
 
-          <div className="nav-actions">
-            <button
-              className={`menu-toggle ${open ? "open" : ""}`}
-              onClick={() => setOpen((v) => !v)}
-              aria-label="Toggle menu"
-              aria-expanded={open}
-            >
-              <span />
-              <span />
-            </button>
-          </div>
-        </div>
-
-        {/* DESKTOP LINKS */}
-        <div className="nav-desktop">
-          <Link to="/#work" onClick={handleProjectsClick}>
-            Projects
-          </Link>
-          <Link to="/about">About</Link>
-          <a href="#contact" onClick={handleContactClick}>
-            Contact
-          </a>
-          <a
-            href={resumePdf}
-            target="_blank"
-            rel="noreferrer"
-            className="nav-resume-btn"
-          >
-            Resume
-          </a>
-        </div>
-
-        {/* MOBILE MENU */}
-        <AnimatePresence>
-          {open && (
-            <motion.div
-              className="mobile-menu show"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <Link to="/#work" onClick={handleProjectsClick}>
-                Projects
-              </Link>
-              <Link to="/about" onClick={() => setOpen(false)}>
-                About
-              </Link>
-              <a href="#contact" onClick={handleContactClick}>
-                Contact
-              </a>
-              <a
-                href={resumePdf}
-                target="_blank"
-                rel="noreferrer"
-                onClick={() => setOpen(false)}
+            <div className="nav-actions">
+              <button
+                className={`menu-toggle ${open ? "open" : ""}`}
+                onClick={() => setOpen((v) => !v)}
+                aria-label="Toggle menu"
+                aria-expanded={open}
               >
-                Resume
-              </a>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.header>
+                <span />
+                <span />
+              </button>
+            </div>
+          </div>
+
+          {/* DESKTOP LINKS */}
+          <div className="nav-desktop">
+            <Link to="/#work" onClick={handleProjectsClick}>
+              Projects
+            </Link>
+            <Link to="/about">About</Link>
+            <a href="#contact" onClick={handleContactClick}>
+              Contact
+            </a>
+            <a
+              href={resumePdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nav-resume-btn"
+            >
+              Resume
+            </a>
+          </div>
+
+          {/* MOBILE MENU */}
+          <AnimatePresence>
+            {open && (
+              <motion.div
+                className="mobile-menu show"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+              >
+                <Link to="/#work" onClick={handleProjectsClick}>
+                  Projects
+                </Link>
+                <Link to="/about" onClick={() => setOpen(false)}>
+                  About
+                </Link>
+                <a href="#contact" onClick={handleContactClick}>
+                  Contact
+                </a>
+                <a
+                  href={resumePdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setOpen(false)}
+                >
+                  Resume
+                </a>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.header>
     </>
   );
 }

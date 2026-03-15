@@ -25,35 +25,35 @@ function Footer() {
             <a
               href="https://github.com/jayramgit94"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               GitHub
             </a>
             <a
               href="https://www.linkedin.com/in/jayram-s-6b1865293/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               LinkedIn
             </a>
             <a
               href="https://www.instagram.com/jayrams_.23/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               Instagram
             </a>
             <a
               href="https://leetcode.com/u/jayramleet94/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               LeetCode
             </a>
             <a
               href="https://www.geeksforgeeks.org/profile/sangawatp3o5"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               GeeksforGeeks
             </a>

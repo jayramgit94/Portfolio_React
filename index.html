@@ -2,17 +2,63 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="icon" type="image/png" href="/me.png" />
+    <link rel="apple-touch-icon" href="/me.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f8f9fb" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://jayram-portfolio.vercel.app/" />
     <title>Jayram G Sangawat — Portfolio</title>
-    <meta name="description" content="Jayram G Sangawat — Computer Science student building real-world web and AI projects. Full-stack developer with React, Python, FastAPI, TensorFlow. 5 deployed projects, 8.20 CGPA." />
+    <meta
+      name="description"
+      content="Jayram G Sangawat — Computer Science student building real-world web and AI projects. Full-stack developer with React, Python, FastAPI, TensorFlow. 5 deployed projects, 8.20 CGPA."
+    />
 
     <!-- Open Graph -->
     <meta property="og:title" content="Jayram G Sangawat — Portfolio" />
-    <meta property="og:description" content="CS student building AI-powered tools and full-stack applications — from real-time sign language detection to automated certificate systems." />
+    <meta
+      property="og:description"
+      content="CS student building AI-powered tools and full-stack applications — from real-time sign language detection to automated certificate systems."
+    />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jayram-portfolio.vercel.app/" />
+    <meta property="og:site_name" content="Jayram G Sangawat Portfolio" />
     <meta property="og:image" content="/profile.jpg" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Jayram G Sangawat — Portfolio" />
+    <meta
+      name="twitter:description"
+      content="Computer Science student building AI-powered tools and full-stack applications."
+    />
+    <meta name="twitter:image" content="/profile.jpg" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Person",
+            "name": "Jayram G Sangawat",
+            "url": "https://jayram-portfolio.vercel.app/",
+            "image": "https://jayram-portfolio.vercel.app/profile.jpg",
+            "jobTitle": "Full-Stack Developer",
+            "sameAs": [
+              "https://github.com/jayramgit94",
+              "https://www.linkedin.com/in/jayram-s-6b1865293/",
+              "https://leetcode.com/u/jayramleet94/"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "name": "Jayram G Sangawat Portfolio",
+            "url": "https://jayram-portfolio.vercel.app/"
+          }
+        ]
+      }
+    </script>
 
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -28,9 +74,32 @@
     <!-- ═══ PRELOADER (pure HTML/CSS, instant) ═══ -->
     <div id="preloader">
       <div class="pre-inner">
-        <svg class="pre-logo" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle class="pre-ring" cx="30" cy="30" r="26" stroke="url(#preGrad)" stroke-width="1.5" stroke-dasharray="6 4" />
-          <text x="30" y="35" text-anchor="middle" fill="url(#preGrad)" font-family="'Space Grotesk', sans-serif" font-weight="700" font-size="22">J</text>
+        <svg
+          class="pre-logo"
+          viewBox="0 0 60 60"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle
+            class="pre-ring"
+            cx="30"
+            cy="30"
+            r="26"
+            stroke="url(#preGrad)"
+            stroke-width="1.5"
+            stroke-dasharray="6 4"
+          />
+          <text
+            x="30"
+            y="35"
+            text-anchor="middle"
+            fill="url(#preGrad)"
+            font-family="'Space Grotesk', sans-serif"
+            font-weight="700"
+            font-size="22"
+          >
+            J
+          </text>
           <defs>
             <linearGradient id="preGrad" x1="0" y1="0" x2="60" y2="60">
               <stop offset="0%" stop-color="#6366f1" />
@@ -53,7 +122,9 @@
         align-items: center;
         justify-content: center;
         background: #f8f9fb;
-        transition: opacity 0.5s ease, visibility 0.5s ease;
+        transition:
+          opacity 0.5s ease,
+          visibility 0.5s ease;
       }
       #preloader.pre-done {
         opacity: 0;
@@ -75,7 +146,9 @@
         transform-origin: center;
       }
       @keyframes pre-spin {
-        to { transform: rotate(360deg); }
+        to {
+          transform: rotate(360deg);
+        }
       }
       .pre-line {
         width: 0;
@@ -85,10 +158,12 @@
         animation: pre-expand 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       }
       @keyframes pre-expand {
-        to { width: 72px; }
+        to {
+          width: 72px;
+        }
       }
       .pre-name {
-        font-family: 'Space Grotesk', sans-serif;
+        font-family: "Space Grotesk", sans-serif;
         font-weight: 700;
         font-size: 14px;
         letter-spacing: 6px;
@@ -97,7 +172,7 @@
         animation: pre-text-in 0.6s ease forwards 0.4s;
       }
       .pre-tagline {
-        font-family: 'Inter', sans-serif;
+        font-family: "Inter", sans-serif;
         font-size: 11px;
         letter-spacing: 1px;
         color: #888;
@@ -105,12 +180,18 @@
         animation: pre-text-in 0.6s ease forwards 0.7s;
       }
       @keyframes pre-text-in {
-        from { opacity: 0; transform: translateY(8px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
       }
       /* Counter dots */
       .pre-inner::after {
-        content: '';
+        content: "";
         display: flex;
         width: 4px;
         height: 4px;
@@ -120,8 +201,15 @@
         animation: pre-pulse 1s ease-in-out infinite 1s;
       }
       @keyframes pre-pulse {
-        0%, 100% { opacity: 0.2; transform: scale(0.8); }
-        50% { opacity: 0.8; transform: scale(1.2); }
+        0%,
+        100% {
+          opacity: 0.2;
+          transform: scale(0.8);
+        }
+        50% {
+          opacity: 0.8;
+          transform: scale(1.2);
+        }
       }
     </style>
 

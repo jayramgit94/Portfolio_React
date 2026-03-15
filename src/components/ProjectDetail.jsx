@@ -219,7 +219,7 @@ function ProjectDetail() {
             </div>
           </aside>
 
-          <main className="project-content">
+          <main id="main-content" className="project-content">
             <AnimatedSection id="overview">
               <div className="section-header">
                 <p className="section-label">Summary</p>

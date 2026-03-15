@@ -212,7 +212,7 @@ function Contact({ ctaBtnRef }) {
             <MagneticButton
               href="https://github.com/jayramgit94"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn btn-outline-light"
             >
               GitHub
@@ -220,7 +220,7 @@ function Contact({ ctaBtnRef }) {
             <MagneticButton
               href="https://www.linkedin.com/in/jayram-s-6b1865293/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn btn-outline-light"
             >
               LinkedIn
@@ -228,7 +228,7 @@ function Contact({ ctaBtnRef }) {
             <MagneticButton
               href="https://leetcode.com/u/jayramleet94/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn btn-outline-light"
             >
               LeetCode
@@ -306,137 +306,139 @@ function Home() {
       <SpotlightFollow />
       <ConfettiBurst triggerRef={ctaBtnRef} />
       <Navbar />
-      <Hero />
-      <MorphingBlob className="home-blob" />
+      <main id="main-content">
+        <Hero />
+        <MorphingBlob className="home-blob" />
 
-      <SectionDivider />
+        <SectionDivider />
 
-      <Work />
+        <Work />
 
-      <SectionDivider />
+        <SectionDivider />
 
-      {/* ===== TOOLKIT SECTION ===== */}
-      <RevealSection>
-        <section className="toolkit-section">
-          <FloatingIcons />
-          <div className="toolkit-header">
-            <span className="section-label">Toolkit</span>
-            <h2 className="section-title">
-              Technologies I <span className="text-gradient">work with</span>
-            </h2>
-          </div>
-
-          <div className="toolkit-grid">
-            {tools.map((tool, i) => (
-              <ToolkitCard key={tool.name} tool={tool} index={i} />
-            ))}
-          </div>
-        </section>
-      </RevealSection>
-
-      <SectionDivider />
-
-      {/* ===== CURRENTLY LEARNING ===== */}
-      <RevealSection>
-        <section className="learning-section">
-          <span className="section-label">What I&rsquo;m into right now</span>
-          <p className="learning-text">
-            Digging deeper into <strong>advanced React patterns</strong>,
-            building more <strong>AI/ML side projects</strong>, getting better
-            at <strong>REST &amp; API design</strong>, and grinding{" "}
-            <strong>DSA</strong> daily.
-          </p>
-        </section>
-      </RevealSection>
-
-      <SectionDivider />
-
-      {/* ===== CERTIFICATIONS ===== */}
-      <RevealSection>
-        <section className="cert-section">
-          <div className="toolkit-header">
-            <span className="section-label">Credentials</span>
-            <h2 className="section-title">
-              Certifications &amp;{" "}
-              <span className="text-gradient">courses</span>
-            </h2>
-          </div>
-          <div className="cert-grid">
-            {certifications.map((cert, i) => (
-              <motion.div
-                key={cert.name}
-                className="cert-card"
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{
-                  duration: 0.4,
-                  delay: i * 0.06,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <span className="cert-platform">{cert.platform}</span>
-                <span className="cert-name">{cert.name}</span>
-              </motion.div>
-            ))}
-          </div>
-        </section>
-      </RevealSection>
-
-      {/* ===== MARQUEE STRIP ===== */}
-      <RevealSection delay={0.1}>
-        <div className="marquee-strip" aria-hidden="true">
-          <div className="marquee-track">
-            {[...Array(2)].map((_, i) => (
-              <span key={i} className="marquee-content">
-                <span className="marquee-dot">✦</span> AI &amp; ML
-                <span className="marquee-dot">✦</span> Full-Stack
-                <span className="marquee-dot">✦</span> React
-                <span className="marquee-dot">✦</span> Python
-                <span className="marquee-dot">✦</span> FastAPI
-                <span className="marquee-dot">✦</span> TensorFlow
-                <span className="marquee-dot">✦</span> Node.js
-                <span className="marquee-dot">✦</span> MongoDB
-              </span>
-            ))}
-          </div>
-        </div>
-      </RevealSection>
-
-      <SectionDivider />
-
-      {/* ===== STATS ROW ===== */}
-      <StatsRow />
-
-      <SectionDivider />
-
-      {/* ===== CONTACT SECTION ===== */}
-      <Contact ctaBtnRef={ctaBtnRef} />
-
-      <Footer />
-
-      {/* ===== EASTER EGG ===== */}
-      <AnimatePresence>
-        {easterEgg && (
-          <motion.div
-            className="easter-egg-overlay"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            onClick={() => setEasterEgg(false)}
-          >
-            <div className="easter-egg-content">
-              <span className="easter-egg-emoji">🎮</span>
-              <p className="easter-egg-text">You found the secret!</p>
-              <p className="easter-egg-sub">
-                You&rsquo;re clearly a person of culture. Let&rsquo;s build
-                something awesome together.
-              </p>
+        {/* ===== TOOLKIT SECTION ===== */}
+        <RevealSection>
+          <section className="toolkit-section">
+            <FloatingIcons />
+            <div className="toolkit-header">
+              <span className="section-label">Toolkit</span>
+              <h2 className="section-title">
+                Technologies I <span className="text-gradient">work with</span>
+              </h2>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+            <div className="toolkit-grid">
+              {tools.map((tool, i) => (
+                <ToolkitCard key={tool.name} tool={tool} index={i} />
+              ))}
+            </div>
+          </section>
+        </RevealSection>
+
+        <SectionDivider />
+
+        {/* ===== CURRENTLY LEARNING ===== */}
+        <RevealSection>
+          <section className="learning-section">
+            <span className="section-label">What I&rsquo;m into right now</span>
+            <p className="learning-text">
+              Digging deeper into <strong>advanced React patterns</strong>,
+              building more <strong>AI/ML side projects</strong>, getting better
+              at <strong>REST &amp; API design</strong>, and grinding{" "}
+              <strong>DSA</strong> daily.
+            </p>
+          </section>
+        </RevealSection>
+
+        <SectionDivider />
+
+        {/* ===== CERTIFICATIONS ===== */}
+        <RevealSection>
+          <section className="cert-section">
+            <div className="toolkit-header">
+              <span className="section-label">Credentials</span>
+              <h2 className="section-title">
+                Certifications &amp;{" "}
+                <span className="text-gradient">courses</span>
+              </h2>
+            </div>
+            <div className="cert-grid">
+              {certifications.map((cert, i) => (
+                <motion.div
+                  key={cert.name}
+                  className="cert-card"
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-40px" }}
+                  transition={{
+                    duration: 0.4,
+                    delay: i * 0.06,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <span className="cert-platform">{cert.platform}</span>
+                  <span className="cert-name">{cert.name}</span>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+        </RevealSection>
+
+        {/* ===== MARQUEE STRIP ===== */}
+        <RevealSection delay={0.1}>
+          <div className="marquee-strip" aria-hidden="true">
+            <div className="marquee-track">
+              {[...Array(2)].map((_, i) => (
+                <span key={i} className="marquee-content">
+                  <span className="marquee-dot">✦</span> AI &amp; ML
+                  <span className="marquee-dot">✦</span> Full-Stack
+                  <span className="marquee-dot">✦</span> React
+                  <span className="marquee-dot">✦</span> Python
+                  <span className="marquee-dot">✦</span> FastAPI
+                  <span className="marquee-dot">✦</span> TensorFlow
+                  <span className="marquee-dot">✦</span> Node.js
+                  <span className="marquee-dot">✦</span> MongoDB
+                </span>
+              ))}
+            </div>
+          </div>
+        </RevealSection>
+
+        <SectionDivider />
+
+        {/* ===== STATS ROW ===== */}
+        <StatsRow />
+
+        <SectionDivider />
+
+        {/* ===== CONTACT SECTION ===== */}
+        <Contact ctaBtnRef={ctaBtnRef} />
+
+        <Footer />
+
+        {/* ===== EASTER EGG ===== */}
+        <AnimatePresence>
+          {easterEgg && (
+            <motion.div
+              className="easter-egg-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setEasterEgg(false)}
+            >
+              <div className="easter-egg-content">
+                <span className="easter-egg-emoji">🎮</span>
+                <p className="easter-egg-text">You found the secret!</p>
+                <p className="easter-egg-sub">
+                  You&rsquo;re clearly a person of culture. Let&rsquo;s build
+                  something awesome together.
+                </p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
     </>
   );
 }

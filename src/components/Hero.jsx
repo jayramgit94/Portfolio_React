@@ -169,9 +169,9 @@ function Hero() {
           </motion.h1>
 
           <motion.p className="hero-sub" {...fadeUp(0.25, isMobile)}>
-            Computer Science student building real-world web and AI
-            projects &mdash; from problem solving to deployment. 5 live
-            projects, 8.20 CGPA, 150+ DSA problems solved.
+            Computer Science student building real-world web and AI projects
+            &mdash; from problem solving to deployment. 5 live projects, 8.20
+            CGPA, 150+ DSA problems solved.
           </motion.p>
 
           <motion.div className="hero-cta-group" {...fadeUp(0.35, isMobile)}>
@@ -193,7 +193,7 @@ function Hero() {
             <MagneticButton
               href={resumePdf}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="btn btn-outline-light"
             >
               <svg
@@ -223,7 +223,7 @@ function Hero() {
             <a
               href="https://leetcode.com/u/jayramleet94/"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               LeetCode
             </a>
@@ -231,7 +231,7 @@ function Hero() {
             <a
               href="https://www.geeksforgeeks.org/profile/sangawatp3o5"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               GeeksforGeeks
             </a>
@@ -239,7 +239,7 @@ function Hero() {
             <a
               href="https://github.com/jayramgit94"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
             >
               GitHub
             </a>
