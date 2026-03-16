@@ -1,39 +1,39 @@
 // Sign Language Project Images
-import signLang1 from "../assets/sign_lang/sign_lang1.webp";
-import signLang2 from "../assets/sign_lang/sign_lang2.webp";
-import signLang3 from "../assets/sign_lang/sign_lang3.webp";
-import signLang4 from "../assets/sign_lang/sign_lang4.webp";
-import signLang5 from "../assets/sign_lang/sign_lang5.webp";
-import signLang6 from "../assets/sign_lang/sign_lang6.webp";
+import signLang1 from "../assets/sign_lang/sign_lang1.png";
+import signLang2 from "../assets/sign_lang/sign_lang2.png";
+import signLang3 from "../assets/sign_lang/sign_lang3.png";
+import signLang4 from "../assets/sign_lang/sign_lang4.png";
+import signLang5 from "../assets/sign_lang/sign_lang5.png";
+import signLang6 from "../assets/sign_lang/sign_lang6.png";
 
 // Resume Analyzer Project Images
-import resume1 from "../assets/resume_analyzer/resum1.webp";
-import resume2 from "../assets/resume_analyzer/resum2.webp";
-import resume3 from "../assets/resume_analyzer/resume3.webp";
-import resume4 from "../assets/resume_analyzer/resume4.webp";
+import resume1 from "../assets/resume_analyzer/resum1.png";
+import resume2 from "../assets/resume_analyzer/resum2.png";
+import resume3 from "../assets/resume_analyzer/resume3.png";
+import resume4 from "../assets/resume_analyzer/resume4.png";
 
 // GitHub Repo Analyzer Project Images
-import repoAnalyzer1 from "../assets/repoanalzer/repoanalyzer1.webp";
-import repoAnalyzer3 from "../assets/repoanalzer/repoanalyzer3.webp";
-import repoAnalyzer4 from "../assets/repoanalzer/repoanalyzer4.webp";
-import repoAnalyzer5 from "../assets/repoanalzer/repoanalyzer5.webp";
-import repoAnalyzer2 from "../assets/repoanalzer/repoanalzyer2.webp";
+import repoAnalyzer1 from "../assets/repoanalzer/repoanalyzer1.png";
+import repoAnalyzer3 from "../assets/repoanalzer/repoanalyzer3.png";
+import repoAnalyzer4 from "../assets/repoanalzer/repoanalyzer4.png";
+import repoAnalyzer5 from "../assets/repoanalzer/repoanalyzer5.png";
+import repoAnalyzer2 from "../assets/repoanalzer/repoanalzyer2.png";
 
 // Certificate Generator Project Images
-import certi1 from "../assets/certi_generation/certi1.webp";
-import certi2 from "../assets/certi_generation/certi2.webp";
-import certi3 from "../assets/certi_generation/certi3.webp";
-import certi6 from "../assets/certi_generation/certi6.webp";
-import certi7 from "../assets/certi_generation/certi7.webp";
-import certi4 from "../assets/certi_generation/csrti4.webp";
-import certi5 from "../assets/certi_generation/csrti5.webp";
+import certi1 from "../assets/certi_generation/certi1.png";
+import certi2 from "../assets/certi_generation/certi2.png";
+import certi3 from "../assets/certi_generation/certi3.png";
+import certi6 from "../assets/certi_generation/certi6.png";
+import certi7 from "../assets/certi_generation/certi7.png";
+import certi4 from "../assets/certi_generation/csrti4.png";
+import certi5 from "../assets/certi_generation/csrti5.png";
 
 // Airbnb Clone Project Images
-import airbnb2 from "../assets/airbnb/airbnb2.webp";
-import airbnb3 from "../assets/airbnb/airbnb3.webp";
-import airbnb4 from "../assets/airbnb/airbnb4.webp";
-import airbnb5 from "../assets/airbnb/airbnb5.webp";
-import airbnb1 from "../assets/airbnb/aribnb1.webp";
+import airbnb2 from "../assets/airbnb/airbnb2.png";
+import airbnb3 from "../assets/airbnb/airbnb3.png";
+import airbnb4 from "../assets/airbnb/airbnb4.png";
+import airbnb5 from "../assets/airbnb/airbnb5.png";
+import airbnb1 from "../assets/airbnb/aribnb1.png";
 
 const projects = [
   {
