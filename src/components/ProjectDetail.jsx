@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import projects from "../data/projects";
 import "../styles/project-detail.css";
 import Cursor from "./Cursor";
-import Footer from "./Footer";
 import Navbar from "./Navbar";
 
 function AnimatedSection({ children, id, className = "" }) {
@@ -297,7 +296,6 @@ function ProjectDetail() {
         </div>
       </div>
 
-      <Footer />
     </>
   );
 }

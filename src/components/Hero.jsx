@@ -34,10 +34,12 @@ function Hero() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
+    const mobileMq = window.matchMedia("(max-width: 768px)");
+    const syncMobile = () => setIsMobile(mobileMq.matches);
+
+    syncMobile();
+    mobileMq.addEventListener("change", syncMobile);
+    return () => mobileMq.removeEventListener("change", syncMobile);
   }, []);
 
   const { scrollYProgress } = useScroll({
@@ -170,7 +172,7 @@ function Hero() {
 
           <motion.p className="hero-sub" {...fadeUp(0.25, isMobile)}>
             Computer Science student building real-world web and AI projects
-            &mdash; from problem solving to deployment. 5 live projects, 8.20
+            &mdash; from problem solving to deployment. 5+ live projects, 8.39
             CGPA, 150+ DSA problems solved.
           </motion.p>
 
@@ -268,6 +270,8 @@ function Hero() {
             width="500"
             height="500"
             loading="eager"
+            decoding="async"
+            fetchPriority="high"
           />
           <div className="hero-float-card">
             <span className="hero-float-emoji">🤖</span>

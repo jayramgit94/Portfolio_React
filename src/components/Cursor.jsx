@@ -3,12 +3,12 @@ import { useEffect, useRef, useState } from "react";
 function Cursor() {
   const cursorRef = useRef(null);
   const trailRef = useRef(null);
-  const labelRef = useRef(null);
   const mouse = useRef({ x: 0, y: 0 });
   const pos = useRef({ x: 0, y: 0 });
   const trailPos = useRef({ x: 0, y: 0 });
   const [cursorState, setCursorState] = useState("default");
-  // default | hovering | card
+  const cursorStateRef = useRef("default");
+  // default | hovering
 
   useEffect(() => {
     if ("ontouchstart" in window) return;
@@ -19,21 +19,19 @@ function Cursor() {
     };
 
     const onMouseOver = (e) => {
-      const card = e.target.closest(".work-card");
       const clickable = e.target.closest(
         "a, button, [role='button'], .nav-logo",
       );
-      if (card) {
-        setCursorState("card");
-      } else if (clickable) {
-        setCursorState("hovering");
-      } else {
-        setCursorState("default");
+
+      const nextState = clickable ? "hovering" : "default";
+      if (nextState !== cursorStateRef.current) {
+        cursorStateRef.current = nextState;
+        setCursorState(nextState);
       }
     };
 
-    window.addEventListener("mousemove", onMouseMove);
-    window.addEventListener("mouseover", onMouseOver);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    window.addEventListener("mouseover", onMouseOver, { passive: true });
 
     let raf;
     const animate = () => {
@@ -70,11 +68,7 @@ function Cursor() {
       <div ref={trailRef} className="cursor-trail" />
 
       {/* Main cursor ring */}
-      <div ref={cursorRef} className={`custom-cursor ${cursorState}`}>
-        <span ref={labelRef} className="cursor-label">
-          View
-        </span>
-      </div>
+      <div ref={cursorRef} className={`custom-cursor ${cursorState}`} />
     </>
   );
 }

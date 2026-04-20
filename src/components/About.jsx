@@ -1,12 +1,11 @@
 import {
-  motion,
+  motion as Motion,
   useInView,
-  useMotionValue,
   useScroll,
   useSpring,
   useTransform,
 } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Cursor from "../components/Cursor";
 import Footer from "../components/Footer";
 import {
@@ -24,12 +23,18 @@ const springTransition = {
   mass: 0.8,
 };
 
-const gentleSpring = {
-  type: "spring",
-  damping: 40,
-  stiffness: 120,
-  mass: 1,
-};
+const dotBurstOffsets = [
+  { x: "8%", y: "18%", delay: "0ms" },
+  { x: "16%", y: "66%", delay: "35ms" },
+  { x: "24%", y: "38%", delay: "70ms" },
+  { x: "38%", y: "14%", delay: "105ms" },
+  { x: "46%", y: "72%", delay: "140ms" },
+  { x: "58%", y: "28%", delay: "175ms" },
+  { x: "68%", y: "60%", delay: "210ms" },
+  { x: "78%", y: "22%", delay: "245ms" },
+  { x: "86%", y: "52%", delay: "280ms" },
+  { x: "92%", y: "34%", delay: "315ms" },
+];
 
 function RevealSection({
   children,
@@ -48,7 +53,7 @@ function RevealSection({
   };
 
   return (
-    <motion.section
+    <Motion.section
       ref={ref}
       className={className}
       initial={{ opacity: 0, ...variants[direction] }}
@@ -57,28 +62,7 @@ function RevealSection({
       {...rest}
     >
       {children}
-    </motion.section>
-  );
-}
-
-/* ── Staggered card reveal ── */
-function StaggerItem({ children, index = 0, className = "" }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-30px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      className={className}
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        ...springTransition,
-        delay: index * 0.08,
-      }}
-    >
-      {children}
-    </motion.div>
+    </Motion.section>
   );
 }
 
@@ -90,13 +74,13 @@ function AboutDivider() {
   return (
     <div className="about-divider" ref={ref}>
       {/* left accent dots (outermost → innermost) */}
-      <motion.span
+      <Motion.span
         className="divider-dot"
         initial={{ scale: 0, opacity: 0 }}
         animate={inView ? { scale: 1, opacity: 0.4 } : {}}
         transition={{ delay: 0.65, duration: 0.35, ease: "easeOut" }}
       />
-      <motion.span
+      <Motion.span
         className="divider-dot divider-dot--mid"
         initial={{ scale: 0, opacity: 0 }}
         animate={inView ? { scale: 1, opacity: 0.55 } : {}}
@@ -104,7 +88,7 @@ function AboutDivider() {
       />
 
       {/* left line: grows from center outward */}
-      <motion.div
+      <Motion.div
         className="about-divider-line"
         style={{ transformOrigin: "right center" }}
         initial={{ scaleX: 0, opacity: 0 }}
@@ -113,7 +97,7 @@ function AboutDivider() {
       />
 
       {/* center diamond ornament */}
-      <motion.div
+      <Motion.div
         className="divider-ornament"
         initial={{ scale: 0, opacity: 0 }}
         animate={inView ? { scale: 1, opacity: 1 } : {}}
@@ -121,7 +105,7 @@ function AboutDivider() {
       />
 
       {/* right line: grows from center outward */}
-      <motion.div
+      <Motion.div
         className="about-divider-line"
         style={{ transformOrigin: "left center" }}
         initial={{ scaleX: 0, opacity: 0 }}
@@ -130,13 +114,13 @@ function AboutDivider() {
       />
 
       {/* right accent dots (innermost → outermost) */}
-      <motion.span
+      <Motion.span
         className="divider-dot divider-dot--mid"
         initial={{ scale: 0, opacity: 0 }}
         animate={inView ? { scale: 1, opacity: 0.55 } : {}}
         transition={{ delay: 0.5, duration: 0.35, ease: "easeOut" }}
       />
-      <motion.span
+      <Motion.span
         className="divider-dot"
         initial={{ scale: 0, opacity: 0 }}
         animate={inView ? { scale: 1, opacity: 0.4 } : {}}
@@ -149,57 +133,6 @@ function AboutDivider() {
   );
 }
 
-/* ── Gallery image with 3D tilt (signature interaction) ── */
-function GalleryImage({ src, alt, index }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const rawRotateX = useTransform(mouseY, [-0.5, 0.5], [6, -6]);
-  const rawRotateY = useTransform(mouseX, [-0.5, 0.5], [-6, 6]);
-  const rotateX = useSpring(rawRotateX, { damping: 20, stiffness: 150 });
-  const rotateY = useSpring(rawRotateY, { damping: 20, stiffness: 150 });
-
-  const handleMouseMove = (e) => {
-    if (isMobile) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      className="gallery-item"
-      style={isMobile ? {} : { rotateX, rotateY, transformPerspective: 600 }}
-      initial={{ opacity: 0, y: 24, scale: 0.97 }}
-      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ ...springTransition, delay: index * 0.1 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-    >
-      <img src={src} alt={alt} loading="lazy" />
-      <div className="gallery-overlay">
-        <span className="gallery-caption">{alt}</span>
-      </div>
-    </motion.div>
-  );
-}
-
 /* ── Scroll-linked intro section ── */
 /* (removed — replaced by unified timeline) */
 
@@ -209,7 +142,7 @@ function ScrollRevealP({ children, className = "" }) {
   const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
-    <motion.p
+    <Motion.p
       ref={ref}
       className={className}
       initial={{ opacity: 0, y: 16 }}
@@ -217,7 +150,7 @@ function ScrollRevealP({ children, className = "" }) {
       transition={{ ...springTransition, delay: 0.05 }}
     >
       {children}
-    </motion.p>
+    </Motion.p>
   );
 }
 
@@ -228,7 +161,7 @@ function TimelineNode() {
 
   return (
     <div className="tl-node" ref={ref}>
-      <motion.span
+      <Motion.span
         className={`tl-dot ${inView ? "tl-dot--active" : ""}`}
         initial={{ scale: 0.6, opacity: 0.4 }}
         animate={
@@ -238,7 +171,7 @@ function TimelineNode() {
       />
       {/* Expanding ring on activation */}
       {inView && (
-        <motion.span
+        <Motion.span
           className="tl-ring"
           initial={{ scale: 0.5, opacity: 0.6 }}
           animate={{ scale: 2.5, opacity: 0 }}
@@ -255,7 +188,7 @@ function ScrollRevealCard({ children, index = 0, className = "about-item" }) {
   const inView = useInView(ref, { once: true, margin: "-40px" });
 
   return (
-    <motion.div
+    <Motion.div
       ref={ref}
       className={className}
       initial={{ opacity: 0, y: 20 }}
@@ -263,63 +196,36 @@ function ScrollRevealCard({ children, index = 0, className = "about-item" }) {
       transition={{ ...springTransition, delay: index * 0.08 }}
     >
       {children}
-    </motion.div>
-  );
-}
-
-/* ── Confetti colors for hover burst ── */
-const BURST_COLORS = [
-  "#a78bfa",
-  "#818cf8",
-  "#34d399",
-  "#f472b6",
-  "#60a5fa",
-  "#fbbf24",
-  "#fb923c",
-  "#c084fc",
-];
-
-function BurstPiece({ x, y, color, delay: d, size, shape }) {
-  const fall = 400 + Math.random() * 500;
-  const drift = (Math.random() - 0.5) * 300;
-  return (
-    <motion.span
-      style={{
-        position: "fixed",
-        left: x,
-        top: y,
-        width: shape === "circle" ? size : size * 0.5,
-        height: shape === "circle" ? size : size * 2.5,
-        borderRadius: shape === "circle" ? "50%" : "2px",
-        backgroundColor: color,
-        pointerEvents: "none",
-        zIndex: 9999,
-      }}
-      initial={{ opacity: 1, scale: 0, y: 0, x: 0, rotate: 0 }}
-      animate={{
-        opacity: [1, 1, 0],
-        scale: [0, 1.2, 0.6],
-        y: fall,
-        x: drift,
-        rotate: Math.random() * 1080 - 540,
-      }}
-      transition={{
-        duration: 2.2 + Math.random() * 1.2,
-        delay: d,
-        ease: [0.2, 0.8, 0.4, 1],
-      }}
-    />
+    </Motion.div>
   );
 }
 
 export default function AboutPage() {
-  const flipCardRef = useRef(null);
   const heroRef = useRef(null);
-  const nativeRef = useRef(null);
-  const hoverTimer = useRef(null);
-  const hasBurst = useRef(false);
+  const photoWrapRef = useRef(null);
+  const photoMoveRafRef = useRef(0);
+  const photoMoveTargetRef = useRef({ x: 0, y: 0 });
+  const secretTimerRef = useRef(null);
+  const philosophyLoopRef = useRef(null);
+  const helperTimerRef = useRef(null);
+  const quoteTimerRef = useRef(null);
+  const signatureTimerRef = useRef(null);
+  const unlockHintShownRef = useRef(false);
+  const showTopRef = useRef(false);
+  const [isMobileAbout, setIsMobileAbout] = useState(false);
+  const [hasFinePointer, setHasFinePointer] = useState(false);
+  const [hasFinePointerDesktop, setHasFinePointerDesktop] = useState(false);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isSecretUnlocked, setIsSecretUnlocked] = useState(false);
+  const [showSecretMessage, setShowSecretMessage] = useState(false);
+  const [isPhotoInteractive, setIsPhotoInteractive] = useState(false);
+  const [geoLayoutIndex, setGeoLayoutIndex] = useState(0);
+  const [showDesignHelper, setShowDesignHelper] = useState(false);
+  const [showSecretQuote, setShowSecretQuote] = useState(false);
+  const [showSignatureStamp, setShowSignatureStamp] = useState(false);
+  const [dotBurstKey, setDotBurstKey] = useState(0);
   const [showTop, setShowTop] = useState(false);
-  const [burstPieces, setBurstPieces] = useState([]);
+  const [philosophyHeadlineIndex, setPhilosophyHeadlineIndex] = useState(0);
 
   /* ── Timeline (single continuous line from About Me → Certifications) ── */
   const timelineRef = useRef(null);
@@ -329,13 +235,16 @@ export default function AboutPage() {
   });
   const smoothTl = useSpring(tlProgress, { damping: 30, stiffness: 100 });
 
+  const philosophyHeadlines = [
+    "be an artist, not just an artisan",
+    "kalakaar bano, mistri nahi",
+  ];
+
   /* Hero parallax */
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
   });
-  const isMobileAbout =
-    typeof window !== "undefined" && window.innerWidth < 768;
   const heroImageY = useTransform(
     scrollYProgress,
     [0, 1],
@@ -347,147 +256,165 @@ export default function AboutPage() {
     [0, isMobileAbout ? -10 : -30],
   );
 
-  /* Cursor-following glow in hero (signature micro-interaction) */
-  const glowX = useMotionValue(0.5);
-  const glowY = useMotionValue(0.5);
-  const smoothGlowX = useSpring(glowX, { damping: 40, stiffness: 90 });
-  const smoothGlowY = useSpring(glowY, { damping: 40, stiffness: 90 });
-  const glowLeft = useTransform(smoothGlowX, (v) => `${v * 100}%`);
-  const glowTop = useTransform(smoothGlowY, (v) => `${v * 100}%`);
+  useEffect(() => {
+    const mobileMq = window.matchMedia("(max-width: 767px)");
+    const pointerAnyMq = window.matchMedia("(pointer: fine)");
+    const pointerMq = window.matchMedia("(min-width: 1025px) and (pointer: fine)");
+    const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  const handleHeroMouseMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    glowX.set((e.clientX - rect.left) / rect.width);
-    glowY.set((e.clientY - rect.top) / rect.height);
+    const syncMediaState = () => {
+      setIsMobileAbout(mobileMq.matches);
+      setHasFinePointer(pointerAnyMq.matches);
+      setHasFinePointerDesktop(pointerMq.matches);
+      setPrefersReducedMotion(motionMq.matches);
+    };
+
+    syncMediaState();
+    mobileMq.addEventListener("change", syncMediaState);
+    pointerAnyMq.addEventListener("change", syncMediaState);
+    pointerMq.addEventListener("change", syncMediaState);
+    motionMq.addEventListener("change", syncMediaState);
+
+    return () => {
+      mobileMq.removeEventListener("change", syncMediaState);
+      pointerAnyMq.removeEventListener("change", syncMediaState);
+      pointerMq.removeEventListener("change", syncMediaState);
+      motionMq.removeEventListener("change", syncMediaState);
+    };
+  }, []);
+
+  useEffect(() => {
+    philosophyLoopRef.current = window.setInterval(() => {
+      setPhilosophyHeadlineIndex((current) =>
+        current === philosophyHeadlines.length - 1 ? 0 : current + 1,
+      );
+    }, 4200);
+
+    return () => window.clearInterval(philosophyLoopRef.current);
+  }, [philosophyHeadlines.length]);
+
+  const clearSecretTimer = () => {
+    window.clearTimeout(secretTimerRef.current);
   };
 
-  useEffect(() => {
-    const isDesktop = window.matchMedia(
-      "(min-width: 1025px) and (pointer: fine)",
-    );
-    const flipCard = flipCardRef.current;
-    const aboutRoot = document.querySelector(".about");
-    const secretTrigger = document.querySelector(".about-secret-trigger");
-    const secretMessage = document.querySelector(".about-secret-message");
+  const handleSecretStart = () => {
+    if (!hasFinePointerDesktop) return;
+    clearSecretTimer();
+    setShowSecretMessage(false);
+    secretTimerRef.current = window.setTimeout(() => {
+      setShowSecretMessage(true);
+      setIsSecretUnlocked(true);
+    }, 2000);
+  };
 
-    let secretTimer;
+  const handleSecretEnd = () => {
+    clearSecretTimer();
+    setShowSecretMessage(false);
+  };
 
-    const handleSecretEnter = () => {
-      if (!isDesktop.matches) return;
-      window.clearTimeout(secretTimer);
-      secretTimer = window.setTimeout(() => {
-        secretMessage?.classList.add("show");
-        aboutRoot?.classList.add("easter-enabled");
-      }, 2000);
-    };
+  const handleSecretTouchFallback = () => {
+    if (hasFinePointerDesktop) return;
+    setIsSecretUnlocked(true);
+    setShowSecretMessage(true);
+    window.setTimeout(() => setShowSecretMessage(false), 2200);
+  };
 
-    const handleSecretLeave = () => {
-      window.clearTimeout(secretTimer);
-      secretMessage?.classList.remove("show");
-    };
+  const launchPhotoInteraction = () => {
+    if (!isSecretUnlocked) return;
 
-    const handleSecretFocus = () => {
-      if (!isDesktop.matches) return;
-      window.clearTimeout(secretTimer);
-      secretTimer = window.setTimeout(() => {
-        secretMessage?.classList.add("show");
-        aboutRoot?.classList.add("easter-enabled");
-      }, 2000);
-    };
+    setIsPhotoInteractive(true);
+    setGeoLayoutIndex((current) => {
+      const next = Math.floor(Math.random() * 3);
+      return next === current ? (next + 1) % 3 : next;
+    });
+    setShowSecretQuote(true);
+    setShowSignatureStamp(true);
+    setDotBurstKey((current) => current + 1);
 
-    const handleSecretBlur = () => {
-      window.clearTimeout(secretTimer);
-      secretMessage?.classList.remove("show");
-    };
-
-    const handleFlipClick = () => {
-      if (
-        !isDesktop.matches ||
-        !aboutRoot?.classList.contains("easter-enabled")
-      )
-        return;
-      flipCard?.classList.add("is-flipped");
-    };
-
-    const handleFlipLeave = () => {
-      flipCard?.classList.remove("is-flipped");
-    };
-
-    if (secretTrigger) {
-      secretTrigger.addEventListener("mouseenter", handleSecretEnter);
-      secretTrigger.addEventListener("mouseleave", handleSecretLeave);
-      secretTrigger.addEventListener("focus", handleSecretFocus);
-      secretTrigger.addEventListener("blur", handleSecretBlur);
+    if (!unlockHintShownRef.current) {
+      unlockHintShownRef.current = true;
+      setShowDesignHelper(true);
+      window.clearTimeout(helperTimerRef.current);
+      helperTimerRef.current = window.setTimeout(() => {
+        setShowDesignHelper(false);
+      }, 2600);
     }
 
-    if (flipCard) {
-      flipCard.addEventListener("click", handleFlipClick);
-      flipCard.addEventListener("mouseleave", handleFlipLeave);
+    window.clearTimeout(quoteTimerRef.current);
+    quoteTimerRef.current = window.setTimeout(() => {
+      setShowSecretQuote(false);
+    }, 2000);
+
+    window.clearTimeout(signatureTimerRef.current);
+    signatureTimerRef.current = window.setTimeout(() => {
+      setShowSignatureStamp(false);
+    }, 1800);
+  };
+
+  const endPhotoInteraction = () => {
+    setIsPhotoInteractive(false);
+
+    if (photoWrapRef.current) {
+      photoWrapRef.current.style.setProperty("--geo-shift-x", "0px");
+      photoWrapRef.current.style.setProperty("--geo-shift-y", "0px");
     }
+  };
 
-    return () => {
-      if (secretTrigger) {
-        secretTrigger.removeEventListener("mouseenter", handleSecretEnter);
-        secretTrigger.removeEventListener("mouseleave", handleSecretLeave);
-        secretTrigger.removeEventListener("focus", handleSecretFocus);
-        secretTrigger.removeEventListener("blur", handleSecretBlur);
+  const handlePhotoMove = (event) => {
+    if (!isSecretUnlocked) return;
+
+    const bounds = photoWrapRef.current?.getBoundingClientRect();
+    if (!bounds) return;
+
+    const offsetX = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const offsetY = (event.clientY - bounds.top) / bounds.height - 0.5;
+
+    photoMoveTargetRef.current = {
+      x: Number((offsetX * 18).toFixed(2)),
+      y: Number((offsetY * 14).toFixed(2)),
+    };
+
+    if (photoMoveRafRef.current) return;
+
+    photoMoveRafRef.current = window.requestAnimationFrame(() => {
+      const node = photoWrapRef.current;
+      if (node) {
+        node.style.setProperty(
+          "--geo-shift-x",
+          `${photoMoveTargetRef.current.x}px`,
+        );
+        node.style.setProperty(
+          "--geo-shift-y",
+          `${photoMoveTargetRef.current.y}px`,
+        );
       }
-      if (flipCard) {
-        flipCard.removeEventListener("click", handleFlipClick);
-        flipCard.removeEventListener("mouseleave", handleFlipLeave);
-      }
-    };
-  }, []);
-
-  /* ── 2-second hover confetti on Hindi name (full-page, once only) ── */
-  const triggerBurst = useCallback(() => {
-    if (hasBurst.current) return;
-    hasBurst.current = true;
-    const vw = window.innerWidth;
-    const shapes = ["circle", "rect"];
-    const newPieces = Array.from({ length: 80 }, (_, i) => ({
-      id: Date.now() + i,
-      x: Math.random() * vw,
-      y: -20 - Math.random() * 60,
-      color: BURST_COLORS[i % BURST_COLORS.length],
-      delay: Math.random() * 0.6,
-      size: 5 + Math.random() * 8,
-      shape: shapes[i % 2],
-    }));
-    setBurstPieces(newPieces);
-    setTimeout(() => setBurstPieces([]), 4000);
-  }, []);
-
-  useEffect(() => {
-    const el = nativeRef.current;
-    if (!el) return;
-    const onEnter = () => {
-      if (hasBurst.current) return;
-      hoverTimer.current = window.setTimeout(() => {
-        triggerBurst();
-        el.classList.remove("native-hovering");
-        el.classList.add("native-done");
-      }, 2000);
-      el.classList.add("native-hovering");
-    };
-    const onLeave = () => {
-      window.clearTimeout(hoverTimer.current);
-      if (!hasBurst.current) el.classList.remove("native-hovering");
-    };
-    el.addEventListener("mouseenter", onEnter);
-    el.addEventListener("mouseleave", onLeave);
-    return () => {
-      el.removeEventListener("mouseenter", onEnter);
-      el.removeEventListener("mouseleave", onLeave);
-      window.clearTimeout(hoverTimer.current);
-    };
-  }, [triggerBurst]);
+      photoMoveRafRef.current = 0;
+    });
+  };
 
   /* Scroll-to-top visibility */
   useEffect(() => {
-    const onScroll = () => setShowTop(window.scrollY > 400);
+    const onScroll = () => {
+      const nextShowTop = window.scrollY > 400;
+      if (nextShowTop !== showTopRef.current) {
+        showTopRef.current = nextShowTop;
+        setShowTop(nextShowTop);
+      }
+    };
+
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      clearSecretTimer();
+      window.clearTimeout(helperTimerRef.current);
+      window.clearTimeout(quoteTimerRef.current);
+      window.clearTimeout(signatureTimerRef.current);
+      window.cancelAnimationFrame(photoMoveRafRef.current);
+    };
   }, []);
 
   const handleScrollToTop = () => {
@@ -496,110 +423,145 @@ export default function AboutPage() {
 
   return (
     <>
-      <Cursor />
-      <SpotlightFollow />
+      {hasFinePointer && <Cursor />}
+      {hasFinePointer && !prefersReducedMotion && <SpotlightFollow />}
       <Navbar />
 
-      <main id="main-content" className="about">
-        <BreathingOrbs count={3} />
+      <main
+        id="main-content"
+        className={`about ${isSecretUnlocked ? "easter-enabled" : ""}`}
+      >
+        {!prefersReducedMotion && <BreathingOrbs count={3} />}
         {/* Noise texture overlay */}
         <div className="about-noise" aria-hidden="true" />
 
         {/* ═══ HERO ═══ */}
-        <section
-          className="about-hero"
-          ref={heroRef}
-          onMouseMove={handleHeroMouseMove}
-        >
-          {/* Animated mesh gradient background */}
-          <div className="hero-mesh" aria-hidden="true">
-            <div className="hero-mesh-orb hero-mesh-orb--1" />
-            <div className="hero-mesh-orb hero-mesh-orb--2" />
-            <div className="hero-mesh-orb hero-mesh-orb--3" />
-          </div>
-          {/* Dot grid overlay */}
-          <div className="hero-dotgrid" aria-hidden="true" />
-
-          {/* Cursor-following radial glow */}
-          <motion.div
-            className="about-hero-glow"
-            style={{ left: glowLeft, top: glowTop }}
-            aria-hidden="true"
-          />
-
-          <motion.div
-            className="about-hero-text"
+        <section className="about-hero about-hero-editorial" ref={heroRef}>
+          <Motion.div
+            className="about-editorial-copy-block"
             style={{ y: heroTextY }}
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ ...springTransition, delay: 0.1 }}
           >
-            <span className="about-role">AI + Full-Stack Developer</span>
-            <h1 className="about-name">
-              Jayram G <span className="about-name-accent">Sangawat</span>
-            </h1>
-            <h2 className="about-native" ref={nativeRef}>
-              &#2332;&#2351;&#2352;&#2366;&#2350;{" "}
-              &#2360;&#2306;&#2327;&#2366;&#2357;&#2340;
-            </h2>
-            <p className="about-pronunciation">/ Jay-raam San-ga-vat /</p>
-          </motion.div>
+            <h1 className="about-editorial-title">ABOUT</h1>
+            <span className="about-editorial-kicker">01 / THE DRIVE</span>
+            <span className="about-editorial-rule" aria-hidden="true" />
 
-          <motion.div
-            className="about-hero-images"
+            <p className="about-editorial-lead">
+              I&apos;ve spent 2+ years learning that craft isn&apos;t a shortcut
+              it&apos;s the path.
+            </p>
+
+            <p className="about-editorial-body">
+              I build for people who crave clarity without losing energy,
+              transforming complex ideas into clean, immersive product
+              experiences where every detail is intentional.
+            </p>
+          </Motion.div>
+
+          <Motion.div
+            className="about-editorial-media"
             style={{ y: heroImageY }}
-            initial={{ opacity: 0, scale: 0.92 }}
+            initial={{ opacity: 0, scale: 0.94 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ ...springTransition, delay: 0.25 }}
+            transition={{ ...springTransition, delay: 0.2 }}
           >
-            {/* Decorative geometric ornaments */}
-            <span className="deco deco-cross" aria-hidden="true" />
-            <span className="deco deco-ring" aria-hidden="true" />
-            <span className="deco deco-dot" aria-hidden="true" />
+            <div
+              ref={photoWrapRef}
+              className={`about-editorial-photo-wrap ${isSecretUnlocked ? "is-unlocked" : ""} ${isPhotoInteractive ? "is-live" : ""} geo-layout-${geoLayoutIndex}`}
+              onMouseEnter={launchPhotoInteraction}
+              onMouseLeave={endPhotoInteraction}
+              onMouseMove={handlePhotoMove}
+              onFocus={launchPhotoInteraction}
+              onBlur={endPhotoInteraction}
+            >
+              <span className="about-photo-aura" aria-hidden="true" />
+              <img
+                src="/profile.jpg"
+                alt="Jayram G Sangawat"
+                width="680"
+                height="860"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+                className="about-editorial-photo"
+              />
+              <span className="about-geo about-geo--ring" aria-hidden="true" />
+              <span className="about-geo about-geo--grid" aria-hidden="true" />
+              <span className="about-geo about-geo--triangle" aria-hidden="true" />
+              <span className="about-geo about-geo--line" aria-hidden="true" />
+              <svg
+                className="about-golden-arc"
+                viewBox="0 0 140 140"
+                aria-hidden="true"
+              >
+                <path d="M130 130 A60 60 0 1 1 70 10" />
+                <path d="M70 10 A36 36 0 1 0 106 46" />
+              </svg>
+              <span className="about-neon-trace" aria-hidden="true" />
 
-            <div className="about-image-main about-flip-card" ref={flipCardRef}>
-              <div className="about-image-glow" />
-              <div className="flip-inner">
-                <div className="flip-front">
-                  <img
-                    src="/profile.jpg"
-                    alt="Jayram G Sangawat"
-                    width="300"
-                    height="380"
-                    loading="eager"
-                  />
-                </div>
-                <div className="flip-back">
-                  <p>Hey there &#128075; Nice to meet you</p>
-                  <span>Thanks for stopping by.</span>
-                </div>
+              <div className="about-geo-points" aria-hidden="true">
+                <span className="geo-point geo-point--1" />
+                <span className="geo-point geo-point--2" />
+                <span className="geo-point geo-point--3" />
+                <span className="geo-point geo-point--4" />
               </div>
-            </div>
-          </motion.div>
-        </section>
 
-        {/* Confetti burst pieces (from 2s hover on Hindi name) */}
-        {burstPieces.length > 0 && (
-          <div
-            style={{
-              position: "fixed",
-              inset: 0,
-              pointerEvents: "none",
-              zIndex: 9999,
-            }}
-          >
-            {burstPieces.map((p) => (
-              <BurstPiece key={p.id} {...p} />
-            ))}
-          </div>
-        )}
+              <div className="about-figma-tags" aria-hidden="true">
+                <span className="figma-tag">Frame 01</span>
+                <span className="figma-tag">Grid</span>
+                <span className="figma-tag">Vector</span>
+              </div>
+
+              <span className="about-design-chip" aria-hidden="true">
+                Design mode: ON
+              </span>
+              <span className={`about-design-helper ${showDesignHelper ? "show" : ""}`}>
+                Try moving cursor around the photo.
+              </span>
+              <span className={`about-secret-quote ${showSecretQuote ? "show" : ""}`}>
+                <a
+                  href="https://www.instagram.com/jayrams_.23/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="about-secret-quote-link"
+                >
+                  @jayrams_.23
+                </a>
+              </span>
+              <span className={`about-signature-stamp ${showSignatureStamp ? "show" : ""}`}>
+                #CraftedBy Jay
+              </span>
+
+              <div key={dotBurstKey} className="about-dot-burst" aria-hidden="true">
+                {dotBurstOffsets.map((dot, index) => (
+                  <span
+                    key={`${dot.x}-${dot.y}`}
+                    className="burst-dot"
+                    style={{
+                      "--dot-x": dot.x,
+                      "--dot-y": dot.y,
+                      "--dot-delay": dot.delay,
+                      "--dot-seed": `${(index % 3) + 1}`,
+                    }}
+                  />
+                ))}
+              </div>
+
+              <span className="about-editorial-rail" aria-hidden="true">
+                PROFILE
+              </span>
+            </div>
+          </Motion.div>
+        </section>
 
         <AboutDivider />
 
         {/* ═══ UNIFIED TIMELINE: About Me → Certifications ═══ */}
         <div className="about-timeline" ref={timelineRef}>
           {/* Single continuous progress line */}
-          <motion.div className="tl-line" style={{ scaleY: smoothTl }} />
+          <Motion.div className="tl-line" style={{ scaleY: smoothTl }} />
 
           {/* ── About Me ── */}
           <div className="tl-section">
@@ -609,7 +571,7 @@ export default function AboutPage() {
               <ScrollRevealP className="intro-lead">
                 I&rsquo;m a{" "}
                 <span className="text-highlight">
-                  Computer Science student with an 8.20 CGPA
+                  Computer Science student with an 8.39 CGPA
                 </span>{" "}
                 at JD College of Engineering, Nagpur &mdash; passionate about
                 building real-world software from problem solving to deployment.
@@ -637,15 +599,19 @@ export default function AboutPage() {
               </ScrollRevealP>
 
               <ScrollRevealP className="about-easter">
-                <span
+                <button
+                  type="button"
                   className="about-secret-trigger"
-                  tabIndex={0}
-                  role="button"
-                  aria-label="Hover or focus here for 2 seconds to reveal a hint"
+                  aria-label="Reveal photo card hint"
+                  onMouseEnter={handleSecretStart}
+                  onMouseLeave={handleSecretEnd}
+                  onFocus={handleSecretStart}
+                  onBlur={handleSecretEnd}
+                  onClick={handleSecretTouchFallback}
                 >
-                  Hover here for 2 seconds&hellip;
-                </span>
-                <span className="about-secret-message">
+                  Hover or focus for 2 seconds&hellip;
+                </button>
+                <span className={`about-secret-message ${showSecretMessage ? "show" : ""}`}>
                   Go up and hover (or click) on the profile photo &#128064;
                 </span>
               </ScrollRevealP>
@@ -684,6 +650,54 @@ export default function AboutPage() {
             </div>
           </div>
 
+          {/* ── Hobbies ── */}
+          <div className="tl-section">
+            <TimelineNode />
+            <h2 className="tl-head">Hobbies</h2>
+            <div className="tl-content">
+              <ScrollRevealCard index={0}>
+                <div className="item-header">
+                  <strong>Photography</strong>
+                  <span className="item-badge">Visual storytelling</span>
+                </div>
+                <p>
+                  Capturing light, textures, and everyday moments with a focus
+                  on clean frames and strong composition.
+                </p>
+              </ScrollRevealCard>
+              <ScrollRevealCard index={1}>
+                <div className="item-header">
+                  <strong>Book Reading</strong>
+                  <span className="item-badge">Quiet focus</span>
+                </div>
+                <p>
+                  Reading to explore new ideas, sharpen perspective, and stay
+                  curious beyond screens and code.
+                </p>
+              </ScrollRevealCard>
+              <ScrollRevealCard index={2}>
+                <div className="item-header">
+                  <strong>Hiking</strong>
+                  <span className="item-badge">Nature reset</span>
+                </div>
+                <p>
+                  Getting out on trails for movement, fresh air, and the kind
+                  of calm that only comes from long walks outdoors.
+                </p>
+              </ScrollRevealCard>
+              <ScrollRevealCard index={3}>
+                <div className="item-header">
+                  <strong>Travel</strong>
+                  <span className="item-badge">Always exploring</span>
+                </div>
+                <p>
+                  Wandering new places, meeting people, and collecting small
+                  experiences that keep life interesting.
+                </p>
+              </ScrollRevealCard>
+            </div>
+          </div>
+
           {/* ── Hackathons ── */}
           <div className="tl-section">
             <TimelineNode />
@@ -710,37 +724,6 @@ export default function AboutPage() {
                   delivering a complete working solution from ideation to demo.
                 </p>
               </ScrollRevealCard>
-              <ScrollRevealCard index={2}>
-                <div className="item-header">
-                  <strong>SB Jain Hackathon</strong>
-                  <span className="item-badge">Team Collaboration</span>
-                </div>
-                <p>
-                  Participated as part of a team, contributing to rapid
-                  prototyping and collaborative problem-solving in a competitive
-                  environment.
-                </p>
-              </ScrollRevealCard>
-            </div>
-          </div>
-
-          {/* ── Values ── */}
-          <div className="tl-section">
-            <TimelineNode />
-            <h2 className="tl-head">Values</h2>
-            <div className="tl-content">
-              <ScrollRevealCard index={0}>
-                <div className="item-header">
-                  <strong>Ship first, polish later</strong>
-                  <span className="item-badge">Builder mindset</span>
-                </div>
-                <p>
-                  Every project I&rsquo;ve built started as a rough prototype
-                  that I iterated on until it worked reliably. I&rsquo;d rather
-                  deploy something useful today than plan a perfect system that
-                  never ships.
-                </p>
-              </ScrollRevealCard>
             </div>
           </div>
 
@@ -751,38 +734,34 @@ export default function AboutPage() {
             <div className="tl-content">
               <ScrollRevealCard index={0}>
                 <div className="item-header">
+                  <strong>10th Standard</strong>
+                  <span className="item-badge">Sardar G G High School</span>
+                </div>
+                <p>
+                  Sardar G G High School and Jr College, Raver, Jalgaon.
+                </p>
+              </ScrollRevealCard>
+              <ScrollRevealCard index={1}>
+                <div className="item-header">
+                  <strong>12th Standard</strong>
+                  <span className="item-badge">Sardar G G Jr College</span>
+                </div>
+                <p>
+                  Sardar G G High School and Jr College, Raver, Jalgaon.
+                </p>
+              </ScrollRevealCard>
+              <ScrollRevealCard index={2}>
+                <div className="item-header">
                   <strong>B.Tech &mdash; Computer Science Engineering</strong>
                   <span className="item-badge">2023 &mdash; 2027</span>
                 </div>
                 <p>
                   JD College of Engineering and Management, Nagpur. Currently in
-                  6th semester with an <strong>8.20 CGPA</strong>. Studying core
+                  6th semester with an <strong>8.39 CGPA</strong>. Studying core
                   computer science subjects while actively building projects in
                   web development, backend systems, AI, and machine learning.
                 </p>
               </ScrollRevealCard>
-            </div>
-          </div>
-
-          {/* ── Certifications (last timeline section) ── */}
-          <div className="tl-section tl-section--last">
-            <TimelineNode />
-            <h2 className="tl-head">Certifications</h2>
-            <div className="tl-content">
-              {[
-                { name: "React.js", platform: "GeeksforGeeks" },
-                { name: "JavaScript", platform: "GeeksforGeeks" },
-                { name: "C++ Programming", platform: "GeeksforGeeks" },
-                { name: "Soft Skills Development", platform: "GeeksforGeeks" },
-                { name: "Python Programming", platform: "Coursera" },
-              ].map((cert, i) => (
-                <ScrollRevealCard key={cert.name} index={i}>
-                  <div className="item-header">
-                    <strong>{cert.name}</strong>
-                    <span className="item-badge">{cert.platform}</span>
-                  </div>
-                </ScrollRevealCard>
-              ))}
             </div>
           </div>
 
@@ -794,230 +773,81 @@ export default function AboutPage() {
 
         <AboutDivider />
 
-        {/* ═══ PHILOSOPHY (outside timeline) ═══ */}
-        <RevealSection className="about-philosophy">
-          {/* Abstract organic line art decoration */}
-          <div className="abstract-lines" aria-hidden="true">
-            <svg
-              viewBox="0 0 800 300"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="abstract-lines-svg"
-            >
-              {/* Flowing curve 1 - large sweep */}
-              <path
-                d="M-50 180 C100 80, 250 220, 400 140 S650 60, 850 160"
-                stroke="url(#line-grad-1)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-              {/* Flowing curve 2 - parallel offset */}
-              <path
-                d="M-30 200 C120 100, 270 240, 420 160 S670 80, 870 180"
-                stroke="url(#line-grad-2)"
-                strokeWidth="1"
-                strokeLinecap="round"
-                opacity="0.5"
-              />
-              {/* Flowing curve 3 - counter flow */}
-              <path
-                d="M-40 80 C80 180, 200 40, 380 120 S600 220, 850 100"
-                stroke="url(#line-grad-3)"
-                strokeWidth="1"
-                strokeLinecap="round"
-                opacity="0.35"
-              />
-              {/* Small accent circles */}
-              <circle
-                cx="200"
-                cy="140"
-                r="3"
-                fill="url(#dot-grad)"
-                opacity="0.4"
-              />
-              <circle
-                cx="400"
-                cy="145"
-                r="2"
-                fill="url(#dot-grad)"
-                opacity="0.3"
-              />
-              <circle
-                cx="580"
-                cy="120"
-                r="4"
-                fill="url(#dot-grad)"
-                opacity="0.25"
-              />
-              <circle
-                cx="650"
-                cy="155"
-                r="2.5"
-                fill="url(#dot-grad)"
-                opacity="0.35"
-              />
-              <circle
-                cx="150"
-                cy="170"
-                r="2"
-                fill="url(#dot-grad)"
-                opacity="0.3"
-              />
-              {/* Ring accents */}
-              <circle
-                cx="300"
-                cy="110"
-                r="8"
-                stroke="url(#line-grad-1)"
-                strokeWidth="0.8"
-                fill="none"
-                opacity="0.2"
-              />
-              <circle
-                cx="550"
-                cy="170"
-                r="6"
-                stroke="url(#line-grad-2)"
-                strokeWidth="0.8"
-                fill="none"
-                opacity="0.15"
-              />
-              <defs>
-                <linearGradient
-                  id="line-grad-1"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="0%"
-                >
-                  <stop
-                    offset="0%"
-                    stopColor="var(--color-primary)"
-                    stopOpacity="0"
-                  />
-                  <stop
-                    offset="30%"
-                    stopColor="var(--color-primary)"
-                    stopOpacity="0.4"
-                  />
-                  <stop
-                    offset="70%"
-                    stopColor="var(--color-accent)"
-                    stopOpacity="0.3"
-                  />
-                  <stop
-                    offset="100%"
-                    stopColor="var(--color-accent)"
-                    stopOpacity="0"
-                  />
-                </linearGradient>
-                <linearGradient
-                  id="line-grad-2"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="0%"
-                >
-                  <stop
-                    offset="0%"
-                    stopColor="var(--color-accent)"
-                    stopOpacity="0"
-                  />
-                  <stop
-                    offset="40%"
-                    stopColor="var(--color-accent)"
-                    stopOpacity="0.3"
-                  />
-                  <stop
-                    offset="60%"
-                    stopColor="var(--color-primary)"
-                    stopOpacity="0.25"
-                  />
-                  <stop
-                    offset="100%"
-                    stopColor="var(--color-primary)"
-                    stopOpacity="0"
-                  />
-                </linearGradient>
-                <linearGradient
-                  id="line-grad-3"
-                  x1="0%"
-                  y1="0%"
-                  x2="100%"
-                  y2="0%"
-                >
-                  <stop
-                    offset="0%"
-                    stopColor="var(--color-primary)"
-                    stopOpacity="0"
-                  />
-                  <stop
-                    offset="50%"
-                    stopColor="var(--color-primary)"
-                    stopOpacity="0.2"
-                  />
-                  <stop
-                    offset="100%"
-                    stopColor="var(--color-accent)"
-                    stopOpacity="0"
-                  />
-                </linearGradient>
-                <radialGradient id="dot-grad">
-                  <stop offset="0%" stopColor="var(--color-primary)" />
-                  <stop offset="100%" stopColor="var(--color-accent)" />
-                </radialGradient>
-              </defs>
-            </svg>
+        {/* ═══ PHILOSOPHY (Reference-inspired) ═══ */}
+        <RevealSection className="about-philosophy about-philosophy-paper">
+          <div className="about-paper-inner">
+            <h3 className="about-paper-title" aria-live="polite">
+              <span key={philosophyHeadlineIndex} className="about-paper-title-swap">
+                &ldquo;
+                {philosophyHeadlines[philosophyHeadlineIndex]}
+                &rdquo;
+              </span>
+            </h3>
+
+            <div className="about-paper-content">
+              <div className="about-paper-col about-paper-col--left">
+                <p>
+                  I stay curious- roz thoda aur samajhne ka, then I carry that
+                  into whatever I build.
+                </p>
+                <p>
+                  I design and build with clarity and intent. First-principles
+                  first, no extra noise.
+                </p>
+              </div>
+              <div className="about-paper-col">
+                <p>
+                  Started with DSA and core CS- algorithms, patterns,
+                  optimization. Solid, but incomplete.
+                </p>
+                <p>
+                  At some point it clicked: solving problems ≠ building
+                  something useful.
+                </p>
+                <p>
+                  So I moved toward full-stack, AI/ML, and product thinking-
+                  jahan logic meets real users, and decisions actually matter.
+                </p>
+              </div>
+            </div>
+
+            <span className="about-paper-sticker" aria-hidden="true">
+              🐾
+            </span>
           </div>
-          <h3 className="standalone-label">Philosophy</h3>
-          <blockquote className="philosophy-quote">
-            <span className="philosophy-ornament-top" aria-hidden="true" />
-            <span className="philosophy-mark">&ldquo;</span>
-            <p>
-              I don&rsquo;t chase trends. I build things that work, feel right,
-              and matter to the people using them.
-            </p>
-            <footer className="philosophy-attr">
-              &mdash; Jayram G Sangawat
-            </footer>
-            <span className="philosophy-ornament-bottom" aria-hidden="true" />
-          </blockquote>
         </RevealSection>
 
         <AboutDivider />
 
-        {/* ═══ IMAGE GALLERY (outside timeline) ═══ */}
-        <RevealSection className="about-gallery-section">
+        {/* ═══ MOMENTS (Reference-inspired strip) ═══ */}
+        <RevealSection className="about-gallery-section about-moments-strip-wrap">
           <h3 className="standalone-label">Moments</h3>
-          <div className="gallery-grid">
-            <GalleryImage src="/profile.jpg" alt="That's me" index={0} />
-            <GalleryImage
-              src="/me.png"
-              alt="Where the code happens"
-              index={1}
-            />
-            <GalleryImage
-              src="/me-2.png"
-              alt="Team hackathon session"
-              index={2}
-            />
+          <div className="about-moments-strip" role="list" aria-label="Moments gallery">
+            {[
+              "/1776693758594.webp",
+              "/1776693865068.webp",
+              "/1776693963360.webp",
+              "/1776694103030.webp",
+              "/1776694210562.webp",
+              "/1776694474046.webp",
+            ].map((src, index) => (
+              <Motion.figure
+                key={src}
+                className="moment-card"
+                role="listitem"
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.45, delay: index * 0.05 }}
+              >
+                <img src={src} alt={`Moment ${index + 1}`} loading="lazy" />
+              </Motion.figure>
+            ))}
           </div>
         </RevealSection>
       </main>
 
-      <motion.button
-        type="button"
-        className="fab"
-        aria-label="Quick contact"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        transition={{ type: "spring", damping: 15, stiffness: 400 }}
-        onClick={() => window.open("mailto:sangawatjayram@gmail.com")}
-      >
-        &#9993;&#65039;
-      </motion.button>
-
-      <motion.button
+      <Motion.button
         type="button"
         className={`to-top ${showTop ? "show" : ""}`}
         onClick={handleScrollToTop}
@@ -1026,9 +856,9 @@ export default function AboutPage() {
         whileTap={{ scale: 0.9 }}
       >
         &uarr;
-      </motion.button>
+      </Motion.button>
 
-      <Footer />
+      <Footer className="footer-about" showNote={false} />
     </>
   );
 }

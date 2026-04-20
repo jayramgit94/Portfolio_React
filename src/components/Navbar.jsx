@@ -8,6 +8,9 @@ function Navbar() {
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
   const lastScrollY = useRef(0);
+  const scrollRafRef = useRef(0);
+  const scrolledRef = useRef(false);
+  const hiddenRef = useRef(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -41,13 +44,34 @@ function Navbar() {
 
   useEffect(() => {
     const onScroll = () => {
-      const currentY = window.scrollY;
-      setScrolled(currentY > 40);
-      setHidden(currentY > 300 && currentY > lastScrollY.current);
-      lastScrollY.current = currentY;
+      if (scrollRafRef.current) return;
+
+      scrollRafRef.current = window.requestAnimationFrame(() => {
+        const currentY = window.scrollY;
+        const nextScrolled = currentY > 40;
+        const nextHidden = currentY > 300 && currentY > lastScrollY.current;
+
+        if (nextScrolled !== scrolledRef.current) {
+          scrolledRef.current = nextScrolled;
+          setScrolled(nextScrolled);
+        }
+
+        if (nextHidden !== hiddenRef.current) {
+          hiddenRef.current = nextHidden;
+          setHidden(nextHidden);
+        }
+
+        lastScrollY.current = currentY;
+        scrollRafRef.current = 0;
+      });
     };
+
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.cancelAnimationFrame(scrollRafRef.current);
+    };
   }, []);
 
   // Close mobile menu on route change
@@ -59,6 +83,7 @@ function Navbar() {
     "navbar-glass",
     scrolled ? "scrolled" : "",
     hidden ? "hidden-nav" : "",
+    location.pathname === "/about" ? "nav-on-about" : "",
   ]
     .filter(Boolean)
     .join(" ");
@@ -101,12 +126,25 @@ function Navbar() {
             </div>
           </div>
 
-          {/* DESKTOP LINKS */}
+          {/* DESKTOP LINKS
+          <div className="nav-center" aria-live="polite">
+            Maharashtra, IN - {liveTime}
+          </div> */}
+
           <div className="nav-desktop">
-            <Link to="/#work" onClick={handleProjectsClick}>
+            <Link
+              to="/#work"
+              onClick={handleProjectsClick}
+              className={location.pathname === "/" ? "active" : ""}
+            >
               Projects
             </Link>
-            <Link to="/about">About</Link>
+            <Link
+              to="/about"
+              className={location.pathname === "/about" ? "active" : ""}
+            >
+              About
+            </Link>
             <a href="#contact" onClick={handleContactClick}>
               Contact
             </a>

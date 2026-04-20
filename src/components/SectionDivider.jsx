@@ -1,12 +1,12 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
-function SectionDivider() {
+function SectionDivider({ className = "" }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-20px" });
 
   return (
-    <div className="section-divider" ref={ref}>
+    <div className={`section-divider ${className}`.trim()} ref={ref}>
       <motion.div
         className="divider-line"
         initial={{ scaleX: 0 }}

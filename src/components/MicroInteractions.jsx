@@ -302,14 +302,27 @@ export function SpotlightFollow({ className = "" }) {
   const y = useMotionValue(0);
   const smoothX = useSpring(x, { damping: 30, stiffness: 150 });
   const smoothY = useSpring(y, { damping: 30, stiffness: 150 });
+  const rafRef = useRef(0);
+  const targetRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMove = (e) => {
-      x.set(e.clientX);
-      y.set(e.clientY);
+      targetRef.current.x = e.clientX;
+      targetRef.current.y = e.clientY;
+
+      if (rafRef.current) return;
+      rafRef.current = window.requestAnimationFrame(() => {
+        x.set(targetRef.current.x);
+        y.set(targetRef.current.y);
+        rafRef.current = 0;
+      });
     };
-    window.addEventListener("mousemove", handleMove);
-    return () => window.removeEventListener("mousemove", handleMove);
+
+    window.addEventListener("mousemove", handleMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", handleMove);
+      window.cancelAnimationFrame(rafRef.current);
+    };
   }, [x, y]);
 
   return (

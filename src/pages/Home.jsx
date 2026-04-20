@@ -1,81 +1,95 @@
-import { AnimatePresence, motion, useInView } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion as Motion, useInView } from "framer-motion";
+import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
 import Cursor from "../components/Cursor";
-import Footer from "../components/Footer";
 import Hero from "../components/Hero";
 import MagneticButton from "../components/MagneticButton";
 import {
-  AuroraStrips,
   ConfettiBurst,
   CountUp,
-  FloatingIcons,
   MorphingBlob,
   SpotlightFollow,
   TextScramble,
 } from "../components/MicroInteractions";
+import {
+  SiCplusplus,
+  SiCoursera,
+  SiCss,
+  SiGeeksforgeeks,
+  SiGit,
+  SiGithub,
+  SiHtml5,
+  SiJavascript,
+  SiMongodb,
+  SiNodedotjs,
+  SiPython,
+  SiReact,
+} from "react-icons/si";
 import Navbar from "../components/Navbar";
 import SectionDivider from "../components/SectionDivider";
-import Work from "../components/Work";
+import certifications from "../data/certifications";
 import "../styles/global.css";
+
+const Footer = lazy(() => import("../components/Footer"));
+const Work = lazy(() => import("../components/Work"));
 
 const tools = [
   {
     name: "C++",
-    icon: "C++",
+    Icon: SiCplusplus,
     info: "Core logic & problem solving",
     color: "cpp",
   },
   {
     name: "Python",
-    icon: "Py",
+    Icon: SiPython,
     info: "AI, ML & automation",
     color: "python",
   },
   {
     name: "JavaScript",
-    icon: "JS",
+    Icon: SiJavascript,
     info: "Logic, interactivity, state",
     color: "js",
   },
   {
     name: "HTML",
-    icon: "\u2318",
+    Icon: SiHtml5,
     info: "Semantic structure & accessibility",
     color: "html",
   },
   {
     name: "CSS",
-    icon: "\u2726",
+    Icon: SiCss,
     info: "Layouts, motion, visual polish",
     color: "css",
   },
   {
     name: "React",
-    icon: "\u269B",
+    Icon: SiReact,
     info: "Component systems & UI logic",
     color: "react",
   },
   {
     name: "Node.js",
-    icon: "N",
+    Icon: SiNodedotjs,
     info: "Backend APIs & server logic",
-    color: "github",
+    color: "node",
   },
   {
     name: "MongoDB",
-    icon: "\uD83C\uDF43",
+    Icon: SiMongodb,
     info: "NoSQL database & data modeling",
-    color: "python",
+    color: "mongodb",
   },
   {
     name: "Git",
-    icon: "\u23C7",
+    Icon: SiGit,
     info: "Version control & collaboration",
     color: "git",
   },
   {
     name: "GitHub",
-    icon: "\uD83D\uDCBB",
+    Icon: SiGithub,
     info: "Code hosting & CI/CD",
     color: "github",
   },
@@ -84,40 +98,35 @@ const tools = [
 function ToolkitCard({ tool, index }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
+  const IconComponent = tool.Icon;
 
   return (
-    <motion.div
+    <Motion.div
       ref={ref}
-      className={`toolkit-card ${tool.color}`}
+      className={`toolkit-ref-card ${tool.color}`}
       initial={{ opacity: 0, y: 16 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      whileHover={{ scaleX: 1.03, scaleY: 0.97 }}
+      whileHover={{ y: -6 }}
       transition={{
         duration: 0.4,
         delay: index * 0.04,
         ease: [0.16, 1, 0.3, 1],
       }}
     >
-      <div className="toolkit-icon">{tool.icon}</div>
-      <span className="toolkit-name">{tool.name}</span>
-      <span className="toolkit-info">{tool.info}</span>
-    </motion.div>
+      <div className="toolkit-ref-icon-wrap" aria-hidden="true">
+        <IconComponent className="toolkit-ref-icon" />
+      </div>
+      <span className="toolkit-ref-name">{tool.name}</span>
+      <span className="toolkit-ref-info">{tool.info}</span>
+    </Motion.div>
   );
 }
 
 const stats = [
-  { number: "5", label: "Live Deployed Projects" },
-  { number: "8.20", label: "CGPA" },
+  { number: "5+", label: "Live Deployed Projects" },
+  { number: "8.39", label: "CGPA" },
   { number: "150+", label: "DSA Problems Solved" },
-  { number: "3+", label: "Years Building" },
-];
-
-const certifications = [
-  { name: "React.js", platform: "GeeksforGeeks" },
-  { name: "JavaScript", platform: "GeeksforGeeks" },
-  { name: "C++ Programming", platform: "GeeksforGeeks" },
-  { name: "Soft Skills Development", platform: "GeeksforGeeks" },
-  { name: "Python Programming", platform: "Coursera" },
+  { number: "2+", label: "Years Building" },
 ];
 
 function StatsRow() {
@@ -127,17 +136,17 @@ function StatsRow() {
   return (
     <section className="impact-section" ref={ref}>
       <div className="impact-inner">
-        <motion.span
+        <Motion.span
           className="section-label impact-label"
           initial={{ opacity: 0, y: 12 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5 }}
         >
           <TextScramble text="By the Numbers" />
-        </motion.span>
+        </Motion.span>
         <div className="impact-grid">
           {stats.map((stat, i) => (
-            <motion.div
+            <Motion.div
               key={stat.label}
               className="impact-card"
               initial={{ opacity: 0, y: 24 }}
@@ -150,7 +159,7 @@ function StatsRow() {
             >
               <CountUp value={stat.number} className="impact-number" />
               <span className="impact-desc">{stat.label}</span>
-            </motion.div>
+            </Motion.div>
           ))}
         </div>
       </div>
@@ -164,78 +173,84 @@ function Contact({ ctaBtnRef }) {
 
   return (
     <section id="contact" className="cta-section" ref={ref}>
-      <motion.div
+      <Motion.div
         className="cta-box"
         initial={{ opacity: 0, y: 40 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
       >
-        <AuroraStrips />
-        <div className="cta-grid-overlay" />
-        <div className="cta-content">
-          <h2 className="cta-headline">
-            GET IN <TextScramble text="TOUCH" className="cta-accent" />
-          </h2>
-          <p className="cta-sub">
-            Looking for a developer who ships real projects? Let&rsquo;s talk
-            about internships, freelance work, or open-source collaboration.
-          </p>
-          <div className="cta-contact-info">
-            <a href="tel:+919421438043">+91 9421438043</a>
-            <span className="cta-info-sep">&middot;</span>
-            <a href="mailto:sangawatjayram@gmail.com">
-              sangawatjayram@gmail.com
-            </a>
-          </div>
-          <div className="cta-links">
-            <div ref={ctaBtnRef} style={{ display: "inline-flex" }}>
-              <MagneticButton
-                href="mailto:sangawatjayram@gmail.com"
-                className="btn btn-primary"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="2" y="4" width="20" height="16" rx="2" />
-                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                </svg>
-                Say Hello
-              </MagneticButton>
+        <div className="cta-layout">
+          <div className="cta-content">
+            <h2 className="cta-headline">
+              How I can help <em>you?</em>
+            </h2>
+
+            <div className="cta-services">
+              <article className="cta-service">
+                <h3 className="cta-service-title">Hire me?</h3>
+                <p className="cta-sub">
+                  Need a <strong>modern, high-converting</strong> website or app? I build clean, fast, and production-ready products.
+                </p>
+              </article>
+
+              <article className="cta-service">
+                <h3 className="cta-service-title">AI + Full-Stack Projects</h3>
+                <p className="cta-sub">
+                  Let&apos;s build <strong>React, Node, and Python-based</strong> solutions with strong APIs and polished UX.
+                </p>
+              </article>
             </div>
-            <MagneticButton
-              href="https://github.com/jayramgit94"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-outline-light"
-            >
-              GitHub
-            </MagneticButton>
-            <MagneticButton
-              href="https://www.linkedin.com/in/jayram-s-6b1865293/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-outline-light"
-            >
-              LinkedIn
-            </MagneticButton>
-            <MagneticButton
-              href="https://leetcode.com/u/jayramleet94/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-outline-light"
-            >
-              LeetCode
-            </MagneticButton>
+
+            <div className="cta-action-row">
+              <div ref={ctaBtnRef} className="cta-action-wrap">
+                <MagneticButton
+                  href="mailto:sangawatjayram@gmail.com"
+                  className="cta-connect-btn"
+                >
+                 LET’S TALK.    
+                  <span aria-hidden="true" className="cta-arrow">
+                    -&gt;
+                  </span>
+                </MagneticButton>
+              </div>
+            </div>
+
+            <div className="cta-quick-links">
+              <a
+                href="https://github.com/jayramgit94"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub
+              </a>
+              <a
+                href="https://www.linkedin.com/in/jayram-s-6b1865293/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://leetcode.com/u/jayramleet94/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                LeetCode
+              </a>
+              <a href="mailto:sangawatjayram@gmail.com">Email</a>
+            </div>
+          </div>
+
+          <div className="cta-media">
+            <img
+              src="/contact_sec_img.avif"
+              alt="Contact section visual"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         </div>
-      </motion.div>
+      </Motion.div>
     </section>
   );
 }
@@ -260,7 +275,7 @@ function RevealSection({ children, className = "", delay = 0 }) {
   const inView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <motion.div
+    <Motion.div
       ref={ref}
       className={className}
       initial={{ opacity: 0, y: 24 }}
@@ -272,12 +287,24 @@ function RevealSection({ children, className = "", delay = 0 }) {
       }}
     >
       {children}
-    </motion.div>
+    </Motion.div>
+  );
+}
+
+function DeferredMount({ children, minHeight = 320, margin = "320px" }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin });
+
+  return (
+    <div ref={ref} style={inView ? undefined : { minHeight }}>
+      {inView ? children : null}
+    </div>
   );
 }
 
 function Home() {
   const [easterEgg, setEasterEgg] = useState(false);
+  const [enableFancyEffects, setEnableFancyEffects] = useState(false);
   const konamiIndex = useRef(0);
 
   const handleKonami = useCallback((e) => {
@@ -294,132 +321,142 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    window.addEventListener("keydown", handleKonami);
+    window.addEventListener("keydown", handleKonami, { passive: true });
     return () => window.removeEventListener("keydown", handleKonami);
   }, [handleKonami]);
 
+  useEffect(() => {
+    const pointerMq = window.matchMedia("(pointer: fine)");
+    const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const sync = () => {
+      setEnableFancyEffects(pointerMq.matches && !motionMq.matches);
+    };
+
+    sync();
+    pointerMq.addEventListener("change", sync);
+    motionMq.addEventListener("change", sync);
+
+    return () => {
+      pointerMq.removeEventListener("change", sync);
+      motionMq.removeEventListener("change", sync);
+    };
+  }, []);
+
   const ctaBtnRef = useRef(null);
+  const certPlatformIcons = {
+    gfg: SiGeeksforgeeks,
+    coursera: SiCoursera,
+    nptel: SiPython,
+  };
 
   return (
     <>
-      <Cursor />
-      <SpotlightFollow />
-      <ConfettiBurst triggerRef={ctaBtnRef} />
+      {enableFancyEffects && <Cursor />}
+      {enableFancyEffects && <SpotlightFollow />}
+      {enableFancyEffects && <ConfettiBurst triggerRef={ctaBtnRef} />}
       <Navbar />
       <main id="main-content">
         <Hero />
-        <MorphingBlob className="home-blob" />
+        {enableFancyEffects && <MorphingBlob className="home-blob" />}
 
-        <SectionDivider />
-
-        <Work />
-
-        <SectionDivider />
+        <DeferredMount minHeight={780} margin="260px">
+          <SectionDivider className="section-divider--landing-project" />
+          <Suspense fallback={null}>
+            <Work />
+          </Suspense>
+          <SectionDivider />
+        </DeferredMount>
 
         {/* ===== TOOLKIT SECTION ===== */}
-        <RevealSection>
-          <section className="toolkit-section">
-            <FloatingIcons />
-            <div className="toolkit-header">
-              <span className="section-label">Toolkit</span>
-              <h2 className="section-title">
-                Technologies I <span className="text-gradient">work with</span>
-              </h2>
-            </div>
+        <DeferredMount minHeight={640} margin="220px">
+          <RevealSection>
+            <section className="toolkit-ref-section" aria-labelledby="toolkit-title">
+              <div className="toolkit-ref-header">
+                <h2 className="toolkit-ref-title" id="toolkit-title">
+                  MY TOOLKIT
+                </h2>
+              </div>
 
-            <div className="toolkit-grid">
-              {tools.map((tool, i) => (
-                <ToolkitCard key={tool.name} tool={tool} index={i} />
-              ))}
-            </div>
-          </section>
-        </RevealSection>
+              <div className="toolkit-ref-grid">
+                {tools.map((tool, i) => (
+                  <ToolkitCard key={tool.name} tool={tool} index={i} />
+                ))}
+              </div>
+            </section>
+          </RevealSection>
 
-        <SectionDivider />
-
-        {/* ===== CURRENTLY LEARNING ===== */}
-        <RevealSection>
-          <section className="learning-section">
-            <span className="section-label">What I&rsquo;m into right now</span>
-            <p className="learning-text">
-              Digging deeper into <strong>advanced React patterns</strong>,
-              building more <strong>AI/ML side projects</strong>, getting better
-              at <strong>REST &amp; API design</strong>, and grinding{" "}
-              <strong>DSA</strong> daily.
-            </p>
-          </section>
-        </RevealSection>
-
-        <SectionDivider />
+          <SectionDivider />
+        </DeferredMount>
 
         {/* ===== CERTIFICATIONS ===== */}
-        <RevealSection>
-          <section className="cert-section">
-            <div className="toolkit-header">
-              <span className="section-label">Credentials</span>
-              <h2 className="section-title">
-                Certifications &amp;{" "}
-                <span className="text-gradient">courses</span>
-              </h2>
-            </div>
-            <div className="cert-grid">
-              {certifications.map((cert, i) => (
-                <motion.div
-                  key={cert.name}
-                  className="cert-card"
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{
-                    duration: 0.4,
-                    delay: i * 0.06,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
-                  <span className="cert-platform">{cert.platform}</span>
-                  <span className="cert-name">{cert.name}</span>
-                </motion.div>
-              ))}
-            </div>
-          </section>
-        </RevealSection>
+        <DeferredMount minHeight={560} margin="220px">
+          <RevealSection>
+            <section className="cert-section">
+              <div className="toolkit-header">
+                <span className="section-label">Credentials</span>
+                <h2 className="section-title">
+                  Verified <span className="text-gradient">Certifications</span>
+                </h2>
+              </div>
+              <div className="cert-grid">
+                {certifications.map((cert, i) => {
+                  const IconComponent =
+                    certPlatformIcons[cert.platformClass] ?? SiPython;
 
-        {/* ===== MARQUEE STRIP ===== */}
-        <RevealSection delay={0.1}>
-          <div className="marquee-strip" aria-hidden="true">
-            <div className="marquee-track">
-              {[...Array(2)].map((_, i) => (
-                <span key={i} className="marquee-content">
-                  <span className="marquee-dot">✦</span> AI &amp; ML
-                  <span className="marquee-dot">✦</span> Full-Stack
-                  <span className="marquee-dot">✦</span> React
-                  <span className="marquee-dot">✦</span> Python
-                  <span className="marquee-dot">✦</span> FastAPI
-                  <span className="marquee-dot">✦</span> TensorFlow
-                  <span className="marquee-dot">✦</span> Node.js
-                  <span className="marquee-dot">✦</span> MongoDB
-                </span>
-              ))}
-            </div>
-          </div>
-        </RevealSection>
+                  return (
+                    <Motion.div
+                      key={`${cert.name}-${cert.platform}`}
+                      className="cert-card"
+                      initial={{ opacity: 0, y: 16 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, margin: "-40px" }}
+                      transition={{
+                        duration: 0.4,
+                        delay: i * 0.06,
+                        ease: [0.16, 1, 0.3, 1],
+                      }}
+                    >
+                      <div className="cert-platform-row">
+                        <span
+                          className={`cert-platform-icon ${cert.platformClass}`}
+                          aria-hidden="true"
+                        >
+                          <IconComponent />
+                        </span>
+                        <span className="cert-platform">{cert.platform}</span>
+                      </div>
+                      <span className="cert-name">{cert.name}</span>
+                    </Motion.div>
+                  );
+                })}
+              </div>
+            </section>
+          </RevealSection>
 
-        <SectionDivider />
+          <SectionDivider />
+        </DeferredMount>
 
-        {/* ===== STATS ROW ===== */}
-        <StatsRow />
+        <DeferredMount minHeight={420} margin="220px">
+          {/* ===== STATS ROW ===== */}
+          <StatsRow />
 
-        <SectionDivider />
+          <SectionDivider />
+        </DeferredMount>
 
-        {/* ===== CONTACT SECTION ===== */}
-        <Contact ctaBtnRef={ctaBtnRef} />
+        <DeferredMount minHeight={640} margin="180px">
+          {/* ===== CONTACT SECTION ===== */}
+          <Contact ctaBtnRef={ctaBtnRef} />
 
-        <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
+        </DeferredMount>
 
         {/* ===== EASTER EGG ===== */}
         <AnimatePresence>
           {easterEgg && (
-            <motion.div
+            <Motion.div
               className="easter-egg-overlay"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -435,7 +472,7 @@ function Home() {
                   something awesome together.
                 </p>
               </div>
-            </motion.div>
+            </Motion.div>
           )}
         </AnimatePresence>
       </main>

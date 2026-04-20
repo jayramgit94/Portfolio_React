@@ -1,42 +1,44 @@
 import { motion, useInView } from "framer-motion";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import projects from "../data/projects";
 
+const screenshotBackdrops = [
+  "linear-gradient(140deg, #4361ee 0%, #3152c8 58%, #233a8b 100%)",
+  "linear-gradient(140deg, #facc15 0%, #f59e0b 56%, #d97706 100%)",
+  "linear-gradient(140deg, #4f46e5 0%, #3b82f6 52%, #1e3a8a 100%)",
+  "linear-gradient(140deg, #8b5cf6 0%, #7c3aed 48%, #4c1d95 100%)",
+  "linear-gradient(140deg, #84cc16 0%, #22c55e 52%, #15803d 100%)",
+  "linear-gradient(140deg, #f59e0b 0%, #f97316 56%, #c2410c 100%)",
+];
+
+const screenshotLayouts = ["edge", "strip", "centered", "offset", "crop"];
+const geometryVariants = [
+  "golden",
+  "figma-grid",
+  "rings",
+  "iso-lines",
+  "dot-mesh",
+  "arc-stack",
+];
+
 function ProjectCard({ project, index }) {
   const ref = useRef(null);
-  const cardRef = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [tilt, setTilt] = useState({ rotateX: 0, rotateY: 0 });
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  const handleMouseMove = useCallback(
-    (e) => {
-      if (isMobile) return;
-      const card = cardRef.current;
-      if (!card) return;
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateY = ((x - centerX) / centerX) * 4;
-      const rotateX = ((centerY - y) / centerY) * 4;
-      setTilt({ rotateX, rotateY });
-    },
-    [isMobile],
-  );
-
-  const handleMouseLeave = useCallback(() => {
-    setTilt({ rotateX: 0, rotateY: 0 });
-  }, []);
+  const isResumeAnalyzer = project.id === "resume-analyzer";
+  const layout = isResumeAnalyzer
+    ? "resume-focus"
+    : screenshotLayouts[index % screenshotLayouts.length];
+  const screenshotBg = isResumeAnalyzer
+    ? "linear-gradient(140deg, #1d4ed8 0%, #2563eb 46%, #14b8a6 100%)"
+    : screenshotBackdrops[index % screenshotBackdrops.length];
+  const geometry = isResumeAnalyzer
+    ? "resume-scan"
+    : geometryVariants[index % geometryVariants.length];
+  const secondaryImage = project.sections?.find(
+    (section) => section.image && section.image !== project.image,
+  )?.image;
+  const hasDualPreview = Boolean(secondaryImage) && ["strip", "offset"].includes(layout);
 
   return (
     <motion.div
@@ -48,36 +50,38 @@ function ProjectCard({ project, index }) {
         delay: index * 0.08,
         ease: [0.16, 1, 0.3, 1],
       }}
-      style={{ perspective: isMobile ? "none" : 800 }}
     >
       <Link
-        ref={cardRef}
         to={`/work/${project.id}`}
-        className="work-card"
-        style={{
-          "--card-gradient": project.gradient,
-          transform: isMobile
-            ? "none"
-            : `rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`,
-          transition: "transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)",
-        }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
+        className={`work-card work-card--${layout}`}
+        style={{ "--ss-bg": screenshotBg }}
       >
-        {/* Grid texture inside card */}
-        <div className="work-card-grid" aria-hidden="true" />
-
-        {/* Image preview */}
-        <div className="work-card-image">
-          <img src={project.image} alt={project.title} loading="lazy" />
+        <div
+          className={`work-media-shell work-geo-${geometry} ${hasDualPreview ? "dual" : "single"}`}
+        >
+          <div className="work-geometry-art" aria-hidden="true" />
+          <div className="work-shot work-shot-main">
+            <img
+              src={project.image}
+              alt={project.title}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          {hasDualPreview && (
+            <div className="work-shot work-shot-alt">
+              <img
+                src={secondaryImage}
+                alt={`${project.title} alternate preview`}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          )}
         </div>
 
-        {/* Info */}
         <div className="work-card-body">
           <div className="work-card-meta">
-            <span className="work-index">
-              {String(index + 1).padStart(2, "0")}
-            </span>
             <span className="work-role">
               {project.role?.split("·")[0]?.trim()}
             </span>
@@ -126,9 +130,8 @@ function Work() {
   return (
     <section id="work" className="work-section">
       <div className="work-header">
-        <span className="section-label">Selected Work</span>
         <h2 className="section-title">
-          Projects I&rsquo;ve <span className="text-gradient">shipped</span>
+          Selected Projects
         </h2>
         <p className="section-desc">
           AI-powered tools, full-stack applications, and real-world systems
