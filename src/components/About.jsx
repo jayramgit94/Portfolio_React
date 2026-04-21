@@ -657,71 +657,12 @@ export default function AboutPage() {
             <div className="tl-content">
               <ScrollRevealCard index={0}>
                 <div className="item-header">
-                  <strong>Photography</strong>
-                  <span className="item-badge">Visual storytelling</span>
+                  <strong>Personal Hobbies</strong>
+                  <span className="item-badge">Interests</span>
                 </div>
                 <p>
-                  Capturing light, textures, and everyday moments with a focus
-                  on clean frames and strong composition.
-                </p>
-              </ScrollRevealCard>
-              <ScrollRevealCard index={1}>
-                <div className="item-header">
-                  <strong>Book Reading</strong>
-                  <span className="item-badge">Quiet focus</span>
-                </div>
-                <p>
-                  Reading to explore new ideas, sharpen perspective, and stay
-                  curious beyond screens and code.
-                </p>
-              </ScrollRevealCard>
-              <ScrollRevealCard index={2}>
-                <div className="item-header">
-                  <strong>Hiking</strong>
-                  <span className="item-badge">Nature reset</span>
-                </div>
-                <p>
-                  Getting out on trails for movement, fresh air, and the kind
-                  of calm that only comes from long walks outdoors.
-                </p>
-              </ScrollRevealCard>
-              <ScrollRevealCard index={3}>
-                <div className="item-header">
-                  <strong>Travel</strong>
-                  <span className="item-badge">Always exploring</span>
-                </div>
-                <p>
-                  Wandering new places, meeting people, and collecting small
-                  experiences that keep life interesting.
-                </p>
-              </ScrollRevealCard>
-            </div>
-          </div>
-
-          {/* ── Hackathons ── */}
-          <div className="tl-section">
-            <TimelineNode />
-            <h2 className="tl-head">Hackathons</h2>
-            <div className="tl-content">
-              <ScrollRevealCard index={0}>
-                <div className="item-header">
-                  <strong>SB Jain Hackathon</strong>
-                  <span className="item-badge">Cleared Round 1</span>
-                </div>
-                <p>
-                  Built and presented a working solution that advanced past the
-                  initial screening round, demonstrating problem-solving under
-                  time constraints.
-                </p>
-              </ScrollRevealCard>
-              <ScrollRevealCard index={1}>
-                <div className="item-header">
-                  <strong>Raisoni Hackathon</strong>
-                  <span className="item-badge">Complete Implementation</span>
-                </div>
-                <p>
-                  Developed a full end-to-end project during the hackathon,
-                  delivering a complete working solution from ideation to demo.
+                  Photography, book reading, hiking, and travel keep me curious,
+                  creative, and energized outside of coding.
                 </p>
               </ScrollRevealCard>
             </div>

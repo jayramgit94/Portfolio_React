@@ -182,24 +182,12 @@ function Contact({ ctaBtnRef }) {
         <div className="cta-layout">
           <div className="cta-content">
             <h2 className="cta-headline">
-              How I can help <em>you?</em>
+              Let&apos;s Build Something Impactful
             </h2>
-
-            <div className="cta-services">
-              <article className="cta-service">
-                <h3 className="cta-service-title">Hire me?</h3>
-                <p className="cta-sub">
-                  Need a <strong>modern, high-converting</strong> website or app? I build clean, fast, and production-ready products.
-                </p>
-              </article>
-
-              <article className="cta-service">
-                <h3 className="cta-service-title">AI + Full-Stack Projects</h3>
-                <p className="cta-sub">
-                  Let&apos;s build <strong>React, Node, and Python-based</strong> solutions with strong APIs and polished UX.
-                </p>
-              </article>
-            </div>
+            <p className="cta-sub cta-sub-primary">
+              From idea to deployment, I deliver outcome-focused full-stack and
+              AI products that are fast, reliable, and production-ready.
+            </p>
 
             <div className="cta-action-row">
               <div ref={ctaBtnRef} className="cta-action-wrap">
@@ -207,13 +195,15 @@ function Contact({ ctaBtnRef }) {
                   href="mailto:sangawatjayram@gmail.com"
                   className="cta-connect-btn"
                 >
-                 LET’S TALK.    
+                  Start a Project
                   <span aria-hidden="true" className="cta-arrow">
                     -&gt;
                   </span>
                 </MagneticButton>
               </div>
             </div>
+
+            <p className="cta-trust">Usually replies within 24 hours</p>
 
             <div className="cta-quick-links">
               <a
@@ -374,7 +364,7 @@ function Home() {
             <section className="toolkit-ref-section" aria-labelledby="toolkit-title">
               <div className="toolkit-ref-header">
                 <h2 className="toolkit-ref-title" id="toolkit-title">
-                  MY TOOLKIT
+                  TOOLKIT
                 </h2>
               </div>
 
@@ -394,10 +384,7 @@ function Home() {
           <RevealSection>
             <section className="cert-section">
               <div className="toolkit-header">
-                <span className="section-label">Credentials</span>
-                <h2 className="section-title">
-                  Verified <span className="text-gradient">Certifications</span>
-                </h2>
+                <h2 className="section-title">Certifications</h2>
               </div>
               <div className="cert-grid">
                 {certifications.map((cert, i) => {

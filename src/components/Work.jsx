@@ -39,6 +39,7 @@ function ProjectCard({ project, index }) {
     (section) => section.image && section.image !== project.image,
   )?.image;
   const hasDualPreview = Boolean(secondaryImage) && ["strip", "offset"].includes(layout);
+  const outcomeLine = project.highlights?.[0] || project.description;
 
   return (
     <motion.div
@@ -88,16 +89,16 @@ function ProjectCard({ project, index }) {
           </div>
 
           <h3 className="work-title">{project.title}</h3>
-          <p className="work-description">{project.description}</p>
+          <p className="work-outcome">{outcomeLine}</p>
 
           <div className="work-tags">
-            {project.tools?.slice(0, 4).map((tool) => (
+            {project.tools?.slice(0, 3).map((tool) => (
               <span key={tool} className="work-tag">
                 {tool}
               </span>
             ))}
-            {project.tools?.length > 4 && (
-              <span className="work-tag">+{project.tools.length - 4}</span>
+            {project.tools?.length > 3 && (
+              <span className="work-tag">+{project.tools.length - 3}</span>
             )}
           </div>
 
@@ -131,12 +132,8 @@ function Work() {
     <section id="work" className="work-section">
       <div className="work-header">
         <h2 className="section-title">
-          Selected Projects
+          Selected Work
         </h2>
-        <p className="section-desc">
-          AI-powered tools, full-stack applications, and real-world systems
-          &mdash; each deployed live with open-source code.
-        </p>
       </div>
 
       <div className="work-grid">

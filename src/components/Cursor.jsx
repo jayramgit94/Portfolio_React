@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 
 function Cursor() {
+
+  
   const cursorRef = useRef(null);
   const trailRef = useRef(null);
   const mouse = useRef({ x: 0, y: 0 });

@@ -171,9 +171,9 @@ function Hero() {
           </motion.h1>
 
           <motion.p className="hero-sub" {...fadeUp(0.25, isMobile)}>
-            Computer Science student building real-world web and AI projects
-            &mdash; from problem solving to deployment. 5+ live projects, 8.39
-            CGPA, 150+ DSA problems solved.
+            5+ live products shipped, 93% ML model accuracy, and 150+ DSA
+            problems solved &mdash; I build fast, measurable web and AI
+            experiences from idea to deployment.
           </motion.p>
 
           <motion.div className="hero-cta-group" {...fadeUp(0.35, isMobile)}>
@@ -215,9 +215,6 @@ function Hero() {
                 <polyline points="10 9 9 9 8 9" />
               </svg>
               Resume
-            </MagneticButton>
-            <MagneticButton href="#contact" className="btn btn-outline-light">
-              Get in Touch
             </MagneticButton>
           </motion.div>
 
@@ -280,21 +277,6 @@ function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Scroll indicator */}
-      <motion.div
-        className="scroll-indicator"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          type: "spring",
-          damping: 20,
-          stiffness: 100,
-          delay: 1,
-        }}
-      >
-        <span className="scroll-text">Scroll</span>
-        <div className="scroll-line" />
-      </motion.div>
     </section>
   );
 }

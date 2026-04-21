@@ -2431,7 +2431,28 @@
 
 #main-content.about .tl-head,
 #main-content.about .standalone-label {
-  color: #e2e8f0;
+  color: rgba(203, 213, 225, 0.92);
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wider);
+}
+
+#main-content.about .tl-head::after,
+#main-content.about .standalone-label::after {
+  width: 24px;
+  height: 2px;
+  background: rgba(148, 163, 184, 0.62);
+  opacity: 0.9;
+}
+
+#main-content.about .about-photo-aura,
+#main-content.about .about-geo,
+#main-content.about .about-golden-arc,
+#main-content.about .about-neon-trace,
+#main-content.about .about-geo-points,
+#main-content.about .about-figma-tags,
+#main-content.about .about-design-chip,
+#main-content.about .about-design-helper {
+  display: none;
 }
 
 #main-content.about .about-item,
