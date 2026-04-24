@@ -129,6 +129,33 @@ const stats = [
   { number: "2+", label: "Years Building" },
 ];
 
+const backendNotes = [
+  {
+    title: "FastAPI Architecture for Real-World AI APIs",
+    summary:
+      "How I structure routers, services, and async workflows so ML APIs stay fast, testable, and production-safe.",
+    readTime: "8 min read",
+    status: "Drafting",
+    tags: ["FastAPI", "Architecture", "Async"],
+  },
+  {
+    title: "Designing Reliable Auth + Role Access in MERN",
+    summary:
+      "A practical pattern for JWT sessions, refresh flow, role guards, and secure middleware organization.",
+    readTime: "10 min read",
+    status: "Planned",
+    tags: ["Node.js", "Security", "MongoDB"],
+  },
+  {
+    title: "Caching, Queues, and Background Jobs for Scale",
+    summary:
+      "When to add Redis caching, delayed workers, and retry strategies to improve latency and stability.",
+    readTime: "12 min read",
+    status: "Planned",
+    tags: ["Redis", "Performance", "Backend"],
+  },
+];
+
 function StatsRow() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
@@ -161,6 +188,87 @@ function StatsRow() {
               <span className="impact-desc">{stat.label}</span>
             </Motion.div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BackendInsightsSection() {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+
+  return (
+    <section className="backend-insights-section" ref={ref}>
+      <div className="backend-insights-inner">
+        <Motion.div
+          className="backend-insights-head"
+          initial={{ opacity: 0, y: 16 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <span className="section-label backend-insights-label">Knowledge Base</span>
+          <h2 className="backend-insights-title">Backend & Systems Notes</h2>
+          <p className="backend-insights-sub">
+            I&rsquo;m adding deep writeups on backend engineering, API design,
+            scale patterns, and production decisions. This section is ready for
+            long-form content and case-study style posts.
+          </p>
+        </Motion.div>
+
+        <div className="backend-insights-layout">
+          <Motion.article
+            className="backend-spotlight"
+            initial={{ opacity: 0, y: 24 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="backend-spotlight-media" aria-hidden="true">
+              <div className="backend-media-topbar">
+                <span />
+                <span />
+                <span />
+              </div>
+              <pre className="backend-code-preview">
+{`POST /api/v1/analysis\n200 OK  •  87ms\ncache: HIT\nqueue: idle\nhealth: stable`}
+              </pre>
+            </div>
+            <div className="backend-spotlight-copy">
+              <h3>In-depth engineering writeups coming soon</h3>
+              <p>
+                You can publish architecture breakdowns, scaling notes,
+                backend debugging stories, and API design decisions here.
+              </p>
+            </div>
+          </Motion.article>
+
+          <div className="backend-notes-grid">
+            {backendNotes.map((note, i) => (
+              <Motion.article
+                key={note.title}
+                className="backend-note-card"
+                initial={{ opacity: 0, y: 18 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                  duration: 0.45,
+                  delay: i * 0.08,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <div className="backend-note-meta">
+                  <span>{note.readTime}</span>
+                  <span className="backend-note-status">{note.status}</span>
+                </div>
+                <h3>{note.title}</h3>
+                <p>{note.summary}</p>
+                <div className="backend-note-tags" aria-label="Topic tags">
+                  {note.tags.map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
+                </div>
+              </Motion.article>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -427,6 +535,13 @@ function Home() {
         <DeferredMount minHeight={420} margin="220px">
           {/* ===== STATS ROW ===== */}
           <StatsRow />
+
+          <SectionDivider />
+        </DeferredMount>
+
+        <DeferredMount minHeight={720} margin="220px">
+          {/* ===== BACKEND INSIGHTS ===== */}
+          <BackendInsightsSection />
 
           <SectionDivider />
         </DeferredMount>

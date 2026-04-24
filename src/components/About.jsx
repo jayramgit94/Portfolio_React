@@ -205,6 +205,7 @@ export default function AboutPage() {
   const photoWrapRef = useRef(null);
   const photoMoveRafRef = useRef(0);
   const photoMoveTargetRef = useRef({ x: 0, y: 0 });
+  const photoActivateTimerRef = useRef(null);
   const secretTimerRef = useRef(null);
   const philosophyLoopRef = useRef(null);
   const helperTimerRef = useRef(null);
@@ -297,6 +298,10 @@ export default function AboutPage() {
     window.clearTimeout(secretTimerRef.current);
   };
 
+  const clearPhotoActivateTimer = () => {
+    window.clearTimeout(photoActivateTimerRef.current);
+  };
+
   const handleSecretStart = () => {
     if (!hasFinePointerDesktop) return;
     clearSecretTimer();
@@ -310,13 +315,6 @@ export default function AboutPage() {
   const handleSecretEnd = () => {
     clearSecretTimer();
     setShowSecretMessage(false);
-  };
-
-  const handleSecretTouchFallback = () => {
-    if (hasFinePointerDesktop) return;
-    setIsSecretUnlocked(true);
-    setShowSecretMessage(true);
-    window.setTimeout(() => setShowSecretMessage(false), 2200);
   };
 
   const launchPhotoInteraction = () => {
@@ -352,6 +350,7 @@ export default function AboutPage() {
   };
 
   const endPhotoInteraction = () => {
+    clearPhotoActivateTimer();
     setIsPhotoInteractive(false);
 
     if (photoWrapRef.current) {
@@ -361,7 +360,7 @@ export default function AboutPage() {
   };
 
   const handlePhotoMove = (event) => {
-    if (!isSecretUnlocked) return;
+    if (!isPhotoInteractive) return;
 
     const bounds = photoWrapRef.current?.getBoundingClientRect();
     if (!bounds) return;
@@ -392,6 +391,15 @@ export default function AboutPage() {
     });
   };
 
+  const handlePhotoInteractionStart = () => {
+    launchPhotoInteraction();
+  };
+
+  const handlePhotoInteractionEnd = () => {
+    clearPhotoActivateTimer();
+    endPhotoInteraction();
+  };
+
   /* Scroll-to-top visibility */
   useEffect(() => {
     const onScroll = () => {
@@ -410,6 +418,7 @@ export default function AboutPage() {
   useEffect(() => {
     return () => {
       clearSecretTimer();
+      clearPhotoActivateTimer();
       window.clearTimeout(helperTimerRef.current);
       window.clearTimeout(quoteTimerRef.current);
       window.clearTimeout(signatureTimerRef.current);
@@ -470,11 +479,11 @@ export default function AboutPage() {
             <div
               ref={photoWrapRef}
               className={`about-editorial-photo-wrap ${isSecretUnlocked ? "is-unlocked" : ""} ${isPhotoInteractive ? "is-live" : ""} geo-layout-${geoLayoutIndex}`}
-              onMouseEnter={launchPhotoInteraction}
-              onMouseLeave={endPhotoInteraction}
+              onMouseEnter={handlePhotoInteractionStart}
+              onMouseLeave={handlePhotoInteractionEnd}
               onMouseMove={handlePhotoMove}
-              onFocus={launchPhotoInteraction}
-              onBlur={endPhotoInteraction}
+              onFocus={handlePhotoInteractionStart}
+              onBlur={handlePhotoInteractionEnd}
             >
               <span className="about-photo-aura" aria-hidden="true" />
               <img
@@ -517,6 +526,42 @@ export default function AboutPage() {
               <span className="about-design-chip" aria-hidden="true">
                 Design mode: ON
               </span>
+
+              <div className="about-figma-handles" aria-hidden="true">
+                <span className="figma-handle figma-handle--tl" />
+                <span className="figma-handle figma-handle--tr" />
+                <span className="figma-handle figma-handle--bl" />
+                <span className="figma-handle figma-handle--br" />
+              </div>
+              <span className="about-selection-size" aria-hidden="true">
+                680 × 860
+              </span>
+              <div className="about-ruler-y" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
+              <div className="about-anchor-nodes" aria-hidden="true">
+                <span className="anchor-node" />
+                <span className="anchor-node" />
+                <span className="anchor-node" />
+              </div>
+              <span className="about-layer-label" aria-hidden="true">
+                Layer: Profile / Hero
+              </span>
+              <div className="about-figma-toolbar" aria-hidden="true">
+                <span>Auto Layout</span>
+                <span>Constraints: Scale</span>
+              </div>
+              <div className="about-measure-guides" aria-hidden="true">
+                <span className="measure-guide measure-guide--x">x: 324</span>
+                <span className="measure-guide measure-guide--y">y: 188</span>
+              </div>
+              <span className="about-grid-badge" aria-hidden="true">
+                12 Col Grid
+              </span>
+
               <span className={`about-design-helper ${showDesignHelper ? "show" : ""}`}>
                 Try moving cursor around the photo.
               </span>
@@ -607,12 +652,11 @@ export default function AboutPage() {
                   onMouseLeave={handleSecretEnd}
                   onFocus={handleSecretStart}
                   onBlur={handleSecretEnd}
-                  onClick={handleSecretTouchFallback}
                 >
                   Hover or focus for 2 seconds&hellip;
                 </button>
                 <span className={`about-secret-message ${showSecretMessage ? "show" : ""}`}>
-                  Go up and hover (or click) on the profile photo &#128064;
+                  Go up and hover on the profile photo &#128064;
                 </span>
               </ScrollRevealP>
             </div>

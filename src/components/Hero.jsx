@@ -23,7 +23,7 @@ const fadeUp = (delay = 0, isMobile = false) => ({
   },
 });
 
-const rotatingWords = ["INTELLIGENT", "FULL-STACK", "AI-POWERED", "REAL-WORLD"];
+const rotatingWords = ["Intelligent", "Full-Stack", "AI-Powered", "Real-World"];
 
 // Spring config for smooth parallax
 const springConfig = { damping: 50, stiffness: 100, mass: 0.5 };
@@ -132,7 +132,7 @@ function Hero() {
           </motion.div>
 
           <motion.h1 className="hero-headline" {...fadeUp(0.15, isMobile)}>
-            <span className="hero-headline-top">BUILDING</span>
+            <span className="hero-headline-top">Building</span>
             <span className="hero-headline-accent">
               <AnimatePresence mode="wait">
                 <motion.span
@@ -167,7 +167,7 @@ function Hero() {
                 </motion.span>
               </AnimatePresence>
             </span>
-            <span className="hero-headline-top">APPLICATIONS</span>
+            <span className="hero-headline-top">Applications</span>
           </motion.h1>
 
           <motion.p className="hero-sub" {...fadeUp(0.25, isMobile)}>

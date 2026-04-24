@@ -116,6 +116,33 @@ function RouteSeo() {
 }
 
 function App() {
+  useEffect(() => {
+    const isImageTarget = (eventTarget) => {
+      if (!(eventTarget instanceof Element)) return false;
+      return Boolean(eventTarget.closest("img, picture"));
+    };
+
+    const blockImageContextMenu = (event) => {
+      if (isImageTarget(event.target)) {
+        event.preventDefault();
+      }
+    };
+
+    const blockImageDrag = (event) => {
+      if (isImageTarget(event.target)) {
+        event.preventDefault();
+      }
+    };
+
+    document.addEventListener("contextmenu", blockImageContextMenu);
+    document.addEventListener("dragstart", blockImageDrag);
+
+    return () => {
+      document.removeEventListener("contextmenu", blockImageContextMenu);
+      document.removeEventListener("dragstart", blockImageDrag);
+    };
+  }, []);
+
   return (
     <>
       <a href="#main-content" className="skip-link">
