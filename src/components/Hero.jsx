@@ -9,6 +9,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 import resumePdf from "../assets/JAY_Resume_2026.pdf";
 import MagneticButton from "./MagneticButton";
+import { mediaQuery } from "../utils/breakpoints";
 
 // Smooth spring-based fade-up with stagger
 const fadeUp = (delay = 0, isMobile = false) => ({
@@ -34,7 +35,7 @@ function Hero() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const mobileMq = window.matchMedia("(max-width: 768px)");
+    const mobileMq = window.matchMedia(mediaQuery.mobileMax);
     const syncMobile = () => setIsMobile(mobileMq.matches);
 
     syncMobile();

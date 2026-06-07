@@ -6,6 +6,7 @@ import {
   useSpring
 } from "framer-motion";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { mediaQuery } from "../utils/breakpoints";
 
 /* ═══════════════════════════════════════════
    #2 — TEXT SCRAMBLE REVEAL
@@ -306,6 +307,14 @@ export function SpotlightFollow({ className = "" }) {
   const targetRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
+    const finePointer = window.matchMedia("(pointer: fine)");
+    const desktopWide = window.matchMedia(mediaQuery.desktopMin);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    if (!finePointer.matches || !desktopWide.matches || reducedMotion.matches) {
+      return undefined;
+    }
+
     const handleMove = (e) => {
       targetRef.current.x = e.clientX;
       targetRef.current.y = e.clientY;

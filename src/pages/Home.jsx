@@ -28,6 +28,7 @@ import Navbar from "../components/Navbar";
 import SectionDivider from "../components/SectionDivider";
 import certifications from "../data/certifications";
 import "../styles/global.css";
+import { mediaQuery } from "../utils/breakpoints";
 
 const Footer = lazy(() => import("../components/Footer"));
 const Work = lazy(() => import("../components/Work"));
@@ -425,18 +426,23 @@ function Home() {
 
   useEffect(() => {
     const pointerMq = window.matchMedia("(pointer: fine)");
+    const wideMq = window.matchMedia(mediaQuery.desktopMin);
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const sync = () => {
-      setEnableFancyEffects(pointerMq.matches && !motionMq.matches);
+      setEnableFancyEffects(
+        pointerMq.matches && wideMq.matches && !motionMq.matches,
+      );
     };
 
     sync();
     pointerMq.addEventListener("change", sync);
+    wideMq.addEventListener("change", sync);
     motionMq.addEventListener("change", sync);
 
     return () => {
       pointerMq.removeEventListener("change", sync);
+      wideMq.removeEventListener("change", sync);
       motionMq.removeEventListener("change", sync);
     };
   }, []);

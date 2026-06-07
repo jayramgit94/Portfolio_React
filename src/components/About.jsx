@@ -14,6 +14,7 @@ import {
 } from "../components/MicroInteractions";
 import Navbar from "../components/Navbar";
 import "../styles/about.css";
+import { mediaQuery } from "../utils/breakpoints";
 
 /* ── Spring-based scroll reveal ── */
 const springTransition = {
@@ -258,9 +259,9 @@ export default function AboutPage() {
   );
 
   useEffect(() => {
-    const mobileMq = window.matchMedia("(max-width: 767px)");
+    const mobileMq = window.matchMedia(mediaQuery.mobileMax);
     const pointerAnyMq = window.matchMedia("(pointer: fine)");
-    const pointerMq = window.matchMedia("(min-width: 1025px) and (pointer: fine)");
+    const pointerMq = window.matchMedia(mediaQuery.finePointerDesktop);
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const syncMediaState = () => {

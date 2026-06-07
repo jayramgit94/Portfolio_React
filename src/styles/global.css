@@ -1762,23 +1762,29 @@ body {
   --shot-rotate: 0deg;
   --shot-scale: 1;
   position: absolute;
-  border-radius: 14px;
+   /* align inner shot radius with the shell while leaving a subtle inset */
+  border-radius: 16px;
   overflow: hidden;
-  border: 2px solid #020617;
-  box-shadow: 0 14px 24px rgba(2, 6, 23, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(2, 6, 23, 0.9);
+  box-shadow: 0 12px 28px rgba(2, 6, 23, 0.48), 0 0 0 1px rgba(255, 255, 255, 0.04);
   z-index: 5;
-  background: #060a12;
+  /* make the inner shot white to match common screenshot frames */
+  background: #ffffff;
   transform-origin: center;
   transform: rotate(var(--shot-rotate)) scale(var(--shot-scale));
-  transition: transform 0.78s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.work-shot img {
+ .work-shot img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* ensure the full screenshot is visible within the shot without awkward cropping */
+  object-fit: contain;
   display: block;
-}
+  background: transparent;
+  /* match the rounded corners of the shot */
+  border-radius: inherit;
+ }
 
 .work-card:hover .work-shot-main {
   --shot-scale: 1.045;
@@ -1804,7 +1810,8 @@ body {
 /* Per-project screenshot layouts for visual variety */
 @media (min-width: 769px) {
   .work-card--edge .work-media-shell.single .work-shot-main {
-    inset: 17% 30% 8% -6%;
+    /* avoid negative inset so screenshot stays fully visible */
+    inset: 17% 30% 8% 6%;
   }
 
   .work-card--strip .work-media-shell.dual .work-shot-main {
@@ -1812,8 +1819,9 @@ body {
   }
 
   .work-card--strip .work-media-shell.dual .work-shot-alt {
-    inset: -4% 18% 59% 6%;
-    --shot-rotate: 180deg;
+    /* keep alt preview inside bounds and avoid flipping it upside-down */
+    inset: 4% 18% 59% 6%;
+    --shot-rotate: 0deg;
   }
 
   .work-card--centered .work-media-shell.single .work-shot-main {
@@ -1826,7 +1834,8 @@ body {
   }
 
   .work-card--offset .work-media-shell.dual .work-shot-main {
-    inset: 31% 18% -3% -6%;
+    /* remove negative insets so the main shot doesn't get cut off */
+    inset: 31% 18% 6% 6%;
   }
 
   .work-card--offset .work-media-shell.dual .work-shot-alt {
@@ -1835,7 +1844,8 @@ body {
   }
 
   .work-card--crop .work-media-shell.single .work-shot-main {
-    inset: -2% 16% 30% 8%;
+    /* modest crop but keep inside the shell */
+    inset: 2% 16% 30% 8%;
   }
 }
 
