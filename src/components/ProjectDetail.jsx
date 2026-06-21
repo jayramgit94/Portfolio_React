@@ -3,24 +3,30 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import projects from "../data/projects";
 import "../styles/project-detail.css";
+import CaseStudyDecor from "./CaseStudyDecor";
 import Cursor from "./Cursor";
 import Navbar from "./Navbar";
+import ScreenshotFrame from "./ScreenshotFrame";
 
-function AnimatedSection({ children, id, className = "" }) {
+const sectionDecor = ["squiggle", "arrow", "sparkle", "grid"];
+
+function CaseSection({ children, id, className = "", index = 0 }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
+  const inView = useInView(ref, { once: true, margin: "-50px" });
+  const decor = sectionDecor[index % sectionDecor.length];
 
   return (
-    <motion.section
+    <motion.article
       ref={ref}
       id={id}
-      className={`project-section ${className}`}
-      initial={{ opacity: 0, y: 24 }}
+      className={`case-block ${className}`.trim()}
+      initial={{ opacity: 0, y: 28 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
     >
+      <CaseStudyDecor variant={decor} className="case-block__doodle" />
       {children}
-    </motion.section>
+    </motion.article>
   );
 }
 
@@ -29,24 +35,19 @@ function ProjectDetail() {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState("overview");
 
-  if (!projects || !Array.isArray(projects)) {
-    return <div style={{ padding: "120px" }}>Projects data missing</div>;
-  }
+  const project = projects?.find((p) => p.id === id);
 
-  const project = projects.find((p) => p.id === id);
-
-  if (!project) {
-    return <div style={{ padding: "120px" }}>Project not found</div>;
-  }
-
-  const sections = Array.isArray(project.sections) ? project.sections : [];
+  const sections = useMemo(
+    () => (Array.isArray(project?.sections) ? project.sections : []),
+    [project],
+  );
 
   const tocItems = useMemo(
     () => [
       { id: "overview", title: "Overview" },
       ...sections.map((section) => ({
         id: section.id,
-        title: section.title,
+        title: section.label || section.title,
       })),
     ],
     [sections],
@@ -57,7 +58,7 @@ function ProjectDetail() {
       navigate(-1);
       return;
     }
-    navigate("/");
+    navigate("/#work");
   };
 
   useEffect(() => {
@@ -65,10 +66,7 @@ function ProjectDetail() {
   }, [id]);
 
   useEffect(() => {
-    const sectionElements = Array.from(
-      document.querySelectorAll(".project-section"),
-    );
-
+    const sectionElements = Array.from(document.querySelectorAll(".case-block"));
     if (!sectionElements.length) return undefined;
 
     const observer = new IntersectionObserver(
@@ -81,221 +79,224 @@ function ProjectDetail() {
           setActiveSection(visible[0].target.id);
         }
       },
-      {
-        threshold: [0.2, 0.4, 0.6],
-        rootMargin: "-20% 0px -55% 0px",
-      },
+      { threshold: [0.15, 0.35, 0.55], rootMargin: "-18% 0px -52% 0px" },
     );
 
     sectionElements.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, [sections.length]);
+  }, [sections.length, id]);
+
+  if (!project) {
+    return (
+      <div className="case-empty">
+        <Navbar />
+        <p>Project not found.</p>
+        <button type="button" onClick={() => navigate("/")}>
+          Back home
+        </button>
+      </div>
+    );
+  }
 
   return (
     <>
       <Cursor />
       <Navbar />
 
-      <div className="project-detail">
-        <motion.header
-          className="project-hero"
-          style={{ background: project.gradient || "#f7f6ff" }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="project-hero-inner">
-            <button type="button" className="project-back" onClick={handleBack}>
-              &larr; Back to work
+      <div className="case-study">
+        <header className="case-hero">
+          <div className="case-hero__mesh" aria-hidden="true" />
+          <CaseStudyDecor variant="grid" className="case-hero__doodle case-hero__doodle--grid" />
+          <CaseStudyDecor variant="squiggle" className="case-hero__doodle case-hero__doodle--squiggle" />
+
+          <div className="case-hero__inner">
+            <button type="button" className="case-back" onClick={handleBack}>
+              ← Back to work
             </button>
 
-            <p className="project-eyebrow">Case Study</p>
-            <h1 className="project-title">{project.title}</h1>
+            <p className="case-kicker editorial-kicker">Case study</p>
+            <h1 className="case-title heading-display">{project.title}</h1>
             {project.description && (
-              <p className="project-subtitle">{project.description}</p>
+              <p className="case-lead">{project.description}</p>
             )}
 
-            <div className="project-hero-grid">
-              <div className="project-hero-card">
-                <div className="project-meta">
-                  {project.role && (
-                    <div>
-                      <p className="meta-label">Role</p>
-                      <p className="meta-value">{project.role}</p>
-                    </div>
-                  )}
-                  {project.timeline && (
-                    <div>
-                      <p className="meta-label">Timeline</p>
-                      <p className="meta-value">{project.timeline}</p>
-                    </div>
-                  )}
-                  {project.tools?.length ? (
-                    <div>
-                      <p className="meta-label">Tools</p>
-                      <p className="meta-value">
-                        {project.tools.join(" \u00B7 ")}
-                      </p>
-                    </div>
-                  ) : null}
-                </div>
+            <div className="case-meta-row">
+              {project.role && (
+                <span className="case-chip">{project.role.split("·")[0]?.trim()}</span>
+              )}
+              {project.timeline && (
+                <span className="case-chip case-chip--muted">{project.timeline}</span>
+              )}
+              {project.tools?.slice(0, 4).map((tool) => (
+                <span key={tool} className="case-chip case-chip--tool">
+                  {tool}
+                </span>
+              ))}
+            </div>
 
-                {project.highlights?.length ? (
-                  <ul className="project-highlights">
-                    {project.highlights.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                ) : null}
-
-                {(project.liveLink || project.githubLink) && (
-                  <div className="project-links">
-                    {project.liveLink && (
-                      <a
-                        href={project.liveLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="project-link live-link"
-                      >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="2"
-                        >
-                          <circle cx="12" cy="12" r="10" />
-                          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                        </svg>
-                        Live Demo
-                      </a>
-                    )}
-                    {project.githubLink && (
-                      <a
-                        href={project.githubLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="project-link github-link"
-                      >
-                        <svg
-                          width="16"
-                          height="16"
-                          viewBox="0 0 24 24"
-                          fill="currentColor"
-                        >
-                          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                        </svg>
-                        View Code
-                      </a>
-                    )}
-                  </div>
+            {(project.liveLink || project.githubLink) && (
+              <div className="case-actions">
+                {project.liveLink && (
+                  <a
+                    href={project.liveLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="case-btn case-btn--primary"
+                  >
+                    Live demo
+                  </a>
+                )}
+                {project.githubLink && (
+                  <a
+                    href={project.githubLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="case-btn case-btn--ghost"
+                  >
+                    View code
+                  </a>
                 )}
               </div>
+            )}
 
-              {project.image && (
-                <div className="project-hero-image">
-                  <img src={project.image} alt={project.title} loading="lazy" />
-                </div>
-              )}
-            </div>
+            {project.highlights?.length ? (
+              <ul className="case-metrics">
+                {project.highlights.slice(0, 3).map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
+
+            {project.image && (
+              <div className="case-hero-media">
+                <ScreenshotFrame
+                  src={project.image}
+                  alt={project.title}
+                  layoutId={`project-cover-${project.id}`}
+                  eager
+                  label={project.title}
+                />
+              </div>
+            )}
           </div>
-        </motion.header>
+        </header>
 
-        <div className="project-body">
-          <aside className="project-toc">
-            <div className="toc-card">
-              <p className="toc-title">On this page</p>
+        <div className="case-layout">
+          <aside className="case-toc" aria-label="On this page">
+            <nav className="case-toc__nav">
+              <p className="case-toc__title">On this page</p>
               {tocItems.map((item) => (
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  className={`toc-link ${activeSection === item.id ? "is-active" : ""}`}
+                  className={`case-toc__link${activeSection === item.id ? " is-active" : ""}`}
                 >
                   {item.title}
                 </a>
               ))}
-            </div>
+            </nav>
           </aside>
 
-          <main id="main-content" className="project-content">
-            <AnimatedSection id="overview">
-              <div className="section-header">
-                <p className="section-label">Summary</p>
-                <h2>Overview</h2>
+          <div className="case-content">
+            <CaseSection id="overview" index={0}>
+              <header className="case-block__head">
+                <span className="case-block__index">01</span>
+                <div>
+                  <p className="editorial-kicker">Summary</p>
+                  <h2 className="case-block__title heading-section">Overview</h2>
+                </div>
+              </header>
+
+              <div className="notion-block notion-block--text">
+                <p>{project.longDescription || project.description}</p>
               </div>
-              {project.longDescription ? (
-                <p className="section-text">{project.longDescription}</p>
-              ) : (
-                <p className="section-text">{project.description}</p>
-              )}
 
               {project.objectives?.length ? (
-                <div className="section-grid">
-                  {project.objectives.map((objective) => (
-                    <div key={objective.title} className="info-card">
+                <div className="notion-block notion-block--cards">
+                  {project.objectives.map((objective, i) => (
+                    <div key={objective.title} className="notion-card">
+                      <span className="notion-card__num">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
                       <h3>{objective.title}</h3>
                       <p>{objective.description}</p>
                     </div>
                   ))}
                 </div>
               ) : null}
-            </AnimatedSection>
+            </CaseSection>
 
-            {sections.map((section) => (
-              <AnimatedSection key={section.id} id={section.id}>
-                <div className="section-header">
-                  {section.label && (
-                    <p className="section-label">{section.label}</p>
-                  )}
-                  <h2>{section.title}</h2>
-                  {section.subtitle && (
-                    <p className="section-subtitle">{section.subtitle}</p>
-                  )}
-                </div>
+            {sections.map((section, sectionIndex) => (
+              <CaseSection
+                key={section.id}
+                id={section.id}
+                index={sectionIndex + 1}
+              >
+                <header className="case-block__head">
+                  <span className="case-block__index">
+                    {String(sectionIndex + 2).padStart(2, "0")}
+                  </span>
+                  <div>
+                    {section.label && (
+                      <p className="editorial-kicker">{section.label}</p>
+                    )}
+                    <h2 className="case-block__title heading-section">
+                      {section.title}
+                    </h2>
+                    {section.subtitle && (
+                      <p className="case-block__subtitle">{section.subtitle}</p>
+                    )}
+                  </div>
+                </header>
 
                 {Array.isArray(section.content) ? (
                   section.content.map((paragraph, index) => (
-                    <p key={`${section.id}-${index}`} className="section-text">
-                      {paragraph}
-                    </p>
+                    <div
+                      key={`${section.id}-p-${index}`}
+                      className="notion-block notion-block--text"
+                    >
+                      <p>{paragraph}</p>
+                    </div>
                   ))
                 ) : section.content ? (
-                  <p className="section-text">{section.content}</p>
+                  <div className="notion-block notion-block--text">
+                    <p>{section.content}</p>
+                  </div>
                 ) : null}
 
                 {section.points?.length ? (
-                  <ul className="section-list">
+                  <ul className="notion-block notion-block--list">
                     {section.points.map((point) => (
-                      <li key={point}>{point}</li>
+                      <li key={point}>
+                        <span className="notion-list__marker" aria-hidden="true" />
+                        {point}
+                      </li>
                     ))}
                   </ul>
                 ) : null}
 
                 {section.callout && (
-                  <div className="section-callout">
+                  <blockquote className="notion-block notion-block--quote">
+                    <CaseStudyDecor variant="sparkle" className="notion-quote__doodle" />
                     <p>{section.callout}</p>
-                  </div>
+                  </blockquote>
                 )}
 
                 {section.image && (
-                  <figure className="section-media">
-                    <img
+                  <div className="notion-block notion-block--media">
+                    <ScreenshotFrame
                       src={section.image}
                       alt={section.title}
-                      loading="lazy"
+                      caption={section.caption}
+                      label={section.label || "Screen"}
                     />
-                    {section.caption && (
-                      <figcaption>{section.caption}</figcaption>
-                    )}
-                  </figure>
+                  </div>
                 )}
-              </AnimatedSection>
+              </CaseSection>
             ))}
-          </main>
+          </div>
         </div>
       </div>
-
     </>
   );
 }

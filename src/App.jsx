@@ -1,3 +1,4 @@
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { Suspense, lazy, useEffect, useLayoutEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 
@@ -14,7 +15,7 @@ const PROJECT_SEO = {
       "AI-powered sign language detection with a custom CNN, real-time webcam inference, and full-stack deployment.",
   },
   "certificate-generator": {
-    title: "Certificate Generator | Jayram G Sangawat",
+    title: "Certificate Management System | Jayram G Sangawat",
     description:
       "Automated certificate generation with custom PDF templates, CSV bulk import, and instant preview workflow.",
   },
@@ -115,6 +116,31 @@ function RouteSeo() {
   return null;
 }
 
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <LayoutGroup>
+      <AnimatePresence mode="popLayout">
+        <motion.div
+          key={location.pathname}
+          className="page-transition"
+          initial={false}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <Routes location={location}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/work/:id" element={<ProjectDetail />} />
+          </Routes>
+        </motion.div>
+      </AnimatePresence>
+    </LayoutGroup>
+  );
+}
+
 function App() {
   useEffect(() => {
     const isImageTarget = (eventTarget) => {
@@ -150,12 +176,8 @@ function App() {
       </a>
       <ScrollToTop />
       <RouteSeo />
-      <Suspense fallback={null}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/work/:id" element={<ProjectDetail />} />
-        </Routes>
+      <Suspense fallback={<div className="route-loading" aria-hidden="true" />}>
+        <AnimatedRoutes />
       </Suspense>
     </>
   );

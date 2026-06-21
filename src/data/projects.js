@@ -165,7 +165,7 @@ const projects = [
 
   {
     id: "certificate-generator",
-    title: "Certificate Generator",
+    title: "Certificate Management System",
     description:
       "Automated certificate generation from custom PDF templates with visual field mapping, CSV bulk import, and instant preview — used for real college events.",
     image: certi1,

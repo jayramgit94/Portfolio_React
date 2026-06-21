@@ -1,5 +1,4 @@
 import {
-  AnimatePresence,
   motion,
   useReducedMotion,
   useScroll,
@@ -8,12 +7,12 @@ import {
 } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import resumePdf from "../assets/JAY_Resume_2026.pdf";
+import { site } from "../data/site";
 import MagneticButton from "./MagneticButton";
 import { mediaQuery } from "../utils/breakpoints";
 
-// Smooth spring-based fade-up with stagger
 const fadeUp = (delay = 0, isMobile = false) => ({
-  initial: { opacity: 0, y: isMobile ? 20 : 40, filter: "blur(4px)" },
+  initial: { opacity: 0, y: isMobile ? 20 : 32, filter: "blur(4px)" },
   animate: { opacity: 1, y: 0, filter: "blur(0px)" },
   transition: {
     type: "spring",
@@ -24,9 +23,6 @@ const fadeUp = (delay = 0, isMobile = false) => ({
   },
 });
 
-const rotatingWords = ["Intelligent", "Full-Stack", "AI-Powered", "Real-World"];
-
-// Spring config for smooth parallax
 const springConfig = { damping: 50, stiffness: 100, mass: 0.5 };
 
 function Hero() {
@@ -48,14 +44,8 @@ function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Parallax transforms — reduced on mobile, spring-smoothed for buttery feel
   const parallaxScale = isMobile || prefersReducedMotion ? 0.15 : 1;
   const blob1YRaw = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, -120 * parallaxScale],
-  );
-  const blob2YRaw = useTransform(
     scrollYProgress,
     [0, 1],
     [0, -80 * parallaxScale],
@@ -63,60 +53,41 @@ function Hero() {
   const imageYRaw = useTransform(
     scrollYProgress,
     [0, 1],
-    [0, 60 * parallaxScale],
+    [0, 50 * parallaxScale],
   );
   const textYRaw = useTransform(
     scrollYProgress,
     [0, 1],
-    [0, 40 * parallaxScale],
+    [0, 30 * parallaxScale],
   );
 
-  // Apply springs for silky-smooth parallax
   const blob1Y = useSpring(blob1YRaw, springConfig);
-  const blob2Y = useSpring(blob2YRaw, springConfig);
   const imageY = useSpring(imageYRaw, springConfig);
   const textY = useSpring(textYRaw, springConfig);
   const gridOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  // Rotating word state
-  const [wordIndex, setWordIndex] = useState(0);
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % rotatingWords.length);
-    }, 2800);
-    return () => clearInterval(interval);
-  }, []);
-
-  // Container stagger for coordinated entrance
   const containerVariants = {
     hidden: {},
     visible: {
       transition: {
-        staggerChildren: isMobile ? 0.08 : 0.12,
-        delayChildren: 0.1,
+        staggerChildren: isMobile ? 0.08 : 0.1,
+        delayChildren: 0.08,
       },
     },
   };
 
   return (
     <section className="hero-section" ref={heroRef}>
-      {/* Grid overlay */}
       <motion.div
         className="hero-grid-overlay"
         aria-hidden="true"
         style={{ opacity: gridOpacity }}
       />
 
-      {/* Decorative gradient blobs — spring parallax */}
       <motion.div
         className="hero-blob blob-1"
         aria-hidden="true"
         style={{ y: blob1Y }}
-      />
-      <motion.div
-        className="hero-blob blob-2"
-        aria-hidden="true"
-        style={{ y: blob2Y }}
       />
 
       <motion.div
@@ -125,61 +96,24 @@ function Hero() {
         initial="hidden"
         animate="visible"
       >
-        {/* TEXT COLUMN */}
         <motion.div className="hero-text" style={{ y: textY }}>
           <motion.div className="hero-badge" {...fadeUp(0.05, isMobile)}>
             <span className="status-dot" />
             Open to opportunities
           </motion.div>
 
-          <motion.h1 className="hero-headline" {...fadeUp(0.15, isMobile)}>
-            <span className="hero-headline-top">Building</span>
-            <span className="hero-headline-accent">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={rotatingWords[wordIndex]}
-                  className="rotating-word"
-                  initial={{
-                    y: isMobile ? 12 : 24,
-                    opacity: 0,
-                    rotateX: isMobile ? 0 : -40,
-                    filter: "blur(3px)",
-                  }}
-                  animate={{
-                    y: 0,
-                    opacity: 1,
-                    rotateX: 0,
-                    filter: "blur(0px)",
-                  }}
-                  exit={{
-                    y: isMobile ? -12 : -24,
-                    opacity: 0,
-                    rotateX: isMobile ? 0 : 40,
-                    filter: "blur(3px)",
-                  }}
-                  transition={{
-                    type: "spring",
-                    damping: 25,
-                    stiffness: 200,
-                    mass: 0.6,
-                  }}
-                >
-                  {rotatingWords[wordIndex]}
-                </motion.span>
-              </AnimatePresence>
-            </span>
-            <span className="hero-headline-top">Applications</span>
+          <motion.h1 className="hero-headline hero-headline--identity" {...fadeUp(0.12, isMobile)}>
+            <span className="hero-name heading-display">{site.name}</span>
+            <span className="hero-role">{site.role}</span>
           </motion.h1>
 
-          <motion.p className="hero-sub" {...fadeUp(0.25, isMobile)}>
-            5+ live products shipped, 93% ML model accuracy, and 150+ DSA
-            problems solved &mdash; I build fast, measurable web and AI
-            experiences from idea to deployment.
+          <motion.p className="hero-sub" {...fadeUp(0.22, isMobile)}>
+            {site.tagline}
           </motion.p>
 
-          <motion.div className="hero-cta-group" {...fadeUp(0.35, isMobile)}>
+          <motion.div className="hero-cta-group" {...fadeUp(0.32, isMobile)}>
             <MagneticButton href="#work" className="btn btn-primary">
-              View Projects
+              View work
               <svg
                 width="16"
                 height="16"
@@ -199,27 +133,11 @@ function Hero() {
               rel="noopener noreferrer"
               className="btn btn-outline-light"
             >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-                <polyline points="10 9 9 9 8 9" />
-              </svg>
               Resume
             </MagneticButton>
           </motion.div>
 
-          <motion.div className="hero-profiles" {...fadeUp(0.45, isMobile)}>
+          <motion.div className="hero-profiles" {...fadeUp(0.42, isMobile)}>
             <a
               href="https://leetcode.com/u/jayramleet94/"
               target="_blank"
@@ -246,24 +164,23 @@ function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* IMAGE COLUMN — spring parallax */}
         <motion.div
           className="hero-image-wrap"
-          initial={{ opacity: 0, scale: 0.9, y: 30 }}
+          initial={{ opacity: 0, scale: 0.94, y: 24 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{
             type: "spring",
             damping: 28,
             stiffness: 160,
             mass: 0.9,
-            delay: isMobile ? 0.15 : 0.25,
+            delay: isMobile ? 0.12 : 0.2,
           }}
           style={{ y: imageY }}
         >
           <div className="hero-image-ring" />
           <img
             src="/profile.jpg"
-            alt="Jayram G Sangawat"
+            alt={site.name}
             className="hero-image"
             width="500"
             height="500"
@@ -271,13 +188,8 @@ function Hero() {
             decoding="async"
             fetchPriority="high"
           />
-          <div className="hero-float-card">
-            <span className="hero-float-emoji">🤖</span>
-            <span>AI + Full-Stack Dev</span>
-          </div>
         </motion.div>
       </motion.div>
-
     </section>
   );
 }

@@ -1,84 +1,38 @@
 import { motion, useInView } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
 import projects from "../data/projects";
+import ScreenshotFrame from "./ScreenshotFrame";
 
-const screenshotBackdrops = [
-  "linear-gradient(140deg, #4361ee 0%, #3152c8 58%, #233a8b 100%)",
-  "linear-gradient(140deg, #facc15 0%, #f59e0b 56%, #d97706 100%)",
-  "linear-gradient(140deg, #4f46e5 0%, #3b82f6 52%, #1e3a8a 100%)",
-  "linear-gradient(140deg, #8b5cf6 0%, #7c3aed 48%, #4c1d95 100%)",
-  "linear-gradient(140deg, #84cc16 0%, #22c55e 52%, #15803d 100%)",
-  "linear-gradient(140deg, #f59e0b 0%, #f97316 56%, #c2410c 100%)",
-];
-
-const screenshotLayouts = ["edge", "strip", "centered", "offset", "crop"];
-const geometryVariants = [
-  "golden",
-  "figma-grid",
-  "rings",
-  "iso-lines",
-  "dot-mesh",
-  "arc-stack",
-];
-
-function ProjectCard({ project, index }) {
+function ProjectCard({ project, index, featured = false }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const isResumeAnalyzer = project.id === "resume-analyzer";
-  const layout = isResumeAnalyzer
-    ? "resume-focus"
-    : screenshotLayouts[index % screenshotLayouts.length];
-  const screenshotBg = isResumeAnalyzer
-    ? "linear-gradient(140deg, #1d4ed8 0%, #2563eb 46%, #14b8a6 100%)"
-    : screenshotBackdrops[index % screenshotBackdrops.length];
-  const geometry = isResumeAnalyzer
-    ? "resume-scan"
-    : geometryVariants[index % geometryVariants.length];
-  const secondaryImage = project.sections?.find(
-    (section) => section.image && section.image !== project.image,
-  )?.image;
-  const hasDualPreview = Boolean(secondaryImage) && ["strip", "offset"].includes(layout);
   const outcomeLine = project.highlights?.[0] || project.description;
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{
-        duration: 0.5,
-        delay: index * 0.08,
+        duration: 0.45,
+        delay: index * 0.06,
         ease: [0.16, 1, 0.3, 1],
       }}
     >
       <Link
         to={`/work/${project.id}`}
-        className={`work-card work-card--${layout}`}
-        style={{ "--ss-bg": screenshotBg }}
+        className={`work-card ui-card${featured ? " work-card--featured" : ""}`}
       >
-        <div
-          className={`work-media-shell work-geo-${geometry} ${hasDualPreview ? "dual" : "single"}`}
-        >
-          <div className="work-geometry-art" aria-hidden="true" />
-          <div className="work-shot work-shot-main">
-            <img
-              src={project.image}
-              alt={project.title}
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-          {hasDualPreview && (
-            <div className="work-shot work-shot-alt">
-              <img
-                src={secondaryImage}
-                alt={`${project.title} alternate preview`}
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          )}
+        <div className="work-card-preview">
+          <ScreenshotFrame
+            src={project.image}
+            alt={project.title}
+            layoutId={`project-cover-${project.id}`}
+            eager={featured}
+            label={project.title.split(" ").slice(0, 2).join(" ")}
+            className="screenshot-frame--compact"
+          />
         </div>
 
         <div className="work-card-body">
@@ -88,7 +42,7 @@ function ProjectCard({ project, index }) {
             </span>
           </div>
 
-          <h3 className="work-title">{project.title}</h3>
+          <h3 className="work-title heading-card">{project.title}</h3>
           <p className="work-outcome">{outcomeLine}</p>
 
           <div className="work-tags">
@@ -103,7 +57,7 @@ function ProjectCard({ project, index }) {
           </div>
 
           <span className="work-link">
-            View Case Study
+            View case study
             <svg
               width="16"
               height="16"
@@ -124,21 +78,24 @@ function ProjectCard({ project, index }) {
 }
 
 function Work() {
-  useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-  }, []);
+  const [featured, ...rest] = projects;
 
   return (
     <section id="work" className="work-section">
       <div className="work-header">
-        <h2 className="section-title">
-          Selected Work
+        <span className="section-label editorial-kicker">01 — Work</span>
+        <h2 className="section-title editorial-title heading-section">
+          Selected work
         </h2>
+        <p className="section-desc work-section-desc">
+          Production apps with live demos, case studies, and measurable outcomes.
+        </p>
       </div>
 
       <div className="work-grid">
-        {projects.map((project, index) => (
-          <ProjectCard key={project.id} project={project} index={index} />
+        <ProjectCard project={featured} index={0} featured />
+        {rest.map((project, index) => (
+          <ProjectCard key={project.id} project={project} index={index + 1} />
         ))}
       </div>
     </section>

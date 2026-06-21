@@ -1,280 +1,20 @@
-import { AnimatePresence, motion as Motion, useInView } from "framer-motion";
-import { Suspense, lazy, useCallback, useEffect, useRef, useState } from "react";
+import { motion as Motion, useInView } from "framer-motion";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import Cursor from "../components/Cursor";
 import Hero from "../components/Hero";
 import MagneticButton from "../components/MagneticButton";
-import {
-  ConfettiBurst,
-  CountUp,
-  MorphingBlob,
-  SpotlightFollow,
-  TextScramble,
-} from "../components/MicroInteractions";
-import {
-  SiCplusplus,
-  SiCoursera,
-  SiCss,
-  SiGeeksforgeeks,
-  SiGit,
-  SiGithub,
-  SiHtml5,
-  SiJavascript,
-  SiMongodb,
-  SiNodedotjs,
-  SiPython,
-  SiReact,
-} from "react-icons/si";
+import ProofBento from "../components/ProofBento";
+import { ConfettiBurst, MorphingBlob, SpotlightFollow } from "../components/MicroInteractions";
+import { SiCoursera, SiGeeksforgeeks, SiPython } from "react-icons/si";
 import Navbar from "../components/Navbar";
-import SectionDivider from "../components/SectionDivider";
 import certifications from "../data/certifications";
+import { site } from "../data/site";
 import "../styles/global.css";
 import { mediaQuery } from "../utils/breakpoints";
 
 const Footer = lazy(() => import("../components/Footer"));
 const Work = lazy(() => import("../components/Work"));
-
-const tools = [
-  {
-    name: "C++",
-    Icon: SiCplusplus,
-    info: "Core logic & problem solving",
-    color: "cpp",
-  },
-  {
-    name: "Python",
-    Icon: SiPython,
-    info: "AI, ML & automation",
-    color: "python",
-  },
-  {
-    name: "JavaScript",
-    Icon: SiJavascript,
-    info: "Logic, interactivity, state",
-    color: "js",
-  },
-  {
-    name: "HTML",
-    Icon: SiHtml5,
-    info: "Semantic structure & accessibility",
-    color: "html",
-  },
-  {
-    name: "CSS",
-    Icon: SiCss,
-    info: "Layouts, motion, visual polish",
-    color: "css",
-  },
-  {
-    name: "React",
-    Icon: SiReact,
-    info: "Component systems & UI logic",
-    color: "react",
-  },
-  {
-    name: "Node.js",
-    Icon: SiNodedotjs,
-    info: "Backend APIs & server logic",
-    color: "node",
-  },
-  {
-    name: "MongoDB",
-    Icon: SiMongodb,
-    info: "NoSQL database & data modeling",
-    color: "mongodb",
-  },
-  {
-    name: "Git",
-    Icon: SiGit,
-    info: "Version control & collaboration",
-    color: "git",
-  },
-  {
-    name: "GitHub",
-    Icon: SiGithub,
-    info: "Code hosting & CI/CD",
-    color: "github",
-  },
-];
-
-function ToolkitCard({ tool, index }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const IconComponent = tool.Icon;
-
-  return (
-    <Motion.div
-      ref={ref}
-      className={`toolkit-ref-card ${tool.color}`}
-      initial={{ opacity: 0, y: 16 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      whileHover={{ y: -6 }}
-      transition={{
-        duration: 0.4,
-        delay: index * 0.04,
-        ease: [0.16, 1, 0.3, 1],
-      }}
-    >
-      <div className="toolkit-ref-icon-wrap" aria-hidden="true">
-        <IconComponent className="toolkit-ref-icon" />
-      </div>
-      <span className="toolkit-ref-name">{tool.name}</span>
-      <span className="toolkit-ref-info">{tool.info}</span>
-    </Motion.div>
-  );
-}
-
-const stats = [
-  { number: "5+", label: "Live Deployed Projects" },
-  { number: "8.39", label: "CGPA" },
-  { number: "150+", label: "DSA Problems Solved" },
-  { number: "2+", label: "Years Building" },
-];
-
-const backendNotes = [
-  {
-    title: "FastAPI Architecture for Real-World AI APIs",
-    summary:
-      "How I structure routers, services, and async workflows so ML APIs stay fast, testable, and production-safe.",
-    readTime: "8 min read",
-    status: "Drafting",
-    tags: ["FastAPI", "Architecture", "Async"],
-  },
-  {
-    title: "Designing Reliable Auth + Role Access in MERN",
-    summary:
-      "A practical pattern for JWT sessions, refresh flow, role guards, and secure middleware organization.",
-    readTime: "10 min read",
-    status: "Planned",
-    tags: ["Node.js", "Security", "MongoDB"],
-  },
-  {
-    title: "Caching, Queues, and Background Jobs for Scale",
-    summary:
-      "When to add Redis caching, delayed workers, and retry strategies to improve latency and stability.",
-    readTime: "12 min read",
-    status: "Planned",
-    tags: ["Redis", "Performance", "Backend"],
-  },
-];
-
-function StatsRow() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-
-  return (
-    <section className="impact-section" ref={ref}>
-      <div className="impact-inner">
-        <Motion.span
-          className="section-label impact-label"
-          initial={{ opacity: 0, y: 12 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5 }}
-        >
-          <TextScramble text="By the Numbers" />
-        </Motion.span>
-        <div className="impact-grid">
-          {stats.map((stat, i) => (
-            <Motion.div
-              key={stat.label}
-              className="impact-card"
-              initial={{ opacity: 0, y: 24 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                duration: 0.6,
-                delay: i * 0.1,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
-              <CountUp value={stat.number} className="impact-number" />
-              <span className="impact-desc">{stat.label}</span>
-            </Motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function BackendInsightsSection() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-
-  return (
-    <section className="backend-insights-section" ref={ref}>
-      <div className="backend-insights-inner">
-        <Motion.div
-          className="backend-insights-head"
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <span className="section-label backend-insights-label">Knowledge Base</span>
-          <h2 className="backend-insights-title">Backend & Systems Notes</h2>
-          <p className="backend-insights-sub">
-            I&rsquo;m adding deep writeups on backend engineering, API design,
-            scale patterns, and production decisions. This section is ready for
-            long-form content and case-study style posts.
-          </p>
-        </Motion.div>
-
-        <div className="backend-insights-layout">
-          <Motion.article
-            className="backend-spotlight"
-            initial={{ opacity: 0, y: 24 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <div className="backend-spotlight-media" aria-hidden="true">
-              <div className="backend-media-topbar">
-                <span />
-                <span />
-                <span />
-              </div>
-              <pre className="backend-code-preview">
-{`POST /api/v1/analysis\n200 OK  •  87ms\ncache: HIT\nqueue: idle\nhealth: stable`}
-              </pre>
-            </div>
-            <div className="backend-spotlight-copy">
-              <h3>In-depth engineering writeups coming soon</h3>
-              <p>
-                You can publish architecture breakdowns, scaling notes,
-                backend debugging stories, and API design decisions here.
-              </p>
-            </div>
-          </Motion.article>
-
-          <div className="backend-notes-grid">
-            {backendNotes.map((note, i) => (
-              <Motion.article
-                key={note.title}
-                className="backend-note-card"
-                initial={{ opacity: 0, y: 18 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{
-                  duration: 0.45,
-                  delay: i * 0.08,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <div className="backend-note-meta">
-                  <span>{note.readTime}</span>
-                  <span className="backend-note-status">{note.status}</span>
-                </div>
-                <h3>{note.title}</h3>
-                <p>{note.summary}</p>
-                <div className="backend-note-tags" aria-label="Topic tags">
-                  {note.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
-                </div>
-              </Motion.article>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 function Contact({ ctaBtnRef }) {
   const ref = useRef(null);
@@ -283,30 +23,30 @@ function Contact({ ctaBtnRef }) {
   return (
     <section id="contact" className="cta-section" ref={ref}>
       <Motion.div
-        className="cta-box"
-        initial={{ opacity: 0, y: 40 }}
+        className="cta-box ui-card"
+        initial={{ opacity: 0, y: 32 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="cta-layout">
           <div className="cta-content">
-            <h2 className="cta-headline">
-              Let&apos;s Build Something Impactful
+            <span className="section-label editorial-kicker">Contact</span>
+            <h2 className="cta-headline editorial-title heading-section">
+              Let&apos;s build something that ships
             </h2>
             <p className="cta-sub cta-sub-primary">
-              From idea to deployment, I deliver outcome-focused full-stack and
-              AI products that are fast, reliable, and production-ready.
+              Full-stack and AI products — fast, reliable, production-ready.
             </p>
 
             <div className="cta-action-row">
               <div ref={ctaBtnRef} className="cta-action-wrap">
                 <MagneticButton
-                  href="mailto:sangawatjayram@gmail.com"
-                  className="cta-connect-btn"
+                  href={`mailto:${site.email}`}
+                  className="cta-connect-btn btn-primary"
                 >
-                  Start a Project
+                  Email me
                   <span aria-hidden="true" className="cta-arrow">
-                    -&gt;
+                    →
                   </span>
                 </MagneticButton>
               </div>
@@ -336,14 +76,14 @@ function Contact({ ctaBtnRef }) {
               >
                 LeetCode
               </a>
-              <a href="mailto:sangawatjayram@gmail.com">Email</a>
+              <Link to="/about">About</Link>
             </div>
           </div>
 
           <div className="cta-media">
             <img
               src="/contact_sec_img.avif"
-              alt="Contact section visual"
+              alt=""
               loading="lazy"
               decoding="async"
             />
@@ -354,21 +94,6 @@ function Contact({ ctaBtnRef }) {
   );
 }
 
-// Konami code sequence
-const KONAMI = [
-  "ArrowUp",
-  "ArrowUp",
-  "ArrowDown",
-  "ArrowDown",
-  "ArrowLeft",
-  "ArrowRight",
-  "ArrowLeft",
-  "ArrowRight",
-  "b",
-  "a",
-];
-
-// Reusable scroll-reveal wrapper
 function RevealSection({ children, className = "", delay = 0 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
@@ -377,10 +102,10 @@ function RevealSection({ children, className = "", delay = 0 }) {
     <Motion.div
       ref={ref}
       className={className}
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{
-        duration: 0.5,
+        duration: 0.45,
         delay,
         ease: [0.16, 1, 0.3, 1],
       }}
@@ -402,27 +127,7 @@ function DeferredMount({ children, minHeight = 320, margin = "320px" }) {
 }
 
 function Home() {
-  const [easterEgg, setEasterEgg] = useState(false);
   const [enableFancyEffects, setEnableFancyEffects] = useState(false);
-  const konamiIndex = useRef(0);
-
-  const handleKonami = useCallback((e) => {
-    if (e.key === KONAMI[konamiIndex.current]) {
-      konamiIndex.current++;
-      if (konamiIndex.current === KONAMI.length) {
-        setEasterEgg(true);
-        konamiIndex.current = 0;
-        setTimeout(() => setEasterEgg(false), 3500);
-      }
-    } else {
-      konamiIndex.current = 0;
-    }
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("keydown", handleKonami, { passive: true });
-    return () => window.removeEventListener("keydown", handleKonami);
-  }, [handleKonami]);
 
   useEffect(() => {
     const pointerMq = window.matchMedia("(pointer: fine)");
@@ -465,40 +170,23 @@ function Home() {
         {enableFancyEffects && <MorphingBlob className="home-blob" />}
 
         <DeferredMount minHeight={780} margin="260px">
-          <SectionDivider className="section-divider--landing-project" />
           <Suspense fallback={null}>
             <Work />
           </Suspense>
-          <SectionDivider />
         </DeferredMount>
 
-        {/* ===== TOOLKIT SECTION ===== */}
-        <DeferredMount minHeight={640} margin="220px">
-          <RevealSection>
-            <section className="toolkit-ref-section" aria-labelledby="toolkit-title">
-              <div className="toolkit-ref-header">
-                <h2 className="toolkit-ref-title" id="toolkit-title">
-                  TOOLKIT
-                </h2>
-              </div>
-
-              <div className="toolkit-ref-grid">
-                {tools.map((tool, i) => (
-                  <ToolkitCard key={tool.name} tool={tool} index={i} />
-                ))}
-              </div>
-            </section>
-          </RevealSection>
-
-          <SectionDivider />
+        <DeferredMount minHeight={480} margin="220px">
+          <ProofBento />
         </DeferredMount>
 
-        {/* ===== CERTIFICATIONS ===== */}
-        <DeferredMount minHeight={560} margin="220px">
+        <DeferredMount minHeight={480} margin="220px">
           <RevealSection>
-            <section className="cert-section">
+            <section className="cert-section" aria-labelledby="cert-title">
               <div className="toolkit-header">
-                <h2 className="section-title">Certifications</h2>
+                <span className="section-label editorial-kicker">Credentials</span>
+                <h2 className="section-title editorial-title heading-section" id="cert-title">
+                  Certifications
+                </h2>
               </div>
               <div className="cert-grid">
                 {certifications.map((cert, i) => {
@@ -508,13 +196,13 @@ function Home() {
                   return (
                     <Motion.div
                       key={`${cert.name}-${cert.platform}`}
-                      className="cert-card"
-                      initial={{ opacity: 0, y: 16 }}
+                      className="cert-card ui-card"
+                      initial={{ opacity: 0, y: 14 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, margin: "-40px" }}
                       transition={{
                         duration: 0.4,
-                        delay: i * 0.06,
+                        delay: i * 0.05,
                         ease: [0.16, 1, 0.3, 1],
                       }}
                     >
@@ -534,55 +222,15 @@ function Home() {
               </div>
             </section>
           </RevealSection>
-
-          <SectionDivider />
         </DeferredMount>
 
-        <DeferredMount minHeight={420} margin="220px">
-          {/* ===== STATS ROW ===== */}
-          <StatsRow />
-
-          <SectionDivider />
-        </DeferredMount>
-
-        <DeferredMount minHeight={720} margin="220px">
-          {/* ===== BACKEND INSIGHTS ===== */}
-          <BackendInsightsSection />
-
-          <SectionDivider />
-        </DeferredMount>
-
-        <DeferredMount minHeight={640} margin="180px">
-          {/* ===== CONTACT SECTION ===== */}
+        <DeferredMount minHeight={560} margin="180px">
           <Contact ctaBtnRef={ctaBtnRef} />
 
           <Suspense fallback={null}>
             <Footer />
           </Suspense>
         </DeferredMount>
-
-        {/* ===== EASTER EGG ===== */}
-        <AnimatePresence>
-          {easterEgg && (
-            <Motion.div
-              className="easter-egg-overlay"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              onClick={() => setEasterEgg(false)}
-            >
-              <div className="easter-egg-content">
-                <span className="easter-egg-emoji">🎮</span>
-                <p className="easter-egg-text">You found the secret!</p>
-                <p className="easter-egg-sub">
-                  You&rsquo;re clearly a person of culture. Let&rsquo;s build
-                  something awesome together.
-                </p>
-              </div>
-            </Motion.div>
-          )}
-        </AnimatePresence>
       </main>
     </>
   );
