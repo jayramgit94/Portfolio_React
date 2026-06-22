@@ -385,24 +385,205 @@
 }
 
 .proof-cell--stack {
-  grid-column: span 2;
+  grid-column: 1 / -1;
+  padding: 0;
+  background: transparent;
 }
 
-.proof-stack-label {
-  display: block;
+/* Notion × Figma × Replit stack panel */
+.stack-panel {
+  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+  background: var(--surface-3);
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.28);
+}
+
+.stack-panel__chrome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.55rem 0.85rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.stack-panel__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.stack-panel__dot--red {
+  background: #ff5f57;
+}
+
+.stack-panel__dot--yellow {
+  background: #febc2e;
+}
+
+.stack-panel__dot--green {
+  background: #28c840;
+}
+
+.stack-panel__title {
+  margin-left: 0.35rem;
   font-family: var(--font-mono);
   font-size: 0.68rem;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-accent-editorial);
-  margin-bottom: 0.5rem;
+  color: var(--text-muted);
 }
 
-.proof-stack-value {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.55;
+.stack-panel__status {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-editorial);
+}
+
+.stack-panel__body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--border-subtle);
+}
+
+.stack-group {
+  padding: 1rem 1.1rem 1.15rem;
+  background: var(--surface-2);
+  min-height: 100%;
+}
+
+.stack-group__label {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--text-muted);
+}
+
+.stack-group__pills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.stack-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-subtle);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.stack-pill:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-hover);
+}
+
+.stack-pill__icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.stack-pill__glyph {
+  font-size: 0.55rem;
+  opacity: 0.7;
+}
+
+.stack-pill--react {
+  border-color: rgba(97, 218, 251, 0.35);
+  background: rgba(97, 218, 251, 0.08);
+  color: #7dd3fc;
+}
+
+.stack-pill--js {
+  border-color: rgba(247, 223, 30, 0.35);
+  background: rgba(247, 223, 30, 0.08);
+  color: #fde047;
+}
+
+.stack-pill--html {
+  border-color: rgba(227, 79, 38, 0.35);
+  background: rgba(227, 79, 38, 0.1);
+  color: #fb923c;
+}
+
+.stack-pill--css {
+  border-color: rgba(38, 77, 228, 0.35);
+  background: rgba(38, 77, 228, 0.1);
+  color: #93c5fd;
+}
+
+.stack-pill--node {
+  border-color: rgba(51, 153, 51, 0.35);
+  background: rgba(51, 153, 51, 0.1);
+  color: #86efac;
+}
+
+.stack-pill--mongo {
+  border-color: rgba(71, 162, 72, 0.35);
+  background: rgba(71, 162, 72, 0.1);
+  color: #86efac;
+}
+
+.stack-pill--sql {
+  border-color: rgba(56, 189, 248, 0.3);
+  background: rgba(56, 189, 248, 0.08);
+  color: #7dd3fc;
+}
+
+.stack-pill--git {
+  border-color: rgba(240, 80, 50, 0.35);
+  background: rgba(240, 80, 50, 0.1);
+  color: #fca5a5;
+}
+
+.stack-pill--github {
+  border-color: rgba(148, 163, 184, 0.35);
+  background: rgba(148, 163, 184, 0.1);
+  color: #e2e8f0;
+}
+
+.stack-pill--cpp {
+  border-color: rgba(0, 90, 156, 0.4);
+  background: rgba(0, 90, 156, 0.12);
+  color: #7dd3fc;
+}
+
+.stack-pill--dsa {
+  border-color: rgba(183, 206, 114, 0.4);
+  background: rgba(183, 206, 114, 0.1);
+  color: var(--color-accent-editorial);
+}
+
+.stack-pill--n8n {
+  border-color: rgba(255, 109, 90, 0.4);
+  background: rgba(255, 109, 90, 0.12);
+  color: #fda4af;
+}
+
+.stack-pill--auto {
+  border-color: rgba(167, 139, 250, 0.35);
+  background: rgba(167, 139, 250, 0.1);
+  color: #c4b5fd;
 }
 
 @media (max-width: 900px) {
@@ -410,9 +591,12 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .proof-cell--quote,
-  .proof-cell--stack {
+  .proof-cell--quote {
     grid-column: span 2;
+  }
+
+  .stack-panel__body {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
@@ -421,9 +605,12 @@
     grid-template-columns: 1fr;
   }
 
-  .proof-cell--quote,
-  .proof-cell--stack {
+  .proof-cell--quote {
     grid-column: span 1;
+  }
+
+  .stack-panel__body {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -1,6 +1,7 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 import { CountUp } from "./MicroInteractions";
+import StackPanel from "./StackPanel";
 import { site } from "../data/site";
 
 function ProofBento() {
@@ -55,8 +56,7 @@ function ProofBento() {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            <span className="proof-stack-label">Stack</span>
-            <p className="proof-stack-value">{site.stackSummary}</p>
+            <StackPanel inView={inView} />
           </motion.div>
         </div>
       </div>

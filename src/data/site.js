@@ -11,7 +11,51 @@ export const site = {
     { value: "200+", label: "DSA solved" },
     { value: "2+", label: "Years building" },
   ],
-  stackSummary: "React · Python · FastAPI · TensorFlow · Node · MongoDB",
+  stackGroups: [
+    {
+      id: "frontend",
+      label: "Frontend",
+      items: [
+        { name: "React", tone: "react" },
+        { name: "JavaScript", tone: "js" },
+        { name: "HTML", tone: "html" },
+        { name: "CSS", tone: "css" },
+      ],
+    },
+    {
+      id: "backend",
+      label: "Backend & data",
+      items: [
+        { name: "Node.js", tone: "node" },
+        { name: "MongoDB", tone: "mongo" },
+        { name: "SQL", tone: "sql" },
+      ],
+    },
+    {
+      id: "tooling",
+      label: "Tooling",
+      items: [
+        { name: "Git", tone: "git" },
+        { name: "GitHub", tone: "github" },
+      ],
+    },
+    {
+      id: "core",
+      label: "Core & practice",
+      items: [
+        { name: "C++", tone: "cpp" },
+        { name: "DSA", tone: "dsa" },
+      ],
+    },
+    {
+      id: "automation",
+      label: "Automation",
+      items: [
+        { name: "n8n", tone: "n8n" },
+        { name: "Workflow automation", tone: "auto" },
+      ],
+    },
+  ],
   quote:
     "I ship measurable web and AI products — from real-time ML pipelines to production APIs.",
 };
